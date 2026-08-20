@@ -46,6 +46,19 @@
   @media(min-width:640px){.bullets{grid-template-columns:1fr 1fr 1fr}}
   .bullet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;font-size:14.5px;color:#DCE4EB;display:flex;gap:10px;align-items:flex-start}
   .bullet .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#E8B84B;margin-top:7px}
+  /* ---------- resume draft ---------- */
+  .resume{display:none;position:sticky;top:56px;z-index:40;max-width:860px;margin:0 auto;padding:0 12px}
+  .resume.show{display:block}
+  .resume-in{background:#FCF9F2;border:1px solid var(--gold);border-radius:12px;padding:14px 16px;
+    margin-top:12px;box-shadow:0 4px 14px rgba(28,43,58,.12);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .resume-in .txt{flex:1 1 240px;font-size:14.5px;font-weight:500}
+  .resume-in button{border:0;border-radius:8px;font:600 14px/1 var(--body-font);padding:11px 16px;cursor:pointer}
+  #resumeYes{background:var(--ink);color:#fff}
+  #resumeNo{background:transparent;color:var(--steel);text-decoration:underline}
+  .saved-hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(12px);
+    background:var(--ink);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:999px;
+    opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60}
+  .saved-hint.show{opacity:.94;transform:translateX(-50%) translateY(0)}
   /* ---------- name meaning ---------- */
   .meaning{max-width:860px;margin:0 auto;padding:30px 16px 0}
   .meaning-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 18px}
@@ -181,6 +194,15 @@
     </div>
   </div>
 </section>
+
+<div class="resume" id="resumeBar">
+  <div class="resume-in">
+    <span class="txt" data-i18n="resumeTxt"></span>
+    <button type="button" id="resumeYes" data-i18n="resumeYes"></button>
+    <button type="button" id="resumeNo" data-i18n="resumeNo"></button>
+  </div>
+</div>
+<div class="saved-hint" id="savedHint" data-i18n="savedHint"></div>
 
 <section class="meaning">
   <div class="meaning-in">
@@ -438,6 +460,10 @@ ru:{
  b1:"Бесплатно для поставщиков — участие в базе не стоит ничего",
  b2:"Опт и розница: отгрузки из Китая и со складов в России",
  b3:"Прямой контакт с покупателями — без посредников",
+ resumeTxt:"У вас есть незаконченная анкета. Продолжить с того места, где вы остановились?",
+ resumeYes:"Продолжить",
+ resumeNo:"Начать заново",
+ savedHint:"Черновик сохранён",
  mnTitle:"Почему CHUAI",
  mnLead:"Chuai — запись китайского слога пиньинем. В зависимости от тона он даёт три значения, и все три — про нашу работу.",
  mn1:"Положить за пазуху, в карман — 揣在口袋里.",
@@ -519,6 +545,10 @@ en:{
  b1:"Free for suppliers — joining the database costs nothing",
  b2:"Wholesale & retail: shipping from China or from stock in Russia",
  b3:"Direct contact with buyers — no middlemen",
+ resumeTxt:"You have an unfinished form. Continue where you left off?",
+ resumeYes:"Continue",
+ resumeNo:"Start over",
+ savedHint:"Draft saved",
  mnTitle:"Why CHUAI",
  mnLead:"Chuai is a Chinese syllable in pinyin. Depending on the tone it carries three meanings — and all three describe what we do.",
  mn1:"To tuck away, to put in your pocket — 揣在口袋里.",
@@ -600,6 +630,10 @@ zh:{
  b1:"供应商免费 — 加入买家数据库不收取任何费用",
  b2:"批发与零售：支持中国直发或俄罗斯仓库发货",
  b3:"与买家直接联系 — 没有中间商",
+ resumeTxt:"您有一份未完成的问卷，是否从上次中断的地方继续填写？",
+ resumeYes:"继续填写",
+ resumeNo:"重新开始",
+ savedHint:"已自动保存",
  mnTitle:"为什么叫 CHUAI",
  mnLead:"CHUAI 取自汉语拼音 chuai。不同声调有三个含义，恰好对应我们为供应商做的三件事。",
  mn1:"揣起来、放进口袋 —— 揣在口袋里。",
@@ -913,6 +947,94 @@ form.addEventListener("change",function(e){
   if(n==="defer_pay") document.getElementById("deferDaysBox").classList.toggle("show",form.defer_pay.value==="yes");
 });
 
+/* ---- автосохранение: анкета длинная, WeChat-браузер легко теряет вкладку ---- */
+var DRAFT_KEY="chuai_draft_v1";
+var saveTimer=null;
+function draftSnapshot(){
+  var d={};
+  Array.prototype.forEach.call(form.elements,function(el){
+    if(!el.name||el.name==="website_url"||el.type==="file")return;
+    if(el.type==="checkbox"||el.type==="radio"){
+      if(el.checked){(d[el.name]=d[el.name]||[]).push(el.value);}
+    }else if(el.value){d[el.name]=el.value;}
+  });
+  return d;
+}
+function saveDraft(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){
+    try{
+      var d=draftSnapshot();
+      if(Object.keys(d).length<2){return;}
+      localStorage.setItem(DRAFT_KEY,JSON.stringify({t:Date.now(),lang:LANG,data:d}));
+      showSavedHint();
+    }catch(e){}
+  },400);
+}
+function showSavedHint(){
+  var el=document.getElementById("savedHint");
+  if(!el)return;
+  el.classList.add("show");
+  clearTimeout(el._t);
+  el._t=setTimeout(function(){el.classList.remove("show");},2200);
+}
+function restoreDraft(d){
+  Object.keys(d).forEach(function(name){
+    var val=d[name];
+    var els=form.elements[name];
+    if(!els)return;
+    if(Array.isArray(val)){
+      var list=els.length?els:[els];
+      Array.prototype.forEach.call(list,function(el){
+        if(val.indexOf(el.value)>-1){el.checked=true;}
+      });
+    }else{
+      if(els.length&&!els.value&&els[0]){els[0].value=val;}else{els.value=val;}
+    }
+  });
+  /* пересчитать зависимые поля */
+  ["who","dist","stock_ru","defer_pay"].forEach(function(n){
+    if(form[n])form.dispatchEvent(new Event("change"));
+  });
+  if(form.who&&form.who.value==="other")document.getElementById("whoOtherBox").classList.add("show");
+  if(form.dist&&form.dist.value==="yes")document.getElementById("distCountBox").classList.add("show");
+  if(form.stock_ru&&form.stock_ru.value==="yes")document.getElementById("lotRuBox").classList.add("show");
+  if(form.defer_pay&&form.defer_pay.value==="yes")document.getElementById("deferDaysBox").classList.add("show");
+  /* счётчики выбранных марок */
+  document.querySelectorAll(".region").forEach(function(reg){
+    var n=reg.querySelectorAll("input:checked").length;
+    var cnt=reg.querySelector(".cnt");
+    if(cnt){cnt.textContent=n;cnt.classList.toggle("show",n>0);}
+  });
+}
+function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
+form.addEventListener("input",saveDraft);
+form.addEventListener("change",saveDraft);
+document.addEventListener("visibilitychange",function(){if(document.hidden)saveDraft();});
+window.addEventListener("pagehide",saveDraft);
+
+(function checkDraft(){
+  var raw=null;
+  try{raw=localStorage.getItem(DRAFT_KEY);}catch(e){}
+  if(!raw)return;
+  var saved;
+  try{saved=JSON.parse(raw);}catch(e){return;}
+  if(!saved||!saved.data)return;
+  /* черновик старше 7 дней не предлагаем */
+  if(Date.now()-(saved.t||0)>7*24*3600*1000){clearDraft();return;}
+  var bar=document.getElementById("resumeBar");
+  bar.classList.add("show");
+  document.getElementById("resumeYes").onclick=function(){
+    if(saved.lang)applyLang(saved.lang);
+    restoreDraft(saved.data);
+    bar.classList.remove("show");
+    document.getElementById("form").scrollIntoView({behavior:"smooth"});
+  };
+  document.getElementById("resumeNo").onclick=function(){
+    clearDraft();bar.classList.remove("show");
+  };
+})();
+
 /* files */
 var MAX_FILES=10, MAX_SIZE=25*1024*1024, MAX_TOTAL=50*1024*1024;
 var pickedFiles=[];
@@ -1000,6 +1122,7 @@ form.addEventListener("submit",function(e){
   var btnLabel=btn.textContent;btn.textContent=T[LANG].sending;
   function fail(){btn.disabled=false;btn.textContent=btnLabel;errBox.textContent=T[LANG].errSend;errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});}
   function success(){
+    clearDraft();
     form.parentElement.querySelectorAll(".sec,.form-head").forEach(function(s){s.style.display="none";});
     document.getElementById("done").classList.add("show");
     window.scrollTo({top:document.getElementById("form").offsetTop-60,behavior:"smooth"});
