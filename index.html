@@ -365,7 +365,7 @@
 /* Set FORM_ENDPOINT to your backend URL (e.g. a Yandex Cloud Function,
    Google Apps Script web app, or form service). Empty = demo mode:
    the form validates and shows the success screen without sending. */
-var FORM_ENDPOINT = "";
+var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwHjyruaEt4WnQn9mU-QqMu6uz8nqL_Y9OvUuH6M0DMnG7yTwk6_LdGWOyz5kvkCko/exec";
 
 /* ================= I18N ================= */
 var T = {
@@ -422,8 +422,8 @@ ru:{
  filesQ:"Загрузите материалы о компании и продукции",
  filesBig:"Перетащите файлы сюда",
  filesBtn:"Выбрать файлы на компьютере",
- filesSmall:"Каталоги, прайс-листы, презентации: PDF, Excel, CSV, Word, фото · до 10 файлов, каждый до 10 МБ",
- filesTooBig:"Файлы больше 10 МБ не прикрепляются — отправьте их на",
+ filesSmall:"Каталоги, прайс-листы, презентации: PDF, Excel, CSV, Word, фото · до 10 файлов, каждый до 25 МБ",
+ filesTooBig:"Файлы больше 25 МБ (или суммарно больше 50 МБ) не прикрепляются — отправьте их на",
  sending:"Отправка…",
  filesAlt:"Или отправьте материалы на email (укажите название компании в теме письма):",
  consent:"Согласен(-на) на обработку указанных данных и передачу их потенциальным покупателям в России. *",
@@ -488,8 +488,8 @@ en:{
  filesQ:"Upload materials about your company and products",
  filesBig:"Drag and drop files here",
  filesBtn:"Choose files on your computer",
- filesSmall:"Catalogues, price lists, presentations: PDF, Excel, CSV, Word, photos · up to 10 files, 10 MB each",
- filesTooBig:"Files over 10 MB are not attached — please email them to",
+ filesSmall:"Catalogues, price lists, presentations: PDF, Excel, CSV, Word, photos · up to 10 files, 25 MB each",
+ filesTooBig:"Files over 25 MB (or 50 MB in total) are not attached — please email them to",
  sending:"Sending…",
  filesAlt:"Or send your materials by email (put your company name in the subject):",
  consent:"I agree to the processing of this data and to sharing it with potential buyers in Russia. *",
@@ -554,8 +554,8 @@ zh:{
  filesQ:"上传公司及产品资料",
  filesBig:"将文件拖拽到此处",
  filesBtn:"从电脑选择文件",
- filesSmall:"产品目录、价格表、公司介绍：PDF、Excel、CSV、Word、图片 · 最多 10 个文件，每个不超过 10 MB",
- filesTooBig:"超过 10 MB 的文件无法上传，请发送至邮箱",
+ filesSmall:"产品目录、价格表、公司介绍：PDF、Excel、CSV、Word、图片 · 最多 10 个文件，每个不超过 25 MB",
+ filesTooBig:"超过 25 MB（或总共超过 50 MB）的文件无法上传，请发送至邮箱",
  sending:"正在提交…",
  filesAlt:"也可以将资料发送至邮箱（邮件主题请注明公司名称）：",
  consent:"我同意平台处理上述信息，并将其提供给俄罗斯的潜在买家。*",
@@ -768,7 +768,7 @@ form.addEventListener("change",function(e){
 });
 
 /* files */
-var MAX_FILES=10, MAX_SIZE=10*1024*1024, MAX_TOTAL=20*1024*1024;
+var MAX_FILES=10, MAX_SIZE=25*1024*1024, MAX_TOTAL=50*1024*1024;
 var pickedFiles=[];
 var fileInput=document.getElementById("fileInput");
 var dropEl=document.getElementById("drop");
@@ -801,16 +801,6 @@ fileInput.addEventListener("change",function(){addFiles(fileInput.files);fileInp
 ["dragenter","dragover"].forEach(function(ev){dropEl.addEventListener(ev,function(e){e.preventDefault();dropEl.classList.add("drag");});});
 ["dragleave","drop"].forEach(function(ev){dropEl.addEventListener(ev,function(e){e.preventDefault();dropEl.classList.remove("drag");});});
 dropEl.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.files)addFiles(e.dataTransfer.files);});
-function filesAsBase64(){
-  return Promise.all(pickedFiles.map(function(f){
-    return new Promise(function(res,rej){
-      var r=new FileReader();
-      r.onload=function(){res({name:f.name,type:f.type||"application/octet-stream",size:f.size,data:String(r.result).split(",")[1]||""});};
-      r.onerror=rej;
-      r.readAsDataURL(f);
-    });
-  }));
-}
 
 /* submit */
 /* Коды ответов переводятся в русские подписи, чтобы таблицу было удобно читать */
@@ -867,12 +857,27 @@ form.addEventListener("submit",function(e){
     window.scrollTo({top:document.getElementById("form").offsetTop-60,behavior:"smooth"});
   }
   if(FORM_ENDPOINT){
-    filesAsBase64().then(function(files){
-      var payload=collect();payload.files=files;
-      return fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
-    }).then(function(r){return r.json();})
-      .then(function(j){if(j&&j.ok)success();else fail();})
-      .catch(fail);
+    var payload=collect();payload.files_count=pickedFiles.length;
+    var post=function(body){return fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){return r.json();});};
+    post(payload).then(function(j){
+      if(!j||!j.ok)throw 0;
+      if(!j.folder_id||!pickedFiles.length)return;
+      /* файлы уходят по одному, каждый отдельным запросом */
+      var chain=Promise.resolve();
+      pickedFiles.forEach(function(f,i){
+        chain=chain.then(function(){
+          btn.textContent=T[LANG].sending+" ("+(i+1)+"/"+pickedFiles.length+")";
+          return new Promise(function(res,rej){
+            var r=new FileReader();
+            r.onload=function(){res(String(r.result).split(",")[1]||"");};
+            r.onerror=rej;r.readAsDataURL(f);
+          }).then(function(b64){
+            return post({kind:"file",folder_id:j.folder_id,name:f.name,type:f.type||"application/octet-stream",data:b64});
+          }).catch(function(){/* один битый файл не должен ронять анкету */});
+        });
+      });
+      return chain;
+    }).then(success).catch(fail);
   }else{
     try{localStorage.setItem("chuai_last_submission",JSON.stringify(collect()));}catch(e){}
     setTimeout(success,400);
