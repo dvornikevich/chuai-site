@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,12 @@
     --red:#C4342B; --red-deep:#A02620; --green:#2E7D4F; --green-bg:#E8F3EC;
     --gold:#B98A2F;
     --body-font:'Golos Text','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  }
+  /* иероглифы у CJK-языков различаются: порядок семейств задаём по языку страницы */
+  html[lang="ja"]{--body-font:'Golos Text','Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif}
+  html[lang="ko"]{--body-font:'Golos Text','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+  html[lang="hi"]{--body-font:'Golos Text','Noto Sans Devanagari','Nirmala UI',sans-serif}
+  :root{
     --disp-font:'Unbounded','Golos Text','Noto Sans SC','PingFang SC',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -28,9 +34,17 @@
   .logo{font-family:var(--disp-font);font-weight:700;font-size:19px;letter-spacing:.06em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:9px}
   .logo b{color:#E8B84B;font-weight:700}
   .logo-mark{width:26px;height:26px;flex:none;display:block}
-  .langs{display:flex;gap:4px;background:rgba(255,255,255,.09);border-radius:999px;padding:3px}
-  .langs button{border:0;background:transparent;color:#C7D2DC;font:600 13px/1 var(--body-font);padding:7px 12px;border-radius:999px;cursor:pointer}
-  .langs button.on{background:#fff;color:var(--ink)}
+  .langs{position:relative}
+  .lang-cur{display:flex;align-items:center;gap:7px;border:0;background:rgba(255,255,255,.12);color:#fff;
+            font:600 13.5px/1 var(--body-font);padding:9px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .lang-cur .cv{font-size:10px;opacity:.7}
+  .lang-menu{position:absolute;right:0;top:calc(100% + 8px);min-width:150px;background:#fff;border-radius:12px;
+             box-shadow:0 12px 32px rgba(10,20,30,.28);padding:6px;display:none;z-index:60}
+  .lang-menu.open{display:block}
+  .lang-menu button{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);
+                    font:600 14px/1 var(--body-font);padding:11px 12px;border-radius:8px;cursor:pointer}
+  .lang-menu button:hover{background:#F1F4F7}
+  .lang-menu button.on{background:var(--ink);color:#fff}
   /* ---------- hero ---------- */
   .hero{background:linear-gradient(160deg,#1C2B3A 0%,#24384D 55%,#2A415A 100%);color:#fff;padding:44px 16px 52px;position:relative;overflow:hidden}
   .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
@@ -47,6 +61,17 @@
   @media(min-width:640px){.bullets{grid-template-columns:1fr 1fr 1fr}}
   .bullet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;font-size:14.5px;color:#DCE4EB;display:flex;gap:10px;align-items:flex-start}
   .bullet .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#E8B84B;margin-top:7px}
+  /* ---------- marketplaces ---------- */
+  .mp{margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14)}
+  .mp-t{font-size:13px;font-weight:600;letter-spacing:.06em;color:#E8B84B;margin-bottom:12px}
+  .mp-row{display:flex;flex-wrap:wrap;gap:8px}
+  .mp-item{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:8px;
+    font:700 14px/1 var(--body-font);letter-spacing:.01em;white-space:nowrap}
+  .mp-ozon{background:#0069FF;color:#fff}
+  .mp-wb{background:#CB11AB;color:#fff}
+  .mp-ya{background:#FFDB4D;color:#21201F}
+  .mp-mm{background:#7B2BF9;color:#fff}
+  .mp-zap{background:#fff;color:#16232F}
   /* ---------- resume draft ---------- */
   .resume{display:none;position:sticky;top:56px;z-index:40;max-width:860px;margin:0 auto;padding:0 12px}
   .resume.show{display:block}
@@ -121,10 +146,15 @@
   .region-h .cnt.show{display:inline-block}
   .region-b{padding:12px 12px 14px}
   .region .opts{gap:6px}
-  .region .opt span{padding:7px 12px;font-size:13.5px}
+  .region .opt span{padding:0 12px;font-size:13.5px;height:32px;display:inline-flex;align-items:center}
+  /* показываем ровно две строки чипов, остальное — по кнопке «Ещё» */
+  .clamp2{max-height:70px;overflow:hidden}
+  .clamp2.open{max-height:none}
   .more-btn{margin-top:10px;border:1px dashed var(--steel);background:transparent;color:var(--ink-soft);
     font:600 13.5px/1 var(--body-font);border-radius:999px;padding:8px 16px;cursor:pointer}
-  .hideable{display:none}.hideable.show{display:contents}
+  .more-btn:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .cols .opts.clamp2{max-height:76px}
+  .cols .opt span{height:34px;display:flex;align-items:center;padding:0 14px}
   /* files */
   .drop{display:block;border:2px dashed #B9C4CE;border-radius:11px;background:var(--field);padding:28px 22px;text-align:center;cursor:pointer}
   .drop.drag{border-color:var(--ink-soft);background:#EEF2F5}
@@ -175,9 +205,15 @@
       CHU<b>AI</b>
     </a>
     <nav class="langs" aria-label="Language">
-      <button type="button" data-lang="zh">中文</button>
-      <button type="button" data-lang="ru">RU</button>
-      <button type="button" data-lang="en">EN</button>
+      <button type="button" class="lang-cur" id="langCur" aria-haspopup="true" aria-expanded="false"><span id="langCurTxt">中文</span><span class="cv">▾</span></button>
+      <div class="lang-menu" id="langMenu">
+        <button type="button" data-lang="zh">中文</button>
+        <button type="button" data-lang="ko">한국어</button>
+        <button type="button" data-lang="ja">日本語</button>
+        <button type="button" data-lang="hi">हिन्दी</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ru">Русский</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -192,6 +228,16 @@
       <div class="bullet"><span class="dot"></span><span data-i18n="b1"></span></div>
       <div class="bullet"><span class="dot"></span><span data-i18n="b2"></span></div>
       <div class="bullet"><span class="dot"></span><span data-i18n="b3"></span></div>
+    </div>
+    <div class="mp">
+      <div class="mp-t" data-i18n="mpTitle"></div>
+      <div class="mp-row">
+        <span class="mp-item mp-ozon">OZON</span>
+        <span class="mp-item mp-wb">WILDBERRIES</span>
+        <span class="mp-item mp-ya">Яндекс Маркет</span>
+        <span class="mp-item mp-mm">МегаМаркет</span>
+        <span class="mp-item mp-zap">ZAP.RU</span>
+      </div>
     </div>
   </div>
 </section>
@@ -243,6 +289,20 @@
         <div class="fld"><label>Email</label><input type="email" name="email"></div>
         <div class="fld"><label data-i18n="phone"></label><input type="tel" name="phone"></div>
         <div class="fld"><label data-i18n="booth"></label><input type="text" name="booth" data-i18n-ph="boothPh"></div>
+        <div class="fld"><label data-i18n="countryQ"></label>
+          <select name="country" id="countrySel">
+            <option value="" data-i18n="choose"></option>
+            <option value="CN" data-i18n="cCN"></option>
+            <option value="KR" data-i18n="cKR"></option>
+            <option value="JP" data-i18n="cJP"></option>
+            <option value="IN" data-i18n="cIN"></option>
+            <option value="TR" data-i18n="cTR"></option>
+            <option value="VN" data-i18n="cVN"></option>
+            <option value="TH" data-i18n="cTH"></option>
+            <option value="RU" data-i18n="cRU"></option>
+            <option value="other" data-i18n="cOther"></option>
+          </select>
+        </div>
         <div class="fld"><label data-i18n="city"></label><input type="text" name="city"></div>
         <div class="fld"><label data-i18n="site"></label><input type="url" name="site" placeholder="https://"></div>
       </div>
@@ -289,7 +349,8 @@
 
       <div class="cols">
         <p class="q"><span data-i18n="groupsQ"></span></p>
-        <div class="opts" id="groupOpts"></div>
+        <div class="opts clamp2" id="groupOpts"></div>
+        <button type="button" class="more-btn" id="groupMore"></button>
       </div>
       <div class="fld"><label data-i18n="groupsOther"></label><input type="text" name="groups_other"></div>
 
@@ -474,6 +535,7 @@ ru:{
  b1:"Сами заказываем, сами платим, сами растамаживаем — товар на наших складах",
  b2:"Наша марка: упаковка, этикетки, инструкции наши — вы производите по спецификации",
  b3:"Российская сторона на нас: EAC, импорт, склад, продажи, сервис",
+ mpTitle:"НАШИ КАНАЛЫ ПРОДАЖ В РОССИИ",
  resumeTxt:"У вас есть незаконченная анкета. Продолжить с того места, где вы остановились?",
  resumeYes:"Продолжить",
  resumeNo:"Начать заново",
@@ -490,7 +552,10 @@ ru:{
  s1:"Контакты", s1hint:"Укажите хотя бы один канал связи: WeChat, email или телефон.",
  company:"Название компании *", person:"Контактное лицо *", position:"Должность",
  phone:"Телефон / WhatsApp", booth:"Номер стенда на выставке", boothPh:"например: 2B-105",
- city:"Город / провинция в Китае", site:"Сайт компании",
+ countryQ:"Страна производства *",
+ cCN:"Китай", cKR:"Республика Корея", cJP:"Япония", cIN:"Индия", cTR:"Турция",
+ cVN:"Вьетнам", cTH:"Таиланд", cRU:"Россия", cOther:"Другая страна",
+ city:"Город / провинция", site:"Сайт компании",
  s2:"О компании",
  whoQ:"Кто вы?", otherPh:"Свой вариант",
  aboutQ:"Расскажите о компании",
@@ -551,7 +616,7 @@ ru:{
  filesAlt:"Или отправьте материалы на email (укажите название компании в теме письма):",
  consent:"Согласен на использование указанных данных для оценки поставщика и закупочных коммуникаций. Третьим лицам данные не передаются. *",
  submit:"Отправить анкету",
- errMsg:"Заполните обязательные поля: название компании, контактное лицо, хотя бы один канал связи, «Кто вы?» и согласие на обработку данных.",
+ errMsg:"Заполните обязательные поля: название компании, контактное лицо, хотя бы один канал связи, страну, «Кто вы?» и согласие на обработку данных.",
  errSend:"Не удалось отправить анкету. Проверьте интернет и попробуйте ещё раз — или напишите нам на mos.kruk@gmail.com.",
  doneT:"Анкета отправлена!",
  doneP:"Спасибо! Мы изучим информацию о вашей компании и свяжемся с вами, когда подберём заинтересованных покупателей.",
@@ -566,6 +631,7 @@ en:{
  b1:"We place the orders, we pay, we clear customs — goods go to our own warehouses",
  b2:"Our label: packaging, labels and manuals are ours — you produce to our specification",
  b3:"The Russian side is on us: EAC, import clearance, warehousing, sales, after-sales",
+ mpTitle:"WHERE WE SELL IN RUSSIA",
  resumeTxt:"You have an unfinished form. Continue where you left off?",
  resumeYes:"Continue",
  resumeNo:"Start over",
@@ -582,7 +648,10 @@ en:{
  s1:"Contacts", s1hint:"Please leave at least one contact channel: WeChat, email or phone.",
  company:"Company name *", person:"Contact person *", position:"Job title",
  phone:"Phone / WhatsApp", booth:"Booth number at the exhibition", boothPh:"e.g. 2B-105",
- city:"City / province in China", site:"Company website",
+ countryQ:"Country of manufacture *",
+ cCN:"China", cKR:"South Korea", cJP:"Japan", cIN:"India", cTR:"Türkiye",
+ cVN:"Vietnam", cTH:"Thailand", cRU:"Russia", cOther:"Other country",
+ city:"City / province", site:"Company website",
  s2:"About your company",
  whoQ:"Who are you?", otherPh:"Your answer",
  aboutQ:"Tell us about your company",
@@ -643,7 +712,7 @@ en:{
  filesAlt:"Or send your materials by email (put your company name in the subject):",
  consent:"I agree that CHUAI may use this information for supplier evaluation and sourcing contact. It will not be shared with third parties. *",
  submit:"Submit the form",
- errMsg:"Please fill in the required fields: company name, contact person, at least one contact channel, “Who are you?” and the consent checkbox.",
+ errMsg:"Please fill in the required fields: company name, contact person, at least one contact channel, country, “Who are you?” and the consent checkbox.",
  errSend:"Failed to submit the form. Check your connection and try again — or email us at mos.kruk@gmail.com.",
  doneT:"Form submitted!",
  doneP:"Thank you! We will review your company profile and contact you once we match you with interested buyers.",
@@ -658,6 +727,7 @@ zh:{
  b1:"我们自己下单、自己付款、自己清关，货进我们自有仓库",
  b2:"贴我们的品牌 —— 包装、标签、说明书由我们提供，贵公司按标准生产",
  b3:"俄罗斯这一端由我们负责：EAC 认证、进口清关、仓储、销售和售后",
+ mpTitle:"我们在俄罗斯的销售渠道",
  resumeTxt:"您有一份未完成的问卷，是否从上次中断的地方继续填写？",
  resumeYes:"继续填写",
  resumeNo:"重新开始",
@@ -674,6 +744,9 @@ zh:{
  s1:"联系方式", s1hint:"请至少留下一种联系方式：微信、邮箱或电话。",
  company:"公司名称 *", person:"联系人 *", position:"职位",
  phone:"电话 / WhatsApp", booth:"展会展位号", boothPh:"例如：2B-105",
+ countryQ:"生产国家 *",
+ cCN:"中国", cKR:"韩国", cJP:"日本", cIN:"印度", cTR:"土耳其",
+ cVN:"越南", cTH:"泰国", cRU:"俄罗斯", cOther:"其他国家",
  city:"所在城市 / 省份", site:"公司网站",
  s2:"公司信息",
  whoQ:"贵公司属于哪种类型？", otherPh:"请填写",
@@ -735,12 +808,300 @@ zh:{
  filesAlt:"也可以将资料发送至邮箱（邮件主题请注明公司名称）：",
  consent:"我同意 CHUAI 将以上信息用于供应商评估与采购联络，不向第三方提供。*",
  submit:"提交问卷",
- errMsg:"请填写必填项：公司名称、联系人、至少一种联系方式、公司类型，并勾选同意条款。",
+ errMsg:"请填写必填项：公司名称、联系人、至少一种联系方式、生产国家、公司类型，并勾选同意条款。",
  errSend:"提交失败。请检查网络后重试，或发送邮件至 mos.kruk@gmail.com。",
  doneT:"问卷已提交！",
  doneP:"感谢您的填写！我们会认真研究贵公司的信息，匹配到有意向的买家后会尽快与您联系。",
  doneMail:"产品目录和价格表也可发送至：",
  footer1:"俄罗斯汽车配件自有品牌方 · 直接向工厂贴牌采购"
+},
+ja:{
+ mpTitle:"ロシアでの販売チャネル",
+ countryQ:"製造国 *",
+ cCN:"中国", cKR:"韓国", cJP:"日本", cIN:"インド", cTR:"トルコ",
+ cVN:"ベトナム", cTH:"タイ", cRU:"ロシア", cOther:"その他の国",
+ kicker:"ロシア · 自動車部品 · 自社ブランド調達",
+ h1:"当社は自動車部品を買い付け、自社ブランドで販売しています",
+ sub:"当社はロシアの自動車部品の自社ブランドオーナーで、自前の販売網と倉庫を持っています。現在12,000品番を販売しており、20,000品番まで拡大する計画です。残る8,000品番が不足しているため、工場の皆様に直接お声がけしています。発注・支払い・通関はすべて当社が行い、商品は当社の倉庫に入り、当社ブランドでロシア国内で販売します。",
+ cta:"サプライヤー登録に進む",
+ b1:"発注・支払い・通関はすべて当社が行い、商品は当社の自社倉庫に入ります",
+ b2:"当社ブランドでの生産 — 包装・ラベル・取扱説明書は当社が支給し、貴社には当社の仕様どおりに生産していただきます",
+ b3:"ロシア側は当社が担当します：EAC認証、輸入通関、保管、販売、アフターサービス",
+ resumeTxt:"未送信のアンケートが残っています。前回の続きから入力を再開しますか？",
+ resumeYes:"続きから入力する",
+ resumeNo:"最初から入力する",
+ savedHint:"自動保存しました",
+ mnTitle:"社名 CHUAI の由来",
+ mnLead:"CHUAI は中国語のピンイン chuai に由来します。声調によって三つの意味があり、それがそのまま当社がサプライヤーの皆様に対して行う三つのことに対応しています。",
+ mn1:"揣（chuāi）— 手に取って懐にしまう、ふところに入れる。",
+ mn2:"揣（chuǎi）— 見極める、評価する、目利きをする。",
+ mn3:"踹（chuài）— 扉を蹴り開ける。",
+ mnSum:"当社は貴社の製品を<b>手に取り</b>、<b>評価し</b>、ロシア市場の扉を<b>切り開きます</b>。",
+ formTitle:"サプライヤー登録アンケート",
+ formNote:"入力所要時間は約7〜10分です。* は必須項目です。ご記入内容が詳しいほど、当社での検討が早く進み、お引き合いも早くお出しできます。",
+ langNote:"重要：記述式の項目は、必ず日本語または英語でご記入ください（当社は日本語を理解できます）。選択式の項目はそのままお選びいただくだけで結構です。",
+ s1:"ご連絡先", s1hint:"メール・電話・WhatsApp のうち、少なくとも一つはご記入ください。",
+ company:"会社名 *", person:"ご担当者名 *", position:"役職",
+ phone:"電話 / WhatsApp", booth:"展示会のブース番号", boothPh:"例：2B-105",
+ city:"所在地（都市 / 都道府県）", site:"会社ウェブサイト",
+ s2:"会社概要",
+ whoQ:"貴社の事業形態をお選びください。", otherPh:"ご記入ください",
+ aboutQ:"貴社についてご紹介ください",
+ aboutPh:"設立年、従業員数、生産能力、主な市場、主なお取引先など（日本語または英語でご記入ください）",
+ distQ:"ロシアに代理店・販売店はありますか？", distCount:"代理店は何社ありますか？",
+ brandQ:"ロシアで展開をお考えのブランドは何ですか？", brandPh:"ブランド名",
+ brandModeQ:"ブランド戦略（複数選択可）",
+ s3:"製品情報",
+ vehQ:"貴社の製品はどの車両区分に対応していますか？（複数選択可）",
+ makesQ:"貴社の製品はどの自動車・二輪車メーカーに適合しますか？",
+ makesHint:"該当するメーカーをお選びください。表示は2行までです。他のメーカーは「もっと見る」をクリックしてください。",
+ makesOther:"その他のメーカー（一覧にない場合）",
+ groupsQ:"貴社の製品カテゴリー（複数選択可）",
+ groupsOther:"その他の製品カテゴリー",
+ skuQ:"貴社の自社工場で生産している製品の品番数",
+ skuHint:"品番単位でお数えください。同一品番が複数の車種に適合し、複数のOEM番号に対応していても1品番と数えます。サイズ・色・包装の違いも別々には数えません。",
+ sk1:"50品番未満", sk2:"50〜200品番", sk3:"200〜500品番", sk4:"500〜1500品番", sk5:"1500〜5000品番", sk6:"5000品番以上",
+ skuTotalQ:"貴社がお見積り可能な製品の総数（SKU）",
+ skuTotalHint:"自社生産分に加え、他社工場からの仕入れ・取扱分も含みます。こちらも品番単位で数え、OEM互換番号は数に含めません。",
+ st1:"1000未満", st2:"1000〜5000", st3:"5000〜20000", st4:"20000〜100000", st5:"100000以上", st6:"該当なし（自社生産品のみ販売）",
+ skuNote:"品番数の多寡は評価に影響しません。単一カテゴリーに特化した工場も、幅広い品揃えのサプライヤーも、当社には必要です。",
+ choose:"— 選択してください —",
+ warrantyQ:"製品保証",
+ wNone:"保証なし", w6:"6ヶ月", w12:"1年", w24:"2年以上",
+ wClaims:"品質不良時の交換対応", wOther:"その他",
+ infoQ:"ご提供いただける製品資料はどれですか？（複数選択可）",
+ priceQ:"製品価格をご提示いただけますか？",
+ certsQ:"貴社製品が取得している認証をお選びください（複数選択可）",
+ certsOther:"その他の認証",
+ eacQ:"ロシア向け供給のため、EAC（ユーラシア経済連合）認証の取得にご対応いただけますか？",
+ payQ:"貴社が対応可能な支払条件をお選びください（複数選択可）",
+ currQ:"決済可能な通貨をお選びください（複数選択可）",
+ deferQ:"支払サイト（後払い）にご対応いただけますか？",
+ deferDays:"支払サイトは何日ですか？",
+ incoQ:"引渡条件 — インコタームズ（複数選択可）",
+ s4:"供給条件",
+ stockRuQ:"ロシア国内に倉庫はありますか？",
+ lotRuQ:"ロシア国内の倉庫からは、どのロット単位で出荷できますか？",
+ lotCnQ:"日本からは、どのロット単位で出荷できますか？",
+ lotUnit:"1個から（小口）", lotBox:"1カートンから", lotPallet:"1パレットから",
+ lotBulk:"大口卸のみ", lotLcl:"混載（LCL）", lotFcl:"コンテナ単位（FCL）",
+ lotFclOnly:"コンテナ単位（FCL）のみ",
+ stockCnQ:"日本国内に在庫はありますか？",
+ moqOptQ:"卸売の最小発注数量（MOQ）", moqOptPh:"例：2,000米ドル以上 または 500個以上",
+ moqRetQ:"小口出荷の最小数量", moqRetPh:"例：1個から",
+ speedOptQ:"卸売のご注文は、どのくらいで出荷できますか？",
+ speedRetQ:"小口のご注文は、どのくらいで出荷できますか？",
+ sp13:"1〜3日", sp7:"7日以内", sp14:"14日以内", sp30:"30日以内", sp30p:"30日超 / 受注生産",
+ smallQ:"少額のご注文をお受けいただき、フォワーダー（国際宅配便・混載便）でロシアへ発送していただくことは可能ですか？",
+ seekQ:"貴社は展示会でどのようなパートナーをお探しですか？（複数選択可）", seekOther:"その他にお探しのパートナー",
+ s5:"資料アップロード",
+ filesQ:"会社案内・製品資料のアップロード",
+ filesBig:"ここにファイルをドラッグ＆ドロップ",
+ filesBtn:"パソコンからファイルを選ぶ",
+ filesSmall:"製品カタログ、価格表、会社案内：PDF、Excel、CSV、Word、画像 · 最大10ファイル、1ファイルにつき25 MBまで",
+ filesTooBig:"25 MBを超えるファイル（または合計50 MBを超える場合）はアップロードできません。メールでお送りください",
+ sending:"送信中…",
+ filesAlt:"資料はメールでお送りいただくこともできます（件名に貴社名をご記入ください）：",
+ consent:"上記の情報を CHUAI がサプライヤー評価および調達に関するご連絡のために利用すること、また第三者には提供しないことに同意します。*",
+ submit:"アンケートを送信",
+ errMsg:"必須項目をご記入ください：会社名、ご担当者名、ご連絡先（いずれか一つ以上）、製造国、事業形態、および同意事項へのチェック。",
+ errSend:"送信に失敗しました。通信環境をご確認のうえ再度お試しいただくか、mos.kruk@gmail.com までメールをお送りください。",
+ doneT:"アンケートを送信しました！",
+ doneP:"ご記入いただきありがとうございます。貴社の情報をしっかりと検討し、当社の調達ニーズに合致しましたら、こちらから改めてご連絡いたします。",
+ doneMail:"製品カタログや価格表は、次のアドレスへもお送りいただけます：",
+ footer1:"ロシアの自動車部品 自社ブランドオーナー · 工場からの直接OEM調達"
+},
+ko:{
+ mpTitle:"러시아 내 판매 채널",
+ countryQ:"제조 국가 *",
+ cCN:"중국", cKR:"대한민국", cJP:"일본", cIN:"인도", cTR:"튀르키예",
+ cVN:"베트남", cTH:"태국", cRU:"러시아", cOther:"기타 국가",
+ kicker:"러시아 · 자동차 부품 · 자체 브랜드 구매",
+ h1:"자동차 부품을 저희 자체 브랜드로 구매합니다",
+ sub:"저희는 러시아 자동차 부품 자체 브랜드(PB)를 보유한 기업으로, 자체 판매망과 물류창고를 운영합니다. 현재 12,000개 품번을 판매 중이며 20,000개까지 확대할 계획입니다. 8,000개가 부족하여 제조사를 직접 찾고 있습니다. 발주·결제·통관을 모두 저희가 직접 진행하고, 저희 창고로 입고하여 저희 브랜드로 러시아에서 판매합니다.",
+ cta:"공급업체 등록하기",
+ b1:"발주·결제·통관을 저희가 직접 진행하고 저희 자체 창고로 입고합니다",
+ b2:"저희 브랜드로 납품 — 포장·라벨·설명서는 저희가 제공하고, 귀사는 규격대로 생산해 주시면 됩니다",
+ b3:"러시아 측 업무는 저희가 책임집니다 — EAC 인증, 수입 통관, 보관, 판매, 사후관리(A/S)",
+ resumeTxt:"작성하시던 설문이 있습니다. 중단하신 부분부터 이어서 작성하시겠습니까?",
+ resumeYes:"이어서 작성",
+ resumeNo:"처음부터 다시",
+ savedHint:"자동 저장됨",
+ mnTitle:"회사명이 CHUAI인 이유",
+ mnLead:"CHUAI는 중국어 발음 chuai에서 따온 이름입니다. 성조에 따라 세 가지 뜻이 있는데, 저희가 공급업체와 함께 밟는 세 단계와 정확히 일치합니다.",
+ mn1:"揣 (chuāi) — 품에 넣다, 챙겨 넣다.",
+ mn2:"揣 (chuǎi) — 헤아리다, 평가하다, 판단하다.",
+ mn3:"踹 (chuài) — 발로 차서 문을 열다.",
+ mnSum:"저희는 귀사의 제품을 <b>받아들이고</b>, <b>평가</b>한 뒤, 저희 브랜드로 러시아 시장의 문을 <b>열어</b> 드립니다.",
+ formTitle:"공급업체 등록 신청서",
+ formNote:"작성에는 약 7~10분이 소요됩니다. *는 필수 항목입니다. 정보가 상세할수록 검토가 빨라집니다.",
+ langNote:"중요 안내: 설문의 서술형 항목은 반드시 한국어 또는 영어로 작성해 주십시오 (선택형 항목은 클릭만 하시면 됩니다).",
+ s1:"연락처", s1hint:"이메일, 전화, WhatsApp 중 최소 한 가지 연락처를 남겨 주십시오.",
+ company:"회사명 *", person:"담당자 성명 *", position:"직위",
+ phone:"전화 / WhatsApp", booth:"전시회 부스 번호", boothPh:"예: 2B-105",
+ city:"소재 도시 / 지역", site:"회사 웹사이트",
+ s2:"회사 정보",
+ whoQ:"귀사는 어떤 유형의 기업입니까?", otherPh:"직접 입력",
+ aboutQ:"귀사에 대해 소개해 주십시오",
+ aboutPh:"설립 연도, 임직원 수, 생산 능력, 주요 시장, 주요 거래처 등 (한국어 또는 영어로 작성)",
+ distQ:"귀사는 러시아에 판매 대리점이 있습니까?", distCount:"대리점은 몇 곳입니까?",
+ brandQ:"러시아에서 어떤 브랜드를 전개하고자 하십니까?", brandPh:"브랜드명",
+ brandModeQ:"브랜드 전략 (복수 선택 가능)",
+ s3:"제품 정보",
+ vehQ:"귀사의 제품은 어떤 차종에 적용됩니까? (복수 선택 가능)",
+ makesQ:"귀사의 제품은 어떤 자동차/이륜차 브랜드에 적용됩니까?",
+ makesHint:"해당 브랜드를 선택해 주십시오. 두 줄만 표시됩니다. 나머지 브랜드는 ‘더 보기’를 눌러 확인하십시오.",
+ makesOther:"기타 브랜드 (목록에 없는 경우)",
+ groupsQ:"귀사의 제품 카테고리 (복수 선택 가능)",
+ groupsOther:"기타 제품 카테고리",
+ skuQ:"귀사 자체 공장에서 생산하는 품번 수",
+ skuHint:"품번 기준으로 기재해 주십시오. 동일 품번이 여러 차종에 적용되거나 여러 OEM 번호와 호환되더라도 1개로 계산하며, 규격·색상·포장 차이도 별도로 계산하지 않습니다.",
+ sk1:"50개 미만", sk2:"50 – 200개", sk3:"200 – 500개", sk4:"500 – 1500개", sk5:"1500 – 5000개", sk6:"5000개 이상",
+ skuTotalQ:"귀사가 견적을 제공할 수 있는 전체 품목 수 (SKU)",
+ skuTotalHint:"자체 생산품과 타 공장에서 매입·대리 판매하는 제품을 모두 포함합니다. 동일하게 품번 기준으로 계산하며, OEM 호환 번호는 포함하지 않습니다.",
+ st1:"1000개 미만", st2:"1000 – 5000개", st3:"5000 – 20000개", st4:"20000 – 100000개", st5:"100000개 이상", st6:"해당 없음 (자체 생산품만 판매)",
+ skuNote:"품목 수의 많고 적음은 협력 검토에 영향을 주지 않습니다. 저희에게는 단일 품목에 특화된 공장도, 폭넓은 품목을 갖춘 공급업체도 모두 필요합니다.",
+ choose:"— 선택 —",
+ warrantyQ:"제품 보증",
+ wNone:"보증 없음", w6:"6개월", w12:"1년", w24:"2년 이상",
+ wClaims:"품질 불량 시 교환", wOther:"기타",
+ infoQ:"제공하실 수 있는 제품 자료는 무엇입니까? (복수 선택 가능)",
+ priceQ:"제품 가격을 제공하실 수 있습니까?",
+ certsQ:"귀사 제품이 보유한 인증은 무엇입니까? (복수 선택 가능)",
+ certsOther:"기타 인증",
+ eacQ:"러시아 공급을 위해 EAC (유라시아경제연합) 인증을 취득할 의향이 있으십니까?",
+ payQ:"귀사가 수용 가능한 결제 방식은 무엇입니까? (복수 선택 가능)",
+ currQ:"결제 가능한 통화는 무엇입니까? (복수 선택 가능)",
+ deferQ:"결제 유예(외상 거래)가 가능합니까?",
+ deferDays:"결제 유예 기간은 며칠입니까?",
+ incoQ:"인도 조건 — 인코텀즈 (복수 선택 가능)",
+ s4:"공급 조건",
+ stockRuQ:"귀사는 러시아에 창고를 보유하고 있습니까?",
+ lotRuQ:"러시아 창고에서 출고 가능한 최소 단위는 무엇입니까?",
+ lotCnQ:"한국에서 출고 가능한 최소 단위는 무엇입니까?",
+ lotUnit:"1개 단위 (소매)", lotBox:"박스 단위", lotPallet:"팔레트 단위",
+ lotBulk:"대량 도매만 가능", lotLcl:"혼적 (LCL)", lotFcl:"컨테이너 단위 (FCL)",
+ lotFclOnly:"풀 컨테이너만 가능",
+ stockCnQ:"한국에 현재 재고를 보유하고 있습니까?",
+ moqOptQ:"도매 최소 주문 수량 (MOQ)", moqOptPh:"예: USD 2,000 이상 또는 500개 이상",
+ moqRetQ:"소매 최소 출고 수량", moqRetPh:"예: 1개부터",
+ speedOptQ:"도매 주문은 얼마나 빨리 출고 가능합니까?",
+ speedRetQ:"소매 주문은 얼마나 빨리 출고 가능합니까?",
+ sp13:"1~3일", sp7:"7일 이내", sp14:"14일 이내", sp30:"30일 이내", sp30p:"30일 초과 / 주문 생산",
+ smallQ:"소액 주문을 받아, 물류업체(포워더)를 통해 러시아로 발송해 주실 의향이 있으십니까?",
+ seekQ:"귀사는 전시회에서 어떤 파트너를 찾고 계십니까? (복수 선택 가능)", seekOther:"그 밖에 찾고 계신 파트너가 있습니까?",
+ s5:"자료 업로드",
+ filesQ:"회사 및 제품 자료 업로드",
+ filesBig:"이곳에 파일을 끌어다 놓으십시오",
+ filesBtn:"내 컴퓨터에서 파일 선택",
+ filesSmall:"제품 카탈로그, 가격표, 회사 소개: PDF, Excel, CSV, Word, 이미지 · 최대 10개 파일, 파일당 25 MB 이하",
+ filesTooBig:"25 MB를 초과하는 파일 (또는 합계 50 MB 초과)은 업로드할 수 없으니 이메일로 보내 주십시오",
+ sending:"제출 중…",
+ filesAlt:"자료를 이메일로 보내셔도 됩니다 (메일 제목에 회사명을 기재해 주십시오):",
+ consent:"CHUAI가 위 정보를 공급업체 평가 및 구매 관련 연락 목적으로 사용하며 제3자에게 제공하지 않는 것에 동의합니다. *",
+ submit:"설문 제출",
+ errMsg:"필수 항목을 입력해 주십시오: 회사명, 담당자 성명, 연락처 1가지 이상, 제조 국가, 기업 유형, 그리고 동의 항목 체크.",
+ errSend:"제출에 실패했습니다. 네트워크 상태를 확인 후 다시 시도하시거나 mos.kruk@gmail.com 으로 메일을 보내 주십시오.",
+ doneT:"설문이 제출되었습니다!",
+ doneP:"작성해 주셔서 감사합니다. 귀사의 정보를 꼼꼼히 검토한 후, 관심 있는 품목이 확인되면 빠른 시일 내에 연락드리겠습니다.",
+ doneMail:"제품 카탈로그와 가격표는 다음 주소로도 보내실 수 있습니다:",
+ footer1:"러시아 자동차 부품 자체 브랜드 보유 기업 · 공장 직거래 PB 구매"
+},
+hi:{
+ kicker:"रूस · Auto Parts · Private Label खरीद",
+ h1:"हम auto parts खरीदते हैं — अपने खुद के ब्रांड के तहत",
+ sub:"हम रूस में auto parts के private label brand owner हैं — अपना sales network और अपने warehouse हैं। इस समय 12,000 SKU बिक्री में हैं और इन्हें 20,000 तक बढ़ा रहे हैं — यानी 8,000 SKU और चाहिए, इसीलिए हम सीधे factories से बात कर रहे हैं। order हम खुद देते हैं, payment हम खुद करते हैं, customs clearance हम खुद कराते हैं; माल हमारे अपने warehouse में आता है और रूस में हमारे अपने ब्रांड के तहत बिकता है।",
+ cta:"अपनी कंपनी को supplier के रूप में रजिस्टर करें",
+ b1:"order, payment और customs clearance — सब हम खुद करते हैं; माल हमारे अपने warehouse में जाता है",
+ b2:"हमारे ब्रांड के तहत — packaging, labels और manual हम देते हैं, आपकी कंपनी उसी spec के अनुसार production करती है",
+ b3:"रूस की तरफ़ का पूरा काम हमारा: EAC certification, import clearance, warehousing, बिक्री और after-sales",
+ mpTitle:"रूस में हमारे बिक्री चैनल",
+ resumeTxt:"आपका एक अधूरा फ़ॉर्म सेव है। जहाँ छोड़ा था वहीं से आगे भरना चाहेंगे?",
+ resumeYes:"आगे भरें",
+ resumeNo:"नए सिरे से शुरू करें",
+ savedHint:"अपने आप सेव हो गया",
+ mnTitle:"नाम CHUAI क्यों",
+ mnLead:"CHUAI एक चीनी शब्द है (pinyin: chuai)। टोन बदलने पर इसके तीन अर्थ निकलते हैं — और ठीक यही तीन काम हम अपने suppliers के लिए करते हैं।",
+ mn1:"揣 — किसी चीज़ को उठाकर अपनी जेब में रख लेना।",
+ mn2:"揣 — आँकना, परखना, मूल्यांकन करना।",
+ mn3:"踹 — लात मारकर दरवाज़ा खोल देना।",
+ mnSum:"आपका प्रोडक्ट हम <b>अपने पास लेते हैं</b>, उसे <b>परखते हैं</b>, और रूस के बाज़ार का दरवाज़ा आपके लिए <b>खोल देते हैं</b>।",
+ formTitle:"Supplier रजिस्ट्रेशन फ़ॉर्म",
+ formNote:"भरने में करीब 7–10 मिनट लगेंगे। * वाले फ़ील्ड ज़रूरी हैं। जानकारी जितनी पूरी होगी, हम उतनी ही जल्दी आपकी कंपनी को परखकर खरीद की बात आगे बढ़ा सकेंगे।",
+ langNote:"ज़रूरी बात: फ़ॉर्म के सारे text जवाब कृपया अंग्रेज़ी या हिंदी में भरें (जहाँ विकल्प दिए हैं, वहाँ बस चुन लीजिए)।",
+ s1:"संपर्क जानकारी", s1hint:"कृपया कम से कम एक संपर्क ज़रूर दें: WhatsApp, email या फ़ोन।",
+ company:"कंपनी का नाम *", person:"संपर्क व्यक्ति *", position:"पद",
+ phone:"फ़ोन / WhatsApp", booth:"प्रदर्शनी में stall / booth नंबर", boothPh:"जैसे: 2B-105",
+ countryQ:"उत्पादन का देश *",
+ cCN:"चीन", cKR:"दक्षिण कोरिया", cJP:"जापान", cIN:"भारत", cTR:"तुर्किये",
+ cVN:"वियतनाम", cTH:"थाईलैंड", cRU:"रूस", cOther:"अन्य देश",
+ city:"शहर / राज्य", site:"कंपनी की website",
+ s2:"कंपनी की जानकारी",
+ whoQ:"आपकी कंपनी किस प्रकार की है?", otherPh:"कृपया लिखें",
+ aboutQ:"अपनी कंपनी के बारे में बताइए",
+ aboutPh:"स्थापना वर्ष, कर्मचारियों की संख्या, production capacity, मुख्य बाज़ार, प्रमुख ग्राहक… (कृपया अंग्रेज़ी या हिंदी में लिखें)",
+ distQ:"क्या रूस में आपकी कंपनी के distributors हैं?", distCount:"कितने distributors हैं?",
+ brandQ:"रूस में आप कौन-सा ब्रांड आगे बढ़ाना चाहते हैं?", brandPh:"ब्रांड का नाम",
+ brandModeQ:"ब्रांड को लेकर आपकी नीति (एक से ज़्यादा चुन सकते हैं)",
+ s3:"प्रोडक्ट की जानकारी",
+ vehQ:"आपके प्रोडक्ट किस तरह के vehicles के लिए हैं? (एक से ज़्यादा चुन सकते हैं)",
+ makesQ:"आपके प्रोडक्ट किन car / motorcycle ब्रांड्स पर fit होते हैं?",
+ makesHint:"ब्रांड टिक कीजिए। दो लाइनें दिखती हैं, बाक़ी के लिए ‘और’ पर क्लिक करें।",
+ makesOther:"अन्य ब्रांड (अगर list में नहीं हैं)",
+ groupsQ:"आपके प्रोडक्ट की categories (एक से ज़्यादा चुन सकते हैं)",
+ groupsOther:"अन्य product categories",
+ skuQ:"आपकी अपनी factory में बनने वाले प्रोडक्ट्स की SKU संख्या",
+ skuHint:"गिनती part number (SKU) के हिसाब से कीजिए: एक ही part number कई vehicle models पर fit हो या उसके कई OE numbers हों, तब भी वह 1 ही गिना जाएगा; size, रंग या packaging अलग होने पर भी अलग नहीं गिना जाता।",
+ sk1:"50 से कम", sk2:"50 – 200", sk3:"200 – 500", sk4:"500 – 1500", sk5:"1500 – 5000", sk6:"5000 से ज़्यादा",
+ skuTotalQ:"जिन प्रोडक्ट्स पर आपकी कंपनी offer दे सकती है, उनकी कुल संख्या (SKU)",
+ skuTotalHint:"इसमें अपना production और दूसरी factories से खरीदा हुआ / एजेंसी वाला माल — दोनों शामिल हैं। गिनती फिर part number के हिसाब से, OE cross numbers अलग नहीं गिने जाते।",
+ st1:"1000 से कम", st2:"1000 – 5000", st3:"5000 – 20000", st4:"20000 – 100000", st5:"100000 से ज़्यादा", st6:"लागू नहीं (सिर्फ़ अपना ही बनाया माल बेचते हैं)",
+ skuNote:"संख्या कम है या ज़्यादा — इससे मूल्यांकन पर कोई फ़र्क़ नहीं पड़ता। हमें एक ही category पर focused factories भी चाहिए और पूरी range वाले suppliers भी।",
+ choose:"— चुनिए —",
+ warrantyQ:"प्रोडक्ट पर warranty",
+ wNone:"warranty नहीं", w6:"6 महीने", w12:"1 साल", w24:"2 साल या उससे ज़्यादा",
+ wClaims:"quality claim पर replacement", wOther:"अन्य",
+ infoQ:"प्रोडक्ट का कौन-सा data आप दे सकते हैं? (एक से ज़्यादा चुन सकते हैं)",
+ priceQ:"क्या आप प्रोडक्ट की क़ीमतें दे सकते हैं?",
+ certsQ:"आपके प्रोडक्ट्स के पास कौन-से certificates हैं? (एक से ज़्यादा चुन सकते हैं)",
+ certsOther:"अन्य certificates",
+ eacQ:"रूस को supply करने के लिए क्या आप EAC (यूरेशियन यूनियन) certification कराने को तैयार हैं?",
+ payQ:"आपकी कंपनी कौन-से payment terms स्वीकार करती है? (एक से ज़्यादा चुन सकते हैं)",
+ currQ:"किन currencies में भुगतान स्वीकार है? (एक से ज़्यादा चुन सकते हैं)",
+ deferQ:"क्या आप credit period (deferred payment) दे सकते हैं?",
+ deferDays:"कितने दिन का credit?",
+ incoQ:"डिलीवरी की शर्तें — Incoterms (एक से ज़्यादा चुन सकते हैं)",
+ s4:"सप्लाई की शर्तें",
+ stockRuQ:"क्या रूस में आपकी कंपनी का warehouse है?",
+ lotRuQ:"रूस के warehouse से किस lot size में शिपमेंट हो सकती है?",
+ lotCnQ:"अपने देश से किस lot size में शिपमेंट हो सकती है?",
+ lotUnit:"1 piece से (retail)", lotBox:"पूरे box से", lotPallet:"पूरे pallet से",
+ lotBulk:"सिर्फ़ बड़ी wholesale quantity", lotLcl:"LCL (part container)", lotFcl:"FCL (पूरा container)",
+ lotFclOnly:"सिर्फ़ FCL",
+ stockCnQ:"क्या ready stock रहता है?",
+ moqOptQ:"wholesale के लिए MOQ", moqOptPh:"जैसे: USD 2000 से या 500 pcs से",
+ moqRetQ:"retail के लिए कम से कम शिपमेंट", moqRetPh:"जैसे: 1 piece से",
+ speedOptQ:"wholesale order कितनी जल्दी भेज सकते हैं?",
+ speedRetQ:"retail order कितनी जल्दी भेज सकते हैं?",
+ sp13:"1–3 दिन", sp7:"7 दिन के भीतर", sp14:"14 दिन के भीतर", sp30:"30 दिन के भीतर", sp30p:"30 दिन से ज़्यादा / order पर production",
+ smallQ:"क्या आप छोटे orders लेकर freight forwarder / courier के ज़रिए रूस पार्सल भेजने को तैयार हैं?",
+ seekQ:"प्रदर्शनी में आप किस तरह के partners खोज रहे हैं? (एक से ज़्यादा चुन सकते हैं)", seekOther:"और किसकी तलाश है?",
+ s5:"फ़ाइलें अपलोड करें",
+ filesQ:"कंपनी और प्रोडक्ट से जुड़ी फ़ाइलें अपलोड कीजिए",
+ filesBig:"फ़ाइलें यहाँ खींचकर छोड़िए",
+ filesBtn:"कंप्यूटर से फ़ाइल चुनें",
+ filesSmall:"catalogue, price list, company profile: PDF, Excel, CSV, Word, तस्वीरें · ज़्यादा से ज़्यादा 10 फ़ाइलें, हर एक 25 MB तक",
+ filesTooBig:"25 MB से बड़ी (या कुल मिलाकर 50 MB से ज़्यादा) फ़ाइलें अपलोड नहीं होंगी — उन्हें कृपया email से भेजिए",
+ sending:"भेजा जा रहा है…",
+ filesAlt:"फ़ाइलें email से भी भेज सकते हैं (subject में अपनी कंपनी का नाम लिखिए):",
+ consent:"मैं सहमत हूँ कि CHUAI ऊपर दी गई जानकारी का उपयोग supplier मूल्यांकन और खरीद से जुड़े संपर्क के लिए करे और उसे किसी तीसरे पक्ष को न दे। *",
+ submit:"फ़ॉर्म सबमिट करें",
+ errMsg:"कृपया ज़रूरी फ़ील्ड भरें: कंपनी का नाम, संपर्क व्यक्ति, कम से कम एक संपर्क, देश, कंपनी का प्रकार — और सहमति वाला बॉक्स टिक करें।",
+ errSend:"फ़ॉर्म भेजा नहीं जा सका। इंटरनेट कनेक्शन जाँचकर दोबारा कोशिश करें, या mos.kruk@gmail.com पर email कीजिए।",
+ doneT:"फ़ॉर्म भेज दिया गया!",
+ doneP:"भरने के लिए धन्यवाद! हम आपकी कंपनी की जानकारी ध्यान से देखेंगे और खरीद की बात आगे बढ़ाने के लिए खुद आपसे संपर्क करेंगे।",
+ doneMail:"catalogue और price list इस पते पर भी भेज सकते हैं:",
+ footer1:"रूस में auto parts का private label ब्रांड · सीधे factories से अपने ब्रांड के तहत खरीद"
 }};
 
 /* ============ dynamic option data ============ */
@@ -847,25 +1208,121 @@ var OPTS = {
       o("other","Другое","Other","其他")]
 };
 
+
+/* переводы вариантов ответа: ja / ko / hi */
+var OPTS_JA = {
+ who: {factory:"工場（メーカー）", group:"工場グループ", trader:"商社・貿易会社", factory_trader:"メーカー兼商社", other:"その他"},
+ dist: {no:"なし", yes:"あり", negotiating:"商談中"},
+ brandMode: {own:"自社ブランド", oem:"OEM生産 / ノーブランド", private_label:"バイヤーのブランド（プライベートブランド）"},
+ veh: {passenger:"乗用車", lcv:"小型商用車（LCV）", truck:"トラック", bus:"バス", moto:"二輪車", special:"建設機械・特殊車両", universal:"汎用製品"},
+ groups: {engine:"エンジン・関連部品", brakes:"ブレーキ系統", suspension:"サスペンション", steering:"ステアリング", filters:"フィルター類", electrics:"電装品・センサー", lighting:"ランプ・照明", body:"ボディ・外装部品", glass:"ガラス・ミラー", transmission:"トランスミッション・クラッチ", cooling:"冷却系統", exhaust:"排気系統", fuel:"燃料系統", bearings:"ベアリング・ハブ", belts:"ベルト・プーリー・タイミング部品", interior:"内装部品", oils:"オイル・ケミカル用品", battery:"バッテリー", tyres:"タイヤ・ホイール", accessories:"カー用品・アクセサリー", tools:"工具・設備", consumables:"メンテナンス消耗品"},
+ info: {photo:"製品画像", name:"製品名称", factory_sku:"工場品番", brand_sku:"ブランド品番", oem:"OEM番号（互換番号）", dims:"寸法・重量", specs:"技術仕様", pack:"入数（1梱包あたり）", certs:"認証書類", video:"動画"},
+ price: {open:"はい、価格表をお送りできます", request:"ご要望に応じて提示", meeting:"商談後に提示"},
+ yn: {yes:"はい", no:"いいえ"},
+ stockCn: {yes:"在庫あり", partial:"一部在庫あり", mto:"受注生産"},
+ small: {yes:"はい、対応可能です", no:"いいえ", discuss:"ご相談可能です"},
+ certs: {iatf:"IATF 16949 / TS 16949", iso9001:"ISO 9001", eac:"EAC — EAEU / 関税同盟（ロシア）", gost:"GOST R（ロシア）", ece:"E-mark / ECE（欧州）", ccc:"CCC（中国）", dot:"DOT / SAE（米国）", gcc:"GCC / GSO（UAE・湾岸諸国）", none:"認証なし"},
+ eacReady: {have:"EAC認証は取得済みです", ready:"はい、取得に対応します", partner:"ロシア側パートナーの協力があれば対応可能です", no:"いいえ"},
+ pay: {prepay100:"全額前払い（100%）", prepay_part:"一部前払い（30〜50%）、残金は出荷前", after_ship:"出荷後の支払い", lc:"信用状（L/C）", defer:"支払サイト（後払い）"},
+ curr: {cny:"CNY（人民元）", usd:"USD（米ドル）", rub:"RUB（ロシアルーブル）", usdt:"USDT"},
+ deferPay: {yes:"はい", no:"いいえ", discuss:"ご相談可能（バイヤーによります）"},
+ inco: {exw:"EXW — 工場渡し", fob:"FOB — 日本の港", cif:"CIF / CFR — 仕向港渡し", dap:"DAP — バイヤー倉庫渡し", ddp:"DDP — 関税込み仕向地渡し"},
+ seek: {distributors:"ディストリビューター", wholesale:"卸売バイヤー", retail_chains:"小売チェーン", online:"ネットショップ・ECモール", service:"自動車整備チェーン（工場）", agent:"ロシア国内の代理人・エージェント", logistics:"物流パートナー", warehouse:"ロシア国内に倉庫を持つパートナー", other:"その他"}
+};
+var OPTS_KO = {
+ who: {factory:"공장 (제조사)", group:"공장 그룹", trader:"무역회사", factory_trader:"제조 + 무역 겸업", other:"기타"},
+ dist: {no:"없음", yes:"있음", negotiating:"협의 중"},
+ brandMode: {own:"자사 브랜드", oem:"OEM 생산 / 브랜드 없음", private_label:"바이어 브랜드 (PB, 프라이빗 라벨)"},
+ veh: {passenger:"승용차", lcv:"소형 상용차 (LCV)", truck:"트럭", bus:"버스", moto:"이륜차", special:"건설기계·특장차", universal:"범용 제품"},
+ groups: {engine:"엔진 및 부품", brakes:"제동 장치", suspension:"현가 장치 (서스펜션)", steering:"조향 장치", filters:"필터류", electrics:"전장 부품 및 센서", lighting:"등화 장치 (램프)", body:"차체 부품", glass:"유리 및 미러", transmission:"변속기 및 클러치", cooling:"냉각 장치", exhaust:"배기 장치", fuel:"연료 장치", bearings:"베어링 및 허브", belts:"벨트·롤러·타이밍 부품", interior:"실내 내장재", oils:"오일 및 케미컬", battery:"배터리", tyres:"타이어 및 휠", accessories:"자동차 용품", tools:"공구 및 장비", consumables:"정비 소모품"},
+ info: {photo:"제품 사진", name:"제품명", factory_sku:"공장 품번", brand_sku:"브랜드 품번", oem:"OEM 번호 (호환 번호)", dims:"치수 및 중량", specs:"제원 (사양)", pack:"박스당 수량", certs:"인증서", video:"동영상"},
+ price: {open:"예, 가격표를 보내드릴 수 있습니다", request:"요청 시 제공", meeting:"협의 후 제공"},
+ yn: {yes:"예", no:"아니요"},
+ stockCn: {yes:"예, 재고 보유", partial:"일부 보유", mto:"주문 생산"},
+ small: {yes:"예", no:"아니요", discuss:"협의 가능"},
+ certs: {iatf:"IATF 16949 / TS 16949", iso9001:"ISO 9001", eac:"EAC — 유라시아경제연합 / 관세동맹 (러시아)", gost:"GOST R (러시아)", ece:"E-mark / ECE (유럽)", ccc:"CCC (중국)", dot:"DOT / SAE (미국)", gcc:"GCC / GSO (걸프·UAE)", none:"보유 인증 없음"},
+ eacReady: {have:"EAC 인증 보유", ready:"예, 취득할 의향이 있습니다", partner:"예, 러시아 파트너의 지원이 있다면 가능합니다", no:"아니요"},
+ pay: {prepay100:"100% 선불", prepay_part:"부분 선불 (30~50%), 잔금은 선적 전 결제", after_ship:"선적 후 결제", lc:"신용장 (L/C)", defer:"결제 유예 (외상)"},
+ curr: {cny:"CNY (위안화)", usd:"USD (달러)", rub:"RUB (루블)", usdt:"USDT"},
+ deferPay: {yes:"가능", no:"불가", discuss:"협의 가능 (구매자에 따라 다름)"},
+ inco: {exw:"EXW — 공장 인도", fob:"FOB — 한국 항구", cif:"CIF / CFR — 도착항", dap:"DAP — 구매자 창고 인도", ddp:"DDP — 관세 포함 인도"},
+ seek: {distributors:"대리점 (디스트리뷰터)", wholesale:"도매 구매처", retail_chains:"소매 체인", online:"온라인 쇼핑몰 및 마켓플레이스", service:"정비소 체인 (카센터)", agent:"러시아 내 대리인 / 에이전트", logistics:"물류 파트너", warehouse:"러시아 내 창고 파트너", other:"기타"}
+};
+var OPTS_HI = {
+ who: {factory:"Factory (निर्माता)", group:"Factories का समूह", trader:"Trading company", factory_trader:"Factory + trading company", other:"अन्य"},
+ dist: {no:"नहीं", yes:"हाँ", negotiating:"बातचीत चल रही है"},
+ brandMode: {own:"अपना ब्रांड", oem:"OEM / बिना ब्रांड", private_label:"खरीदार के ब्रांड के तहत (private label)"},
+ veh: {passenger:"Passenger cars", lcv:"Light commercial (LCV)", truck:"Trucks", bus:"Buses", moto:"Motorcycles", special:"Special / construction machinery", universal:"Universal प्रोडक्ट"},
+ groups: {engine:"Engine और उसके components", brakes:"Braking system", suspension:"Suspension", steering:"Steering", filters:"Filters", electrics:"Electricals और sensors", lighting:"Lighting", body:"Body parts", glass:"Glass और mirrors", transmission:"Transmission और clutch", cooling:"Cooling system", exhaust:"Exhaust system", fuel:"Fuel system", bearings:"Bearings और hubs", belts:"Belts, rollers, timing kit", interior:"Interior parts", oils:"Oils और car care chemicals", battery:"Batteries", tyres:"Tyres और wheels", accessories:"Accessories", tools:"Tools और equipment", consumables:"Service consumables"},
+ info: {photo:"तस्वीरें", name:"प्रोडक्ट का नाम", factory_sku:"Factory part number", brand_sku:"Brand part number", oem:"OEM cross numbers", dims:"नाप और वज़न", specs:"Specifications", pack:"प्रति pack मात्रा", certs:"Certificates", video:"वीडियो"},
+ price: {open:"हाँ, price list भेज सकते हैं", request:"माँगने पर", meeting:"बातचीत के बाद"},
+ yn: {yes:"हाँ", no:"नहीं"},
+ stockCn: {yes:"हाँ", partial:"आंशिक रूप से", mto:"order पर बनाते हैं"},
+ small: {yes:"हाँ", no:"नहीं", discuss:"बात कर सकते हैं"},
+ certs: {iatf:"IATF 16949 / TS 16949", iso9001:"ISO 9001", eac:"EAC — EAEU / Customs Union (रूस)", gost:"GOST R (रूस)", ece:"E-mark / ECE (यूरोप)", ccc:"CCC (चीन)", dot:"DOT / SAE (अमेरिका)", gcc:"GCC / GSO (UAE, खाड़ी देश)", none:"कोई certificate नहीं"},
+ eacReady: {have:"EAC पहले से है", ready:"हाँ, कराने को तैयार हैं", partner:"तैयार हैं — रूस के partner की मदद से", no:"नहीं"},
+ pay: {prepay100:"100% advance payment", prepay_part:"आंशिक advance (30–50%), बाक़ी shipment से पहले", after_ship:"shipment के बाद भुगतान", lc:"Letter of credit (L/C)", defer:"Deferred payment / credit"},
+ curr: {cny:"CNY (युआन)", usd:"USD (डॉलर)", rub:"RUB (रूबल)", usdt:"USDT"},
+ deferPay: {yes:"हाँ", no:"नहीं", discuss:"बात हो सकती है (खरीदार पर निर्भर)"},
+ inco: {exw:"EXW — factory से pickup", fob:"FOB — अपने देश का port", cif:"CIF / CFR — destination port", dap:"DAP — खरीदार के warehouse तक", ddp:"DDP — duty और customs सहित"},
+ seek: {distributors:"Distributors", wholesale:"Wholesale खरीदार", retail_chains:"Retail chains", online:"Online stores और marketplaces", service:"Car service chains (workshops)", agent:"रूस में प्रतिनिधि / agent", logistics:"Logistics partner", warehouse:"रूस में warehouse वाला partner", other:"अन्य"}
+};
+
+(function(){
+  var packs={ja:OPTS_JA, ko:OPTS_KO, hi:OPTS_HI};
+  Object.keys(packs).forEach(function(lang){
+    var p=packs[lang];
+    Object.keys(OPTS).forEach(function(cat){
+      OPTS[cat].forEach(function(it){
+        it[lang]=(p[cat]&&p[cat][it.v])||it.en;
+      });
+    });
+  });
+})();
+
 /* ============ brands ============ */
 var REGIONS = [
- {key:"europe", ru:"Европа", en:"Europe", zh:"欧系",
+ {key:"europe", ru:"Европа", en:"Europe", zh:"欧系", ja:"欧州車", ko:"유럽차", hi:"यूरोपीय",
   top:["Volkswagen","BMW","Mercedes-Benz","Audi","Skoda","Renault","Peugeot","Citroen","Opel","Volvo","Land Rover","Porsche","Fiat","SEAT","MINI","Jaguar","Dacia","Alfa Romeo","MAN","Scania"],
   more:["DAF","Iveco","Renault Trucks","Smart","Saab","Rolls-Royce","Bentley","Ferrari","Lamborghini","Maserati","Aston Martin","DS Automobiles","Lancia","Ducati","KTM","Aprilia","Triumph","Piaggio","Vespa"]},
- {key:"america", ru:"Америка", en:"America", zh:"美系",
+ {key:"america", ru:"Америка", en:"America", zh:"美系", ja:"米国車", ko:"미국차", hi:"अमेरिकी",
   top:["Ford","Chevrolet","Cadillac","Jeep","Dodge","Chrysler","GMC","Tesla","Lincoln","Buick","RAM","Hummer","Freightliner","Kenworth","Peterbilt","Mack","International","Western Star","Harley-Davidson","Pontiac"],
   more:["Mercury","Oldsmobile","Plymouth","Saturn","Indian Motorcycle","Polaris"]},
- {key:"asia", ru:"Азия (Япония, Корея)", en:"Asia (Japan, Korea)", zh:"日韩系",
+ {key:"asia", ru:"Азия (Япония, Корея)", en:"Asia (Japan, Korea)", zh:"日韩系", ja:"アジア（日本・韓国）", ko:"아시아 (일본·한국)", hi:"एशिया (जापान, कोरिया)",
   top:["Toyota","Lexus","Honda","Acura","Nissan","Infiniti","Mitsubishi","Mazda","Subaru","Suzuki","Isuzu","Hino","Daihatsu","Hyundai","Kia","Genesis","SsangYong","Daewoo","Datsun","Fuso"],
   more:["Yamaha","Kawasaki","UD Trucks","Scion","Tata","Mahindra","Proton","Perodua"]},
- {key:"china", ru:"Китай", en:"China", zh:"中国品牌",
+ {key:"china", ru:"Китай", en:"China", zh:"中国品牌", ja:"中国ブランド", ko:"중국 브랜드", hi:"चीनी ब्रांड",
   top:["Chery","EXEED","Omoda","Jetour","Haval","GWM (Great Wall)","Tank","Geely","Changan","BYD","GAC","JAC","FAW","Dongfeng","Foton","Sinotruk (HOWO)","Shacman","MG (SAIC)","Hongqi","Lifan"],
   more:["Zeekr","Li Auto (Lixiang)","Voyah","Jaecoo","Kaiyi","Livan","SWM","BAIC","Brilliance","Zotye","Haima","Soueast","DFSK","Wuling","Maxus","Forthing","Aito","Avatr","XPeng","NIO"]},
- {key:"russia", ru:"Россия", en:"Russia", zh:"俄罗斯品牌",
+ {key:"russia", ru:"Россия", en:"Russia", zh:"俄罗斯品牌", ja:"ロシアブランド", ko:"러시아 브랜드", hi:"रूसी ब्रांड",
   top:["LADA (VAZ)","GAZ / GAZelle","UAZ","KAMAZ","Moskvich","URAL","MAZ","PAZ","ZIL","Aurus","Sollers","Evolute"],
   more:[]}
 ];
-var MORE_TXT = {ru:["Ещё","Свернуть"], en:["More","Less"], zh:["更多","收起"]};
+var MORE_TXT = {ru:["Ещё","Свернуть"], en:["More","Less"], zh:["更多","收起"],
+                ja:["もっと見る","閉じる"], ko:["더 보기","접기"], hi:["और देखें","छिपाएँ"]};
+
+var FONT_URL = {
+ ja:"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap",
+ ko:"https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap",
+ hi:"https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700&display=swap"
+};
+function ensureFont(l){
+  if(!FONT_URL[l] || document.getElementById("fnt-"+l)) return;
+  var k=document.createElement("link"); k.rel="stylesheet"; k.id="fnt-"+l; k.href=FONT_URL[l];
+  document.head.appendChild(k);
+}
+
+var LANG_NAME = {zh:"中文", ko:"한국어", ja:"日本語", hi:"हिन्दी", en:"English", ru:"Русский"};
+
+function syncMoreBtns(){
+  document.querySelectorAll(".more-btn").forEach(function(btn){
+    var box=btn.parentElement.querySelector(".clamp2");
+    if(!box) return;
+    if(box.classList.contains("open")){ btn.style.display=""; return; }
+    btn.style.display=(box.scrollHeight>box.clientHeight+2)?"":"none";
+  });
+}
+window.addEventListener("resize",syncMoreBtns);
 
 /* ============ rendering ============ */
 var LANG = "zh";
@@ -888,7 +1345,7 @@ function buildRegions(){
     var h=el("div","region-h");
     var t=el("span"); t.setAttribute("data-opt",""); t._d=r; h.appendChild(t);
     var cnt=el("span","cnt","0"); h.appendChild(cnt); reg.appendChild(h);
-    var b=el("div","region-b"); var opts=el("div","opts");
+    var b=el("div","region-b"); var opts=el("div","opts clamp2");
     function chip(brand){
       var lab=el("label","opt");
       var inp=document.createElement("input");
@@ -896,29 +1353,34 @@ function buildRegions(){
       lab.appendChild(inp); lab.appendChild(el("span",null,brand));
       return lab;
     }
-    r.top.forEach(function(brand){opts.appendChild(chip(brand));});
-    var hideWrap=null;
-    if(r.more.length){
-      hideWrap=el("div","hideable");
-      r.more.forEach(function(brand){hideWrap.appendChild(chip(brand));});
-      opts.appendChild(hideWrap);
-    }
+    r.top.concat(r.more).forEach(function(brand){opts.appendChild(chip(brand));});
     b.appendChild(opts);
-    if(r.more.length){
-      var btn=el("button","more-btn"); btn.type="button";
-      btn._more=r.more.length;
-      btn.onclick=function(){
-        hideWrap.classList.toggle("show");
-        btn.textContent=(hideWrap.classList.contains("show")?MORE_TXT[LANG][1]:MORE_TXT[LANG][0]+" ("+r.more.length+")");
-      };
-      b.appendChild(btn);
-    }
+    var total=r.top.length+r.more.length;
+    var btn=el("button","more-btn"); btn.type="button";
+    btn._more=total;
+    btn.onclick=function(){
+      var open=opts.classList.toggle("open");
+      btn.textContent=open?MORE_TXT[LANG][1]:MORE_TXT[LANG][0]+" ("+total+")";
+    };
+    b.appendChild(btn);
     reg.appendChild(b); root.appendChild(reg);
     reg.addEventListener("change",function(){
       var n=reg.querySelectorAll("input:checked").length;
       cnt.textContent=n; cnt.classList.toggle("show",n>0);
     });
   });
+}
+/* язык интерфейса подсказывает страну: китайский → Китай и т.д.
+   Для en/ru не угадываем — пусть выберут сами. */
+var LANG_COUNTRY={zh:"CN", ko:"KR", ja:"JP", hi:"IN"};
+function suggestCountry(l){
+  var sel=document.getElementById("countrySel");
+  if(!sel)return;
+  var guess=LANG_COUNTRY[l];
+  /* не перетираем то, что человек выбрал руками */
+  if(sel.dataset.auto!=="1" && sel.value) return;
+  if(guess){ sel.value=guess; sel.dataset.auto="1"; }
+  else if(sel.dataset.auto==="1"){ sel.value=""; sel.dataset.auto=""; }
 }
 function applyLang(l){
   LANG=l; document.documentElement.lang = l==="zh"?"zh-CN":l;
@@ -936,13 +1398,20 @@ function applyLang(l){
     if(n._d && n._d[l]) n.textContent=n._d[l];
   });
   document.querySelectorAll(".more-btn").forEach(function(btn){
-    var open=btn.previousSibling && btn.parentElement.querySelector(".hideable.show");
+    var box=btn.parentElement.querySelector(".clamp2");
+    var open=box&&box.classList.contains("open");
     btn.textContent=open?MORE_TXT[l][1]:MORE_TXT[l][0]+" ("+btn._more+")";
   });
-  document.querySelectorAll(".langs button").forEach(function(b){
+  syncMoreBtns();
+  document.querySelectorAll(".lang-menu button").forEach(function(b){
     b.classList.toggle("on",b.getAttribute("data-lang")===l);
   });
+  document.getElementById("langCurTxt").textContent=LANG_NAME[l]||l;
+  ensureFont(l);
+  document.documentElement.setAttribute("lang",l);  /* иначе японский рендерится китайскими глифами */
+  document.getElementById("langMenu").classList.remove("open");
   try{localStorage.setItem("chuai_lang",l);}catch(e){}
+  suggestCountry(l);
 }
 
 buildOpts("whoOpts","who",OPTS.who,"radio");
@@ -964,11 +1433,42 @@ buildOpts("smallOpts","small_orders",OPTS.small,"radio");
 buildOpts("seekOpts","seek",OPTS.seek,"checkbox");
 buildRegions();
 
+/* «Ещё» для товарных групп — их 22, две строки хватает для первого взгляда */
+(function(){
+  var box=document.getElementById("groupOpts");
+  var btn=document.getElementById("groupMore");
+  btn._more=OPTS.groups.length;
+  btn.onclick=function(){
+    var open=box.classList.toggle("open");
+    btn.textContent=open?MORE_TXT[LANG][1]:MORE_TXT[LANG][0]+" ("+btn._more+")";
+  };
+})();
+
 /* initial language: saved > browser > zh */
 var saved=null; try{saved=localStorage.getItem("chuai_lang");}catch(e){}
 var nav=(navigator.language||"").toLowerCase();
-applyLang(saved || (nav.indexOf("ru")===0?"ru":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"zh"));
-document.querySelectorAll(".langs button").forEach(function(b){
+function langFromBrowser(n){
+  if(n.indexOf("zh")===0)return "zh";
+  if(n.indexOf("ko")===0)return "ko";
+  if(n.indexOf("ja")===0)return "ja";
+  if(n.indexOf("hi")===0||n.indexOf("mr")===0||n.indexOf("bn")===0||n.indexOf("ta")===0||
+     n.indexOf("te")===0||n.indexOf("gu")===0||n.indexOf("pa")===0||n.indexOf("kn")===0||
+     n.indexOf("ml")===0||n.indexOf("en-in")===0)return "hi";
+  if(n.indexOf("ru")===0)return "ru";
+  if(n.indexOf("en")===0)return "en";
+  return "zh";
+}
+applyLang(saved || langFromBrowser(nav));
+
+var langCur=document.getElementById("langCur"), langMenu=document.getElementById("langMenu");
+langCur.onclick=function(e){
+  e.stopPropagation();
+  var open=langMenu.classList.toggle("open");
+  langCur.setAttribute("aria-expanded",open?"true":"false");
+};
+document.addEventListener("click",function(){langMenu.classList.remove("open");langCur.setAttribute("aria-expanded","false");});
+langMenu.onclick=function(e){e.stopPropagation();};
+document.querySelectorAll(".lang-menu button").forEach(function(b){
   b.onclick=function(){applyLang(b.getAttribute("data-lang"));};
 });
 
@@ -980,6 +1480,7 @@ form.addEventListener("change",function(e){
   if(n==="dist") document.getElementById("distCountBox").classList.toggle("show",form.dist.value==="yes");
   if(n==="stock_ru") document.getElementById("lotRuBox").classList.toggle("show",form.stock_ru.value==="yes");
   if(n==="defer_pay") document.getElementById("deferDaysBox").classList.toggle("show",form.defer_pay.value==="yes");
+  if(n==="country"){ e.target.dataset.auto=""; }  /* выбрал вручную — больше не подставляем */
   if(n==="who"){
     var w=form.who.value;
     document.getElementById("skuTotalBox").classList.toggle("show",w==="trader"||w==="factory_trader"||w==="group"||w==="other");
@@ -1150,7 +1651,9 @@ function ruLabel(field,val){
   for(var i=0;i<list.length;i++)if(list[i].v===val)return list[i].ru;
   return val;
 }
+var COUNTRY_RU={CN:"cCN",KR:"cKR",JP:"cJP",IN:"cIN",TR:"cTR",VN:"cVN",TH:"cTH",RU:"cRU",other:"cOther"};
 function toReadable(data){
+  if(data.country&&COUNTRY_RU[data.country])data.country=T.ru[COUNTRY_RU[data.country]];
   Object.keys(OPT_FIELD).forEach(function(k){
     if(data[k]==null)return;
     data[k]=Array.isArray(data[k])?data[k].map(function(v){return ruLabel(k,v);}):ruLabel(k,data[k]);
@@ -1180,7 +1683,8 @@ form.addEventListener("submit",function(e){
   e.preventDefault();
   var errBox=document.getElementById("errBox");
   var okContact=form.wechat.value.trim()||form.email.value.trim()||form.phone.value.trim();
-  var ok=form.company.value.trim()&&form.person.value.trim()&&okContact&&form.who.value&&document.getElementById("consent").checked;
+  var ok=form.company.value.trim()&&form.person.value.trim()&&okContact&&form.who.value
+    &&form.country.value&&document.getElementById("consent").checked;
   if(form.website_url.value){return;} /* honeypot */
   if(!ok){errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});return;}
   errBox.classList.remove("show");
@@ -1221,6 +1725,5 @@ form.addEventListener("submit",function(e){
   }
 });
 </script>
-
 </body>
 </html>
