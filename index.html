@@ -152,6 +152,8 @@
   .clamp2.open{max-height:none}
   .more-btn{margin-top:10px;border:1px dashed var(--steel);background:transparent;color:var(--ink-soft);
     font:600 13.5px/1 var(--body-font);border-radius:999px;padding:8px 16px;cursor:pointer}
+  .bad{border-color:var(--red) !important; box-shadow:0 0 0 3px rgba(196,52,43,.15)}
+  .opts.bad, .consent.bad{border-radius:10px; padding:6px; box-shadow:0 0 0 3px rgba(196,52,43,.15)}
   .more-btn:hover{border-color:var(--ink-soft);color:var(--ink)}
   .cols .opts.clamp2{max-height:76px}
   .cols .opt span{height:34px;display:flex;align-items:center;padding:0 14px}
@@ -495,7 +497,7 @@
       <div class="file-warn" id="fileWarn"><span data-i18n="filesTooBig"></span> <b>mos.kruk@gmail.com</b></div>
       <p class="alt-mail"><span data-i18n="filesAlt"></span> <b>mos.kruk@gmail.com</b></p>
 
-      <label class="consent">
+      <label class="consent" id="consentBox">
         <input type="checkbox" id="consent" required>
         <span data-i18n="consent"></span>
       </label>
@@ -1451,9 +1453,10 @@ function langFromBrowser(n){
   if(n.indexOf("zh")===0)return "zh";
   if(n.indexOf("ko")===0)return "ko";
   if(n.indexOf("ja")===0)return "ja";
+  /* en-IN сюда не входит: у индийцев деловой язык — английский, страну спросим */
   if(n.indexOf("hi")===0||n.indexOf("mr")===0||n.indexOf("bn")===0||n.indexOf("ta")===0||
      n.indexOf("te")===0||n.indexOf("gu")===0||n.indexOf("pa")===0||n.indexOf("kn")===0||
-     n.indexOf("ml")===0||n.indexOf("en-in")===0)return "hi";
+     n.indexOf("ml")===0)return "hi";
   if(n.indexOf("ru")===0)return "ru";
   if(n.indexOf("en")===0)return "en";
   return "zh";
@@ -1474,7 +1477,11 @@ document.querySelectorAll(".lang-menu button").forEach(function(b){
 
 /* conditional sub-fields */
 var form=document.getElementById("f");
+form.addEventListener("input",function(e){ if(e.target.classList) e.target.classList.remove("bad"); });
 form.addEventListener("change",function(e){
+  if(e.target.classList) e.target.classList.remove("bad");
+  var box=e.target.closest? e.target.closest(".opts, .consent") : null;
+  if(box) box.classList.remove("bad");
   var n=e.target.name;
   if(n==="who") document.getElementById("whoOtherBox").classList.toggle("show",form.who.value==="other");
   if(n==="dist") document.getElementById("distCountBox").classList.toggle("show",form.dist.value==="yes");
@@ -1686,7 +1693,20 @@ form.addEventListener("submit",function(e){
   var ok=form.company.value.trim()&&form.person.value.trim()&&okContact&&form.who.value
     &&form.country.value&&document.getElementById("consent").checked;
   if(form.website_url.value){return;} /* honeypot */
-  if(!ok){errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});return;}
+  if(!ok){
+    /* без подсветки поставщик не поймёт, чего не хватает, и уйдёт с последнего экрана */
+    var miss=[];
+    function mark(el,filled){ if(!el)return; if(filled){el.classList.remove("bad");} else {el.classList.add("bad"); miss.push(el);} }
+    mark(form.company, form.company.value.trim());
+    mark(form.person, form.person.value.trim());
+    mark(document.getElementById("countrySel"), form.country.value);
+    mark(form.wechat, okContact); mark(form.email, okContact); mark(form.phone, okContact);
+    mark(document.getElementById("whoOpts"), form.who.value);
+    mark(document.getElementById("consentBox"), document.getElementById("consent").checked);
+    errBox.classList.add("show");
+    (miss[0]||errBox).scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
   errBox.classList.remove("show");
   var btn=document.getElementById("submitBtn");btn.disabled=true;
   var btnLabel=btn.textContent;btn.textContent=T[LANG].sending;
