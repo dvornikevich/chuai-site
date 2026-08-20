@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHUAI Supplier Gateway</title>
+<meta name="description" content="CHUAI — B2B platform connecting Chinese auto parts manufacturers with buyers in Russia. 中俄汽配对接平台.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --ink:#1C2B3A; --ink-soft:#33455A; --steel:#5C6B7A; --line:#D8DFE6;
+    --ground:#F4F6F8; --card:#FFFFFF; --field:#FBFCFD;
+    --red:#C4342B; --red-deep:#A02620; --green:#2E7D4F; --green-bg:#E8F3EC;
+    --gold:#B98A2F;
+    --body-font:'Golos Text','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+    --disp-font:'Unbounded','Golos Text','Noto Sans SC','PingFang SC',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body-font);line-height:1.55;font-size:16px}
+  img,svg{max-width:100%}
+  a{color:var(--red)}
+  /* ---------- header ---------- */
+  .top{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+  .top-in{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px}
+  .logo{font-family:var(--disp-font);font-weight:700;font-size:19px;letter-spacing:.06em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:9px}
+  .logo b{color:#E8B84B;font-weight:700}
+  .logo-mark{width:26px;height:26px;flex:none;display:block}
+  .langs{display:flex;gap:4px;background:rgba(255,255,255,.09);border-radius:999px;padding:3px}
+  .langs button{border:0;background:transparent;color:#C7D2DC;font:600 13px/1 var(--body-font);padding:7px 12px;border-radius:999px;cursor:pointer}
+  .langs button.on{background:#fff;color:var(--ink)}
+  /* ---------- hero ---------- */
+  .hero{background:linear-gradient(160deg,#1C2B3A 0%,#24384D 55%,#2A415A 100%);color:#fff;padding:44px 16px 52px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(232,184,75,.16),transparent 65%);pointer-events:none}
+  .hero-in{max-width:860px;margin:0 auto;position:relative}
+  .kicker{display:inline-block;font:600 12px/1 var(--body-font);letter-spacing:.14em;text-transform:uppercase;
+    color:#E8B84B;border:1px solid rgba(232,184,75,.45);border-radius:999px;padding:7px 14px;margin-bottom:18px}
+  h1{font-family:var(--disp-font);font-weight:700;font-size:clamp(26px,5vw,40px);line-height:1.18;text-wrap:balance;max-width:21ch}
+  .sub{margin-top:16px;max-width:56ch;color:#C9D4DE;font-size:17px}
+  .cta{display:inline-block;margin-top:26px;background:var(--red);color:#fff;text-decoration:none;font:600 17px/1 var(--body-font);
+    padding:16px 30px;border-radius:10px;box-shadow:0 6px 18px rgba(196,52,43,.35)}
+  .cta:active{background:var(--red-deep)}
+  .bullets{margin-top:34px;display:grid;gap:10px}
+  @media(min-width:640px){.bullets{grid-template-columns:1fr 1fr 1fr}}
+  .bullet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;font-size:14.5px;color:#DCE4EB;display:flex;gap:10px;align-items:flex-start}
+  .bullet .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#E8B84B;margin-top:7px}
+  /* ---------- form ---------- */
+  .wrap{max-width:860px;margin:0 auto;padding:34px 12px 80px}
+  .form-head{padding:0 6px 8px}
+  .form-head h2{font-family:var(--disp-font);font-weight:700;font-size:24px;line-height:1.25}
+  .form-head p{color:var(--steel);margin-top:8px;font-size:14.5px}
+  .sec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 18px;margin-top:16px}
+  @media(min-width:640px){.sec{padding:28px 28px}}
+  .sec-t{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .sec-n{flex:none;width:30px;height:30px;border-radius:8px;background:var(--ink);color:#E8B84B;
+    font:700 14px/30px var(--disp-font);text-align:center}
+  .sec-t h3{font-size:19px;font-weight:700}
+  .sec-hint{color:var(--steel);font-size:13.5px;margin:2px 0 14px 42px}
+  .grid2{display:grid;gap:14px}
+  @media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+  .fld{margin-top:14px}
+  .fld label,.q{display:block;font-weight:600;font-size:15px;margin-bottom:7px}
+  .q{margin-top:20px}
+  .q .req,.fld .req{color:var(--red)}
+  .hint{font-weight:400;color:var(--steel);font-size:13px;margin-top:-3px;margin-bottom:8px}
+  input[type=text],input[type=email],input[type=tel],input[type=url],input[type=number],select,textarea{
+    width:100%;border:1px solid var(--line);border-radius:9px;background:var(--field);color:var(--ink);
+    font:400 16px/1.4 var(--body-font);padding:12px 13px;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:var(--ink-soft);background:#fff;box-shadow:0 0 0 3px rgba(28,43,58,.08)}
+  textarea{min-height:96px;resize:vertical}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C6B7A' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{position:relative}
+  .opt input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .opt span{display:inline-block;border:1px solid var(--line);background:var(--field);border-radius:999px;
+    padding:9px 15px;font-size:14.5px;cursor:pointer;user-select:none;color:var(--ink-soft)}
+  .opt input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+  .opt input:focus-visible+span{box-shadow:0 0 0 3px rgba(28,43,58,.25)}
+  .cols .opts{display:grid;grid-template-columns:1fr;gap:6px}
+  @media(min-width:560px){.cols .opts{grid-template-columns:1fr 1fr}}
+  .cols .opt span{display:block;border-radius:9px;width:100%}
+  .sub-fld{margin:10px 0 0;padding:12px;border-left:3px solid var(--gold);background:#FCF9F2;border-radius:0 9px 9px 0;display:none}
+  .sub-fld.show{display:block}
+  /* brand regions */
+  .region{border:1px solid var(--line);border-radius:11px;margin-top:12px;overflow:hidden}
+  .region-h{display:flex;justify-content:space-between;align-items:center;background:#EEF2F5;padding:11px 14px;font-weight:700;font-size:14.5px}
+  .region-h .cnt{font:600 12px/1 var(--body-font);color:#fff;background:var(--red);border-radius:999px;padding:4px 9px;display:none}
+  .region-h .cnt.show{display:inline-block}
+  .region-b{padding:12px 12px 14px}
+  .region .opts{gap:6px}
+  .region .opt span{padding:7px 12px;font-size:13.5px}
+  .more-btn{margin-top:10px;border:1px dashed var(--steel);background:transparent;color:var(--ink-soft);
+    font:600 13.5px/1 var(--body-font);border-radius:999px;padding:8px 16px;cursor:pointer}
+  .hideable{display:none}.hideable.show{display:contents}
+  /* files */
+  .drop{border:2px dashed var(--line);border-radius:11px;background:var(--field);padding:22px;text-align:center;cursor:pointer}
+  .drop.has{border-color:var(--green);background:var(--green-bg)}
+  .drop input{display:none}
+  .drop .big{font-weight:600}
+  .drop .small{color:var(--steel);font-size:13px;margin-top:5px}
+  .file-list{margin-top:8px;font-size:13.5px;color:var(--ink-soft)}
+  .alt-mail{margin-top:10px;font-size:13.5px;color:var(--steel)}
+  .alt-mail b{color:var(--ink)}
+  /* consent + submit */
+  .consent{display:flex;gap:10px;align-items:flex-start;margin-top:22px;font-size:14px;color:var(--ink-soft)}
+  .consent input{width:20px;height:20px;flex:none;accent-color:var(--red);margin-top:1px}
+  .submit{margin-top:20px;width:100%;border:0;background:var(--red);color:#fff;font:700 18px/1 var(--body-font);
+    padding:17px;border-radius:11px;cursor:pointer;box-shadow:0 6px 18px rgba(196,52,43,.3)}
+  .submit:disabled{opacity:.6;cursor:wait}
+  .err{display:none;margin-top:12px;background:#FBEDEC;border:1px solid #E7B6B2;color:var(--red-deep);border-radius:9px;padding:11px 14px;font-size:14px}
+  .err.show{display:block}
+  /* success */
+  .done{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:48px 24px;text-align:center;margin-top:16px}
+  .done.show{display:block}
+  .done .ok{width:64px;height:64px;border-radius:50%;background:var(--green-bg);color:var(--green);margin:0 auto 18px;
+    display:flex;align-items:center;justify-content:center}
+  .done h3{font-family:var(--disp-font);font-size:22px}
+  .done p{color:var(--steel);margin-top:10px;max-width:52ch;margin-inline:auto}
+  .done p b{color:var(--ink)}
+  /* footer */
+  footer{border-top:1px solid var(--line);color:var(--steel);font-size:13px;padding:26px 16px 40px;text-align:center}
+  footer .fl{font-family:var(--disp-font);font-weight:700;color:var(--ink);font-size:14px;letter-spacing:.06em}
+  @media(prefers-reduced-motion:no-preference){
+    .sec{animation:up .5s ease both}
+    @keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  }
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="#E8B84B" stroke-width="2.4"/><path d="M9 12h14L9 20h14" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      CHU<b>AI</b>
+    </a>
+    <nav class="langs" aria-label="Language">
+      <button type="button" data-lang="zh">中文</button>
+      <button type="button" data-lang="ru">RU</button>
+      <button type="button" data-lang="en">EN</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <span class="kicker" data-i18n="kicker"></span>
+    <h1 data-i18n="h1"></h1>
+    <p class="sub" data-i18n="sub"></p>
+    <a class="cta" href="#form" data-i18n="cta"></a>
+    <div class="bullets">
+      <div class="bullet"><span class="dot"></span><span data-i18n="b1"></span></div>
+      <div class="bullet"><span class="dot"></span><span data-i18n="b2"></span></div>
+      <div class="bullet"><span class="dot"></span><span data-i18n="b3"></span></div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap" id="form">
+  <div class="form-head">
+    <h2 data-i18n="formTitle"></h2>
+    <p data-i18n="formNote"></p>
+  </div>
+
+  <form id="f" novalidate>
+    <input type="text" name="website_url" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true">
+
+    <!-- 1 CONTACTS -->
+    <section class="sec">
+      <div class="sec-t"><span class="sec-n">1</span><h3 data-i18n="s1"></h3></div>
+      <p class="sec-hint" data-i18n="s1hint"></p>
+      <div class="grid2">
+        <div class="fld"><label data-i18n="company"></label><input type="text" name="company" required></div>
+        <div class="fld"><label data-i18n="person"></label><input type="text" name="person" required></div>
+        <div class="fld"><label data-i18n="position"></label><input type="text" name="position"></div>
+        <div class="fld"><label>WeChat ID</label><input type="text" name="wechat"></div>
+        <div class="fld"><label>Email</label><input type="email" name="email"></div>
+        <div class="fld"><label data-i18n="phone"></label><input type="tel" name="phone"></div>
+        <div class="fld"><label data-i18n="booth"></label><input type="text" name="booth" data-i18n-ph="boothPh"></div>
+        <div class="fld"><label data-i18n="city"></label><input type="text" name="city"></div>
+        <div class="fld"><label data-i18n="site"></label><input type="url" name="site" placeholder="https://"></div>
+      </div>
+    </section>
+
+    <!-- 2 COMPANY -->
+    <section class="sec">
+      <div class="sec-t"><span class="sec-n">2</span><h3 data-i18n="s2"></h3></div>
+
+      <p class="q"><span data-i18n="whoQ"></span> <span class="req">*</span></p>
+      <div class="opts" id="whoOpts"></div>
+      <div class="sub-fld" id="whoOtherBox"><input type="text" name="who_other" data-i18n-ph="otherPh"></div>
+
+      <p class="q" data-i18n="aboutQ"></p>
+      <textarea name="about" data-i18n-ph="aboutPh"></textarea>
+
+      <p class="q" data-i18n="distQ"></p>
+      <div class="opts" id="distOpts"></div>
+      <div class="sub-fld" id="distCountBox">
+        <label style="font-weight:600;font-size:14px;display:block;margin-bottom:6px" data-i18n="distCount"></label>
+        <input type="number" name="dist_count" min="1" style="max-width:140px">
+      </div>
+
+      <p class="q" data-i18n="brandQ"></p>
+      <input type="text" name="brand" data-i18n-ph="brandPh">
+
+      <p class="q" data-i18n="brandModeQ"></p>
+      <div class="opts" id="brandModeOpts"></div>
+    </section>
+
+    <!-- 3 PRODUCTS -->
+    <section class="sec">
+      <div class="sec-t"><span class="sec-n">3</span><h3 data-i18n="s3"></h3></div>
+
+      <div class="cols">
+        <p class="q" data-i18n="vehQ"></p>
+        <div class="opts" id="vehOpts"></div>
+      </div>
+
+      <p class="q" data-i18n="makesQ"></p>
+      <p class="hint" data-i18n="makesHint"></p>
+      <div id="regions"></div>
+      <div class="fld"><label data-i18n="makesOther"></label><input type="text" name="makes_other"></div>
+
+      <div class="cols">
+        <p class="q"><span data-i18n="groupsQ"></span></p>
+        <div class="opts" id="groupOpts"></div>
+      </div>
+      <div class="fld"><label data-i18n="groupsOther"></label><input type="text" name="groups_other"></div>
+
+      <div class="grid2">
+        <div class="fld"><label data-i18n="skuQ"></label>
+          <select name="sku">
+            <option value="" data-i18n="choose"></option>
+            <option value="<100">&lt; 100</option><option value="100-500">100 – 500</option>
+            <option value="500-1000">500 – 1 000</option><option value="1000-5000">1 000 – 5 000</option>
+            <option value="5000-20000">5 000 – 20 000</option><option value=">20000">&gt; 20 000</option>
+          </select>
+        </div>
+        <div class="fld"><label data-i18n="warrantyQ"></label>
+          <select name="warranty">
+            <option value="" data-i18n="choose"></option>
+            <option value="none" data-i18n="wNone"></option><option value="6m" data-i18n="w6"></option>
+            <option value="12m" data-i18n="w12"></option><option value="24m" data-i18n="w24"></option>
+            <option value="claims" data-i18n="wClaims"></option><option value="other" data-i18n="wOther"></option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cols">
+        <p class="q" data-i18n="infoQ"></p>
+        <div class="opts" id="infoOpts"></div>
+      </div>
+
+      <p class="q" data-i18n="priceQ"></p>
+      <div class="opts" id="priceOpts"></div>
+    </section>
+
+    <!-- 4 SUPPLY -->
+    <section class="sec">
+      <div class="sec-t"><span class="sec-n">4</span><h3 data-i18n="s4"></h3></div>
+
+      <p class="q" data-i18n="stockRuQ"></p>
+      <div class="opts" id="stockRuOpts"></div>
+      <div class="sub-fld" id="lotRuBox">
+        <label style="font-weight:600;font-size:14px;display:block;margin-bottom:6px" data-i18n="lotRuQ"></label>
+        <select name="lot_ru">
+          <option value="" data-i18n="choose"></option>
+          <option value="unit" data-i18n="lotUnit"></option><option value="box" data-i18n="lotBox"></option>
+          <option value="pallet" data-i18n="lotPallet"></option><option value="bulk" data-i18n="lotBulk"></option>
+        </select>
+      </div>
+
+      <div class="fld"><label data-i18n="lotCnQ"></label>
+        <select name="lot_cn">
+          <option value="" data-i18n="choose"></option>
+          <option value="unit" data-i18n="lotUnit"></option><option value="box" data-i18n="lotBox"></option>
+          <option value="lcl" data-i18n="lotLcl"></option><option value="fcl" data-i18n="lotFcl"></option>
+          <option value="fcl_only" data-i18n="lotFclOnly"></option>
+        </select>
+      </div>
+
+      <p class="q" data-i18n="stockCnQ"></p>
+      <div class="opts" id="stockCnOpts"></div>
+
+      <div class="grid2">
+        <div class="fld"><label data-i18n="moqOptQ"></label><input type="text" name="moq_opt" data-i18n-ph="moqOptPh"></div>
+        <div class="fld"><label data-i18n="moqRetQ"></label><input type="text" name="moq_ret" data-i18n-ph="moqRetPh"></div>
+        <div class="fld"><label data-i18n="speedOptQ"></label>
+          <select name="speed_opt">
+            <option value="" data-i18n="choose"></option>
+            <option value="1-3d" data-i18n="sp13"></option><option value="7d" data-i18n="sp7"></option>
+            <option value="14d" data-i18n="sp14"></option><option value="30d" data-i18n="sp30"></option>
+            <option value="30d+" data-i18n="sp30p"></option>
+          </select>
+        </div>
+        <div class="fld"><label data-i18n="speedRetQ"></label>
+          <select name="speed_ret">
+            <option value="" data-i18n="choose"></option>
+            <option value="1-3d" data-i18n="sp13"></option><option value="7d" data-i18n="sp7"></option>
+            <option value="14d" data-i18n="sp14"></option><option value="30d" data-i18n="sp30"></option>
+            <option value="30d+" data-i18n="sp30p"></option>
+          </select>
+        </div>
+      </div>
+
+      <p class="q" data-i18n="smallQ"></p>
+      <div class="opts" id="smallOpts"></div>
+
+      <div class="cols">
+        <p class="q" data-i18n="seekQ"></p>
+        <div class="opts" id="seekOpts"></div>
+      </div>
+      <div class="fld"><label data-i18n="seekOther"></label><input type="text" name="seek_other"></div>
+    </section>
+
+    <!-- 5 MATERIALS -->
+    <section class="sec">
+      <div class="sec-t"><span class="sec-n">5</span><h3 data-i18n="s5"></h3></div>
+      <p class="q" data-i18n="filesQ"></p>
+      <label class="drop" id="drop">
+        <input type="file" name="files" id="fileInput" multiple accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.txt,.zip,.jpg,.jpeg,.png,.webp">
+        <div class="big" data-i18n="filesBig"></div>
+        <div class="small" data-i18n="filesSmall"></div>
+      </label>
+      <div class="file-list" id="fileList"></div>
+      <p class="alt-mail"><span data-i18n="filesAlt"></span> <b>mos.kruk@gmail.com</b></p>
+
+      <label class="consent">
+        <input type="checkbox" id="consent" required>
+        <span data-i18n="consent"></span>
+      </label>
+      <button class="submit" type="submit" id="submitBtn" data-i18n="submit"></button>
+      <div class="err" id="errBox" data-i18n="errMsg"></div>
+    </section>
+  </form>
+
+  <div class="done" id="done">
+    <div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 data-i18n="doneT"></h3>
+    <p data-i18n="doneP"></p>
+    <p style="margin-top:8px"><span data-i18n="doneMail"></span> <b>mos.kruk@gmail.com</b></p>
+  </div>
+</main>
+
+<footer>
+  <div class="fl">CHUAI</div>
+  <p style="margin-top:6px" data-i18n="footer1"></p>
+  <p style="margin-top:4px">chuai.ru · mos.kruk@gmail.com</p>
+</footer>
+
+<script>
+/* ================= CONFIG ================= */
+/* Set FORM_ENDPOINT to your backend URL (e.g. a Yandex Cloud Function,
+   Google Apps Script web app, or form service). Empty = demo mode:
+   the form validates and shows the success screen without sending. */
+var FORM_ENDPOINT = "";
+
+/* ================= I18N ================= */
+var T = {
+ru:{
+ kicker:"B2B-платформа · Автозапчасти · Россия",
+ h1:"Прямой выход на покупателей автозапчастей в России",
+ sub:"CHUAI соединяет производителей и торговые компании из Китая с оптовыми и розничными покупателями в России. Заполните анкету — мы покажем вашу продукцию покупателям, которым она нужна.",
+ cta:"Заполнить анкету",
+ b1:"Бесплатно для поставщиков — участие в базе не стоит ничего",
+ b2:"Опт и розница: отгрузки из Китая и со складов в России",
+ b3:"Прямой контакт с покупателями — без посредников",
+ formTitle:"Анкета поставщика",
+ formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
+ s1:"Контакты", s1hint:"Укажите хотя бы один канал связи: WeChat, email или телефон.",
+ company:"Название компании *", person:"Контактное лицо *", position:"Должность",
+ phone:"Телефон / WhatsApp", booth:"Номер стенда на выставке", boothPh:"например: 2B-105",
+ city:"Город / провинция в Китае", site:"Сайт компании",
+ s2:"О компании",
+ whoQ:"Кто вы?", otherPh:"Свой вариант",
+ aboutQ:"Расскажите о компании",
+ aboutPh:"Год основания, число сотрудников, производственные мощности, основные рынки, ключевые клиенты…",
+ distQ:"Есть ли у вас дистрибьютор в России?", distCount:"Сколько дистрибьюторов?",
+ brandQ:"Какой бренд хотите развивать в России?", brandPh:"Название бренда",
+ brandModeQ:"Стратегия бренда (можно выбрать несколько)",
+ s3:"Продукция",
+ vehQ:"Для какого транспорта ваша продукция? (можно несколько)",
+ makesQ:"Для каких марок автомобилей / мото?",
+ makesHint:"Отметьте марки. В каждой группе сверху — 20 самых популярных, остальные по кнопке «Ещё».",
+ makesOther:"Другая марка (если нет в списке)",
+ groupsQ:"Ваши товарные группы (можно несколько)",
+ groupsOther:"Другая товарная группа",
+ skuQ:"Количество SKU в ассортименте", choose:"— выберите —",
+ warrantyQ:"Гарантия на товар",
+ wNone:"Без гарантии", w6:"6 месяцев", w12:"1 год", w24:"2 года и более",
+ wClaims:"Замена по рекламациям (брак)", wOther:"Другое",
+ infoQ:"Какую информацию о товаре можете предоставить? (можно несколько)",
+ priceQ:"Можете предоставить цены на продукцию?",
+ s4:"Условия поставок",
+ stockRuQ:"Есть ли у вас склад в России?",
+ lotRuQ:"Какими партиями готовы отгружать со склада в РФ?",
+ lotCnQ:"Какими партиями готовы отгружать из Китая?",
+ lotUnit:"От 1 штуки (розница)", lotBox:"От коробки / упаковки", lotPallet:"От палеты",
+ lotBulk:"Только крупный опт", lotLcl:"Сборный контейнер (LCL)", lotFcl:"Контейнер (FCL)",
+ lotFclOnly:"Только полные контейнеры",
+ stockCnQ:"Есть ли склад готовой продукции (в Китае)?",
+ moqOptQ:"Минимальная партия — опт", moqOptPh:"например: от $2 000 или от 500 шт.",
+ moqRetQ:"Минимальная отгрузка — розница", moqRetPh:"например: от 1 шт.",
+ speedOptQ:"Как быстро отгружаете оптовый заказ?",
+ speedRetQ:"Как быстро отгружаете розничный заказ?",
+ sp13:"1–3 дня", sp7:"До 7 дней", sp14:"До 14 дней", sp30:"До 30 дней", sp30p:"Более 30 дней / под заказ",
+ smallQ:"Готовы работать с небольшими заказами и отправлять посылки в РФ через транспортные компании (карго)?",
+ seekQ:"Кого вы ищете на выставке? (можно несколько)", seekOther:"Кого ещё вы ищете?",
+ s5:"Материалы",
+ filesQ:"Загрузите материалы о компании и продукции",
+ filesBig:"Нажмите, чтобы выбрать файлы",
+ filesSmall:"Каталоги, прайс-листы, презентации: PDF, Excel, CSV, Word, фото · до 10 файлов",
+ filesAlt:"Или отправьте материалы на email (укажите название компании в теме письма):",
+ consent:"Согласен(-на) на обработку указанных данных и передачу их потенциальным покупателям в России. *",
+ submit:"Отправить анкету",
+ errMsg:"Заполните обязательные поля: название компании, контактное лицо, хотя бы один канал связи, «Кто вы?» и согласие на обработку данных.",
+ doneT:"Анкета отправлена!",
+ doneP:"Спасибо! Мы изучим информацию о вашей компании и свяжемся с вами, когда подберём заинтересованных покупателей.",
+ doneMail:"Каталоги и прайс-листы можно дослать на:",
+ footer1:"Независимая B2B-платформа по подбору покупателей автозапчастей в России."
+},
+en:{
+ kicker:"B2B platform · Auto parts · Russia",
+ h1:"Direct access to auto parts buyers in Russia",
+ sub:"CHUAI connects Chinese manufacturers and trading companies with wholesale and retail buyers across Russia. Fill in the form — we will present your products to buyers who need them.",
+ cta:"Fill in the form",
+ b1:"Free for suppliers — joining the database costs nothing",
+ b2:"Wholesale & retail: shipping from China or from stock in Russia",
+ b3:"Direct contact with buyers — no middlemen",
+ formTitle:"Supplier questionnaire",
+ formNote:"Takes 7–10 minutes. Fields marked * are required. The more complete your answers, the faster we match you with buyers.",
+ s1:"Contacts", s1hint:"Please leave at least one contact channel: WeChat, email or phone.",
+ company:"Company name *", person:"Contact person *", position:"Job title",
+ phone:"Phone / WhatsApp", booth:"Booth number at the exhibition", boothPh:"e.g. 2B-105",
+ city:"City / province in China", site:"Company website",
+ s2:"About your company",
+ whoQ:"Who are you?", otherPh:"Your answer",
+ aboutQ:"Tell us about your company",
+ aboutPh:"Year founded, number of employees, production capacity, main markets, key clients…",
+ distQ:"Do you have a distributor in Russia?", distCount:"How many distributors?",
+ brandQ:"Which brand do you want to develop in Russia?", brandPh:"Brand name",
+ brandModeQ:"Brand strategy (select all that apply)",
+ s3:"Products",
+ vehQ:"Which vehicles are your products for? (multiple)",
+ makesQ:"Which car / moto makes do you cover?",
+ makesHint:"Tick the makes. Top 20 most popular are shown first in each group; press “More” for the rest.",
+ makesOther:"Other make (if not listed)",
+ groupsQ:"Your product groups (multiple)",
+ groupsOther:"Other product group",
+ skuQ:"Number of SKUs in your range", choose:"— select —",
+ warrantyQ:"Product warranty",
+ wNone:"No warranty", w6:"6 months", w12:"1 year", w24:"2 years or more",
+ wClaims:"Replacement on claims (defects)", wOther:"Other",
+ infoQ:"What product information can you provide? (multiple)",
+ priceQ:"Can you provide prices for your products?",
+ s4:"Supply terms",
+ stockRuQ:"Do you have a warehouse in Russia?",
+ lotRuQ:"What lot sizes can you ship from your Russian stock?",
+ lotCnQ:"What lot sizes can you ship from China?",
+ lotUnit:"From 1 piece (retail)", lotBox:"From a box / carton", lotPallet:"From a pallet",
+ lotBulk:"Large wholesale only", lotLcl:"Groupage container (LCL)", lotFcl:"Container (FCL)",
+ lotFclOnly:"Full containers only",
+ stockCnQ:"Do you keep finished-goods stock (in China)?",
+ moqOptQ:"Minimum order — wholesale", moqOptPh:"e.g. from $2,000 or from 500 pcs",
+ moqRetQ:"Minimum order — retail", moqRetPh:"e.g. from 1 pc",
+ speedOptQ:"How fast do you ship a wholesale order?",
+ speedRetQ:"How fast do you ship a retail order?",
+ sp13:"1–3 days", sp7:"Up to 7 days", sp14:"Up to 14 days", sp30:"Up to 30 days", sp30p:"Over 30 days / made to order",
+ smallQ:"Are you ready to handle small orders and send parcels to Russia via freight/cargo companies?",
+ seekQ:"Who are you looking for at the exhibition? (multiple)", seekOther:"Anyone else you are looking for?",
+ s5:"Materials",
+ filesQ:"Upload materials about your company and products",
+ filesBig:"Click to choose files",
+ filesSmall:"Catalogues, price lists, presentations: PDF, Excel, CSV, Word, photos · up to 10 files",
+ filesAlt:"Or send your materials by email (put your company name in the subject):",
+ consent:"I agree to the processing of this data and to sharing it with potential buyers in Russia. *",
+ submit:"Submit the form",
+ errMsg:"Please fill in the required fields: company name, contact person, at least one contact channel, “Who are you?” and the consent checkbox.",
+ doneT:"Form submitted!",
+ doneP:"Thank you! We will review your company profile and contact you once we match you with interested buyers.",
+ doneMail:"You can also send catalogues and price lists to:",
+ footer1:"An independent B2B platform matching auto parts suppliers with buyers in Russia."
+},
+zh:{
+ kicker:"B2B平台 · 汽车配件 · 俄罗斯",
+ h1:"直接对接俄罗斯汽配买家",
+ sub:"CHUAI 平台帮助中国生产厂家和贸易公司对接俄罗斯的批发及零售买家。填写问卷，我们会把您的产品推荐给有需求的买家。",
+ cta:"填写问卷",
+ b1:"供应商免费 — 加入买家数据库不收取任何费用",
+ b2:"批发与零售：支持中国直发或俄罗斯仓库发货",
+ b3:"与买家直接联系 — 没有中间商",
+ formTitle:"供应商问卷",
+ formNote:"填写约需 7–10 分钟。带 * 的为必填项。信息越完整，我们为您匹配买家的速度越快。",
+ s1:"联系方式", s1hint:"请至少留下一种联系方式：微信、邮箱或电话。",
+ company:"公司名称 *", person:"联系人 *", position:"职位",
+ phone:"电话 / WhatsApp", booth:"展会展位号", boothPh:"例如：2B-105",
+ city:"所在城市 / 省份", site:"公司网站",
+ s2:"公司信息",
+ whoQ:"贵公司属于哪种类型？", otherPh:"请填写",
+ aboutQ:"请介绍一下贵公司",
+ aboutPh:"成立年份、员工人数、生产能力、主要市场、主要客户……",
+ distQ:"贵公司在俄罗斯有经销商吗？", distCount:"有几家经销商？",
+ brandQ:"您想在俄罗斯发展哪个品牌？", brandPh:"品牌名称",
+ brandModeQ:"品牌策略（可多选）",
+ s3:"产品信息",
+ vehQ:"您的产品适用于哪类车辆？（可多选）",
+ makesQ:"您的产品适配哪些汽车/摩托车品牌？",
+ makesHint:"请勾选品牌。每组前 20 个为最热门品牌，其余请点击“更多”。",
+ makesOther:"其他品牌（如列表中没有）",
+ groupsQ:"您的产品类目（可多选）",
+ groupsOther:"其他产品类目",
+ skuQ:"产品 SKU 数量", choose:"— 请选择 —",
+ warrantyQ:"产品质保",
+ wNone:"无质保", w6:"6 个月", w12:"1 年", w24:"2 年及以上",
+ wClaims:"质量问题换货", wOther:"其他",
+ infoQ:"您能提供哪些产品资料？（可多选）",
+ priceQ:"能否提供产品价格？",
+ s4:"供货条款",
+ stockRuQ:"贵公司在俄罗斯有仓库吗？",
+ lotRuQ:"俄罗斯仓库可按什么批量发货？",
+ lotCnQ:"从中国可按什么批量发货？",
+ lotUnit:"1 件起（零售）", lotBox:"整箱起", lotPallet:"整托盘起",
+ lotBulk:"仅限大批量批发", lotLcl:"拼箱（LCL）", lotFcl:"整柜（FCL）",
+ lotFclOnly:"仅限整柜",
+ stockCnQ:"在中国有现货库存吗？",
+ moqOptQ:"批发最小起订量", moqOptPh:"例如：2000 美元起 或 500 件起",
+ moqRetQ:"零售最小发货量", moqRetPh:"例如：1 件起",
+ speedOptQ:"批发订单多快可以发货？",
+ speedRetQ:"零售订单多快可以发货？",
+ sp13:"1–3 天", sp7:"7 天内", sp14:"14 天内", sp30:"30 天内", sp30p:"30 天以上 / 按订单生产",
+ smallQ:"是否愿意接受小额订单，并通过货运公司（货代/卡航）向俄罗斯发送包裹？",
+ seekQ:"您在展会上寻找什么样的合作伙伴？（可多选）", seekOther:"还在寻找谁？",
+ s5:"资料上传",
+ filesQ:"上传公司及产品资料",
+ filesBig:"点击选择文件",
+ filesSmall:"产品目录、价格表、公司介绍：PDF、Excel、CSV、Word、图片 · 最多 10 个文件",
+ filesAlt:"也可以将资料发送至邮箱（邮件主题请注明公司名称）：",
+ consent:"我同意平台处理上述信息，并将其提供给俄罗斯的潜在买家。*",
+ submit:"提交问卷",
+ errMsg:"请填写必填项：公司名称、联系人、至少一种联系方式、公司类型，并勾选同意条款。",
+ doneT:"问卷已提交！",
+ doneP:"感谢您的填写！我们会认真研究贵公司的信息，匹配到有意向的买家后会尽快与您联系。",
+ doneMail:"产品目录和价格表也可发送至：",
+ footer1:"独立 B2B 平台 — 为汽配供应商匹配俄罗斯买家。"
+}};
+
+/* ============ dynamic option data ============ */
+function o(v,ru,en,zh){return {v:v,ru:ru,en:en,zh:zh};}
+var OPTS = {
+ who:[o("factory","Фабрика (производитель)","Factory (manufacturer)","生产工厂"),
+      o("group","Группа фабрик","Group of factories","工厂集团"),
+      o("trader","Торговая компания","Trading company","贸易公司"),
+      o("factory_trader","Фабрика + торговая компания","Factory + trading company","工贸一体"),
+      o("other","Другое","Other","其他")],
+ dist:[o("no","Нет","No","没有"),
+       o("yes","Да","Yes","有"),
+       o("negotiating","Ведём переговоры","In negotiations","正在洽谈")],
+ brandMode:[o("own","Собственный бренд","Own brand","自有品牌"),
+            o("oem","OEM / без бренда","OEM / no brand","OEM / 无品牌"),
+            o("private_label","Под брендом покупателя (private label)","Buyer's brand (private label)","代工贴牌（买家品牌）")],
+ veh:[o("passenger","Легковые","Passenger cars","乘用车"),
+      o("lcv","Лёгкий коммерческий (LCV)","Light commercial (LCV)","轻型商用车"),
+      o("truck","Грузовые","Trucks","卡车"),
+      o("bus","Автобусы","Buses","客车"),
+      o("moto","Мото","Motorcycles","摩托车"),
+      o("special","Спецтехника","Special machinery","工程机械"),
+      o("universal","Универсальная продукция","Universal products","通用产品")],
+ groups:[o("engine","Двигатель и компоненты","Engine & components","发动机及配件"),
+      o("brakes","Тормозная система","Braking system","制动系统"),
+      o("suspension","Подвеска","Suspension","悬挂系统"),
+      o("steering","Рулевое управление","Steering","转向系统"),
+      o("filters","Фильтры","Filters","滤清器"),
+      o("electrics","Электрика и датчики","Electrics & sensors","电气与传感器"),
+      o("lighting","Освещение","Lighting","车灯照明"),
+      o("body","Кузовные детали","Body parts","车身件"),
+      o("glass","Стёкла и зеркала","Glass & mirrors","玻璃与后视镜"),
+      o("transmission","Трансмиссия и сцепление","Transmission & clutch","变速箱与离合器"),
+      o("cooling","Система охлаждения","Cooling system","冷却系统"),
+      o("exhaust","Выхлопная система","Exhaust system","排气系统"),
+      o("fuel","Топливная система","Fuel system","燃油系统"),
+      o("bearings","Подшипники и ступицы","Bearings & hubs","轴承与轮毂"),
+      o("belts","Ремни, ролики, ГРМ","Belts & timing","皮带与正时件"),
+      o("interior","Салон и интерьер","Interior parts","内饰件"),
+      o("oils","Масла и автохимия","Oils & car chemicals","油品与养护品"),
+      o("battery","Аккумуляторы","Batteries","蓄电池"),
+      o("tyres","Шины и диски","Tyres & wheels","轮胎与轮辋"),
+      o("accessories","Аксессуары","Accessories","汽车用品"),
+      o("tools","Инструмент и оборудование","Tools & equipment","工具与设备"),
+      o("consumables","Расходники ТО","Service consumables","保养易损件")],
+ info:[o("photo","Фото","Photos","产品图片"),
+      o("name","Название","Product name","产品名称"),
+      o("factory_sku","Артикул фабрики","Factory part number","工厂编号"),
+      o("brand_sku","Артикул бренда","Brand part number","品牌编号"),
+      o("oem","OEM-номера (кроссы)","OEM cross numbers","OEM 号（互换号）"),
+      o("dims","Размеры и вес (ВГХ)","Dimensions & weight","尺寸与重量"),
+      o("specs","Характеристики","Specifications","技术参数"),
+      o("pack","Количество в упаковке","Quantity per pack","每箱数量"),
+      o("certs","Сертификаты","Certificates","证书"),
+      o("video","Видео","Videos","视频")],
+ price:[o("open","Да, готовы отправить прайс-лист","Yes, we can send a price list","可以，随时提供价格表"),
+        o("request","По запросу","On request","按需提供"),
+        o("meeting","После переговоров","After negotiations","洽谈后提供")],
+ yn:[o("yes","Да","Yes","有"), o("no","Нет","No","没有")],
+ stockCn:[o("yes","Да","Yes","有现货"),
+          o("partial","Частично","Partially","部分现货"),
+          o("mto","Производим под заказ","Made to order","按订单生产")],
+ small:[o("yes","Да","Yes","愿意"),
+        o("no","Нет","No","不愿意"),
+        o("discuss","Готовы обсуждать","Open to discuss","可以商量")],
+ seek:[o("distributors","Дистрибьюторов","Distributors","经销商"),
+      o("wholesale","Оптовых покупателей","Wholesale buyers","批发买家"),
+      o("retail_chains","Розничные сети","Retail chains","零售连锁"),
+      o("online","Интернет-магазины и маркетплейсы","Online stores & marketplaces","电商与线上平台"),
+      o("service","Сети автосервисов (СТО)","Car service chains","汽修连锁"),
+      o("agent","Представителя / агента в РФ","Representative / agent in Russia","俄罗斯代理人"),
+      o("logistics","Логистического партнёра","Logistics partner","物流合作伙伴"),
+      o("warehouse","Партнёра со складом в РФ","Warehouse partner in Russia","俄罗斯仓储合作伙伴"),
+      o("other","Другое","Other","其他")]
+};
+
+/* ============ brands ============ */
+var REGIONS = [
+ {key:"europe", ru:"Европа", en:"Europe", zh:"欧系",
+  top:["Volkswagen","BMW","Mercedes-Benz","Audi","Skoda","Renault","Peugeot","Citroen","Opel","Volvo","Land Rover","Porsche","Fiat","SEAT","MINI","Jaguar","Dacia","Alfa Romeo","MAN","Scania"],
+  more:["DAF","Iveco","Renault Trucks","Smart","Saab","Rolls-Royce","Bentley","Ferrari","Lamborghini","Maserati","Aston Martin","DS Automobiles","Lancia","Ducati","KTM","Aprilia","Triumph","Piaggio","Vespa"]},
+ {key:"america", ru:"Америка", en:"America", zh:"美系",
+  top:["Ford","Chevrolet","Cadillac","Jeep","Dodge","Chrysler","GMC","Tesla","Lincoln","Buick","RAM","Hummer","Freightliner","Kenworth","Peterbilt","Mack","International","Western Star","Harley-Davidson","Pontiac"],
+  more:["Mercury","Oldsmobile","Plymouth","Saturn","Indian Motorcycle","Polaris"]},
+ {key:"asia", ru:"Азия (Япония, Корея)", en:"Asia (Japan, Korea)", zh:"日韩系",
+  top:["Toyota","Lexus","Honda","Acura","Nissan","Infiniti","Mitsubishi","Mazda","Subaru","Suzuki","Isuzu","Hino","Daihatsu","Hyundai","Kia","Genesis","SsangYong","Daewoo","Datsun","Fuso"],
+  more:["Yamaha","Kawasaki","UD Trucks","Scion","Tata","Mahindra","Proton","Perodua"]},
+ {key:"china", ru:"Китай", en:"China", zh:"中国品牌",
+  top:["Chery","EXEED","Omoda","Jetour","Haval","GWM (Great Wall)","Tank","Geely","Changan","BYD","GAC","JAC","FAW","Dongfeng","Foton","Sinotruk (HOWO)","Shacman","MG (SAIC)","Hongqi","Lifan"],
+  more:["Zeekr","Li Auto (Lixiang)","Voyah","Jaecoo","Kaiyi","Livan","SWM","BAIC","Brilliance","Zotye","Haima","Soueast","DFSK","Wuling","Maxus","Forthing","Aito","Avatr","XPeng","NIO"]},
+ {key:"russia", ru:"Россия", en:"Russia", zh:"俄罗斯品牌",
+  top:["LADA (VAZ)","GAZ / GAZelle","UAZ","KAMAZ","Moskvich","URAL","MAZ","PAZ","ZIL","Aurus","Sollers","Evolute"],
+  more:[]}
+];
+var MORE_TXT = {ru:["Ещё","Свернуть"], en:["More","Less"], zh:["更多","收起"]};
+
+/* ============ rendering ============ */
+var LANG = "zh";
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+
+function buildOpts(containerId,name,list,type){
+  var c=document.getElementById(containerId);
+  list.forEach(function(item){
+    var lab=el("label","opt");
+    var inp=document.createElement("input");
+    inp.type=type; inp.name=name; inp.value=item.v;
+    var sp=el("span"); sp.setAttribute("data-opt",""); sp._d=item;
+    lab.appendChild(inp); lab.appendChild(sp); c.appendChild(lab);
+  });
+}
+function buildRegions(){
+  var root=document.getElementById("regions");
+  REGIONS.forEach(function(r){
+    var reg=el("div","region");
+    var h=el("div","region-h");
+    var t=el("span"); t.setAttribute("data-opt",""); t._d=r; h.appendChild(t);
+    var cnt=el("span","cnt","0"); h.appendChild(cnt); reg.appendChild(h);
+    var b=el("div","region-b"); var opts=el("div","opts");
+    function chip(brand){
+      var lab=el("label","opt");
+      var inp=document.createElement("input");
+      inp.type="checkbox"; inp.name="makes_"+r.key; inp.value=brand;
+      lab.appendChild(inp); lab.appendChild(el("span",null,brand));
+      return lab;
+    }
+    r.top.forEach(function(brand){opts.appendChild(chip(brand));});
+    var hideWrap=null;
+    if(r.more.length){
+      hideWrap=el("div","hideable");
+      r.more.forEach(function(brand){hideWrap.appendChild(chip(brand));});
+      opts.appendChild(hideWrap);
+    }
+    b.appendChild(opts);
+    if(r.more.length){
+      var btn=el("button","more-btn"); btn.type="button";
+      btn._more=r.more.length;
+      btn.onclick=function(){
+        hideWrap.classList.toggle("show");
+        btn.textContent=(hideWrap.classList.contains("show")?MORE_TXT[LANG][1]:MORE_TXT[LANG][0]+" ("+r.more.length+")");
+      };
+      b.appendChild(btn);
+    }
+    reg.appendChild(b); root.appendChild(reg);
+    reg.addEventListener("change",function(){
+      var n=reg.querySelectorAll("input:checked").length;
+      cnt.textContent=n; cnt.classList.toggle("show",n>0);
+    });
+  });
+}
+function applyLang(l){
+  LANG=l; document.documentElement.lang = l==="zh"?"zh-CN":l;
+  var dict=T[l];
+  document.querySelectorAll("[data-i18n]").forEach(function(n){
+    var k=n.getAttribute("data-i18n"); if(dict[k]!=null)n.textContent=dict[k];
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(function(n){
+    var k=n.getAttribute("data-i18n-ph"); if(dict[k]!=null)n.placeholder=dict[k];
+  });
+  document.querySelectorAll("[data-opt]").forEach(function(n){
+    if(n._d && n._d[l]) n.textContent=n._d[l];
+  });
+  document.querySelectorAll(".more-btn").forEach(function(btn){
+    var open=btn.previousSibling && btn.parentElement.querySelector(".hideable.show");
+    btn.textContent=open?MORE_TXT[l][1]:MORE_TXT[l][0]+" ("+btn._more+")";
+  });
+  document.querySelectorAll(".langs button").forEach(function(b){
+    b.classList.toggle("on",b.getAttribute("data-lang")===l);
+  });
+  try{localStorage.setItem("chuai_lang",l);}catch(e){}
+}
+
+buildOpts("whoOpts","who",OPTS.who,"radio");
+buildOpts("distOpts","dist",OPTS.dist,"radio");
+buildOpts("brandModeOpts","brand_mode",OPTS.brandMode,"checkbox");
+buildOpts("vehOpts","veh",OPTS.veh,"checkbox");
+buildOpts("groupOpts","groups",OPTS.groups,"checkbox");
+buildOpts("infoOpts","info",OPTS.info,"checkbox");
+buildOpts("priceOpts","price",OPTS.price,"radio");
+buildOpts("stockRuOpts","stock_ru",OPTS.yn,"radio");
+buildOpts("stockCnOpts","stock_cn",OPTS.stockCn,"radio");
+buildOpts("smallOpts","small_orders",OPTS.small,"radio");
+buildOpts("seekOpts","seek",OPTS.seek,"checkbox");
+buildRegions();
+
+/* initial language: saved > browser > zh */
+var saved=null; try{saved=localStorage.getItem("chuai_lang");}catch(e){}
+var nav=(navigator.language||"").toLowerCase();
+applyLang(saved || (nav.indexOf("ru")===0?"ru":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"zh"));
+document.querySelectorAll(".langs button").forEach(function(b){
+  b.onclick=function(){applyLang(b.getAttribute("data-lang"));};
+});
+
+/* conditional sub-fields */
+var form=document.getElementById("f");
+form.addEventListener("change",function(e){
+  var n=e.target.name;
+  if(n==="who") document.getElementById("whoOtherBox").classList.toggle("show",form.who.value==="other");
+  if(n==="dist") document.getElementById("distCountBox").classList.toggle("show",form.dist.value==="yes");
+  if(n==="stock_ru") document.getElementById("lotRuBox").classList.toggle("show",form.stock_ru.value==="yes");
+});
+
+/* files */
+var fileInput=document.getElementById("fileInput");
+fileInput.addEventListener("change",function(){
+  var files=Array.prototype.slice.call(fileInput.files,0,10);
+  document.getElementById("drop").classList.toggle("has",files.length>0);
+  document.getElementById("fileList").textContent=files.map(function(f){return f.name;}).join(" · ");
+});
+
+/* submit */
+function collect(){
+  var data={lang:LANG, submitted_at:new Date().toISOString(), source:"chuai.ru"};
+  var fd=new FormData(form);
+  var multi={};
+  fd.forEach(function(v,k){
+    if(k==="files"||k==="website_url")return;
+    if(multi[k]!==undefined){multi[k].push(v);}
+    else if(data[k]!==undefined){multi[k]=[data[k],v];delete data[k];}
+    else data[k]=v;
+  });
+  for(var k in multi)data[k]=multi[k];
+  data.files=Array.prototype.map.call(fileInput.files,function(f){return f.name;});
+  return data;
+}
+form.addEventListener("submit",function(e){
+  e.preventDefault();
+  var errBox=document.getElementById("errBox");
+  var okContact=form.wechat.value.trim()||form.email.value.trim()||form.phone.value.trim();
+  var ok=form.company.value.trim()&&form.person.value.trim()&&okContact&&form.who.value&&document.getElementById("consent").checked;
+  if(form.website_url.value){return;} /* honeypot */
+  if(!ok){errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});return;}
+  errBox.classList.remove("show");
+  var btn=document.getElementById("submitBtn");btn.disabled=true;
+  function success(){
+    form.parentElement.querySelectorAll(".sec,.form-head").forEach(function(s){s.style.display="none";});
+    document.getElementById("done").classList.add("show");
+    window.scrollTo({top:document.getElementById("form").offsetTop-60,behavior:"smooth"});
+  }
+  if(FORM_ENDPOINT){
+    var fd=new FormData(form);
+    fd.append("payload",JSON.stringify(collect()));
+    fetch(FORM_ENDPOINT,{method:"POST",body:fd})
+      .then(function(r){if(!r.ok)throw 0;success();})
+      .catch(function(){btn.disabled=false;errBox.textContent=T[LANG].errMsg;errBox.classList.add("show");});
+  }else{
+    try{localStorage.setItem("chuai_last_submission",JSON.stringify(collect()));}catch(e){}
+    setTimeout(success,400);
+  }
+});
+</script>
+
+</body>
+</html>
