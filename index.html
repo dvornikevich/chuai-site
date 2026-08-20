@@ -95,12 +95,19 @@
     font:600 13.5px/1 var(--body-font);border-radius:999px;padding:8px 16px;cursor:pointer}
   .hideable{display:none}.hideable.show{display:contents}
   /* files */
-  .drop{border:2px dashed var(--line);border-radius:11px;background:var(--field);padding:22px;text-align:center;cursor:pointer}
+  .drop{display:block;border:2px dashed #B9C4CE;border-radius:11px;background:var(--field);padding:28px 22px;text-align:center;cursor:pointer}
+  .drop.drag{border-color:var(--ink-soft);background:#EEF2F5}
   .drop.has{border-color:var(--green);background:var(--green-bg)}
   .drop input{display:none}
+  .drop .ic{display:block;margin:0 auto 10px;color:var(--steel)}
   .drop .big{font-weight:600}
-  .drop .small{color:var(--steel);font-size:13px;margin-top:5px}
-  .file-list{margin-top:8px;font-size:13.5px;color:var(--ink-soft)}
+  .fake-btn{display:inline-block;background:var(--ink);color:#fff;font:600 15px/1 var(--body-font);padding:13px 26px;border-radius:9px;margin:12px 0 10px}
+  .drop .small{color:var(--steel);font-size:13px}
+  .file-list{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+  .file-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 13px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;background:#fff;color:var(--ink-soft)}
+  .file-item .fx{border:0;background:transparent;color:var(--red);font:700 15px/1 var(--body-font);cursor:pointer;padding:2px 6px}
+  .file-warn{display:none;margin-top:8px;font-size:13px;color:var(--red-deep)}
+  .file-warn.show{display:block}
   .alt-mail{margin-top:10px;font-size:13.5px;color:var(--steel)}
   .alt-mail b{color:var(--ink)}
   /* consent + submit */
@@ -320,11 +327,14 @@
       <div class="sec-t"><span class="sec-n">5</span><h3 data-i18n="s5"></h3></div>
       <p class="q" data-i18n="filesQ"></p>
       <label class="drop" id="drop">
-        <input type="file" name="files" id="fileInput" multiple accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.txt,.zip,.jpg,.jpeg,.png,.webp">
+        <input type="file" id="fileInput" multiple accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.txt,.zip,.jpg,.jpeg,.png,.webp">
+        <svg class="ic" width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         <div class="big" data-i18n="filesBig"></div>
+        <span class="fake-btn" data-i18n="filesBtn"></span>
         <div class="small" data-i18n="filesSmall"></div>
       </label>
       <div class="file-list" id="fileList"></div>
+      <div class="file-warn" id="fileWarn"><span data-i18n="filesTooBig"></span> <b>mos.kruk@gmail.com</b></div>
       <p class="alt-mail"><span data-i18n="filesAlt"></span> <b>mos.kruk@gmail.com</b></p>
 
       <label class="consent">
@@ -410,12 +420,16 @@ ru:{
  seekQ:"Кого вы ищете на выставке? (можно несколько)", seekOther:"Кого ещё вы ищете?",
  s5:"Материалы",
  filesQ:"Загрузите материалы о компании и продукции",
- filesBig:"Нажмите, чтобы выбрать файлы",
- filesSmall:"Каталоги, прайс-листы, презентации: PDF, Excel, CSV, Word, фото · до 10 файлов",
+ filesBig:"Перетащите файлы сюда",
+ filesBtn:"Выбрать файлы на компьютере",
+ filesSmall:"Каталоги, прайс-листы, презентации: PDF, Excel, CSV, Word, фото · до 10 файлов, каждый до 10 МБ",
+ filesTooBig:"Файлы больше 10 МБ не прикрепляются — отправьте их на",
+ sending:"Отправка…",
  filesAlt:"Или отправьте материалы на email (укажите название компании в теме письма):",
  consent:"Согласен(-на) на обработку указанных данных и передачу их потенциальным покупателям в России. *",
  submit:"Отправить анкету",
  errMsg:"Заполните обязательные поля: название компании, контактное лицо, хотя бы один канал связи, «Кто вы?» и согласие на обработку данных.",
+ errSend:"Не удалось отправить анкету. Проверьте интернет и попробуйте ещё раз — или напишите нам на mos.kruk@gmail.com.",
  doneT:"Анкета отправлена!",
  doneP:"Спасибо! Мы изучим информацию о вашей компании и свяжемся с вами, когда подберём заинтересованных покупателей.",
  doneMail:"Каталоги и прайс-листы можно дослать на:",
@@ -472,12 +486,16 @@ en:{
  seekQ:"Who are you looking for at the exhibition? (multiple)", seekOther:"Anyone else you are looking for?",
  s5:"Materials",
  filesQ:"Upload materials about your company and products",
- filesBig:"Click to choose files",
- filesSmall:"Catalogues, price lists, presentations: PDF, Excel, CSV, Word, photos · up to 10 files",
+ filesBig:"Drag and drop files here",
+ filesBtn:"Choose files on your computer",
+ filesSmall:"Catalogues, price lists, presentations: PDF, Excel, CSV, Word, photos · up to 10 files, 10 MB each",
+ filesTooBig:"Files over 10 MB are not attached — please email them to",
+ sending:"Sending…",
  filesAlt:"Or send your materials by email (put your company name in the subject):",
  consent:"I agree to the processing of this data and to sharing it with potential buyers in Russia. *",
  submit:"Submit the form",
  errMsg:"Please fill in the required fields: company name, contact person, at least one contact channel, “Who are you?” and the consent checkbox.",
+ errSend:"Failed to submit the form. Check your connection and try again — or email us at mos.kruk@gmail.com.",
  doneT:"Form submitted!",
  doneP:"Thank you! We will review your company profile and contact you once we match you with interested buyers.",
  doneMail:"You can also send catalogues and price lists to:",
@@ -534,12 +552,16 @@ zh:{
  seekQ:"您在展会上寻找什么样的合作伙伴？（可多选）", seekOther:"还在寻找谁？",
  s5:"资料上传",
  filesQ:"上传公司及产品资料",
- filesBig:"点击选择文件",
- filesSmall:"产品目录、价格表、公司介绍：PDF、Excel、CSV、Word、图片 · 最多 10 个文件",
+ filesBig:"将文件拖拽到此处",
+ filesBtn:"从电脑选择文件",
+ filesSmall:"产品目录、价格表、公司介绍：PDF、Excel、CSV、Word、图片 · 最多 10 个文件，每个不超过 10 MB",
+ filesTooBig:"超过 10 MB 的文件无法上传，请发送至邮箱",
+ sending:"正在提交…",
  filesAlt:"也可以将资料发送至邮箱（邮件主题请注明公司名称）：",
  consent:"我同意平台处理上述信息，并将其提供给俄罗斯的潜在买家。*",
  submit:"提交问卷",
  errMsg:"请填写必填项：公司名称、联系人、至少一种联系方式、公司类型，并勾选同意条款。",
+ errSend:"提交失败。请检查网络后重试，或发送邮件至 mos.kruk@gmail.com。",
  doneT:"问卷已提交！",
  doneP:"感谢您的填写！我们会认真研究贵公司的信息，匹配到有意向的买家后会尽快与您联系。",
  doneMail:"产品目录和价格表也可发送至：",
@@ -746,12 +768,49 @@ form.addEventListener("change",function(e){
 });
 
 /* files */
+var MAX_FILES=10, MAX_SIZE=10*1024*1024, MAX_TOTAL=20*1024*1024;
+var pickedFiles=[];
 var fileInput=document.getElementById("fileInput");
-fileInput.addEventListener("change",function(){
-  var files=Array.prototype.slice.call(fileInput.files,0,10);
-  document.getElementById("drop").classList.toggle("has",files.length>0);
-  document.getElementById("fileList").textContent=files.map(function(f){return f.name;}).join(" · ");
-});
+var dropEl=document.getElementById("drop");
+function fmtSize(b){return b>1048576?(b/1048576).toFixed(1)+" MB":Math.max(1,Math.round(b/1024))+" KB";}
+function renderFiles(){
+  var list=document.getElementById("fileList");
+  list.innerHTML="";
+  pickedFiles.forEach(function(f,i){
+    var row=document.createElement("div");row.className="file-item";
+    var nm=document.createElement("span");nm.textContent=f.name+" · "+fmtSize(f.size);
+    var x=document.createElement("button");x.type="button";x.className="fx";x.textContent="✕";
+    x.onclick=function(){pickedFiles.splice(i,1);renderFiles();};
+    row.appendChild(nm);row.appendChild(x);list.appendChild(row);
+  });
+  dropEl.classList.toggle("has",pickedFiles.length>0);
+}
+function addFiles(fl){
+  var tooBig=false;
+  Array.prototype.forEach.call(fl,function(f){
+    if(pickedFiles.length>=MAX_FILES)return;
+    var total=pickedFiles.reduce(function(s,p){return s+p.size;},0);
+    if(f.size>MAX_SIZE||total+f.size>MAX_TOTAL){tooBig=true;return;}
+    var dup=pickedFiles.some(function(p){return p.name===f.name&&p.size===f.size;});
+    if(!dup)pickedFiles.push(f);
+  });
+  document.getElementById("fileWarn").classList.toggle("show",tooBig);
+  renderFiles();
+}
+fileInput.addEventListener("change",function(){addFiles(fileInput.files);fileInput.value="";});
+["dragenter","dragover"].forEach(function(ev){dropEl.addEventListener(ev,function(e){e.preventDefault();dropEl.classList.add("drag");});});
+["dragleave","drop"].forEach(function(ev){dropEl.addEventListener(ev,function(e){e.preventDefault();dropEl.classList.remove("drag");});});
+dropEl.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.files)addFiles(e.dataTransfer.files);});
+function filesAsBase64(){
+  return Promise.all(pickedFiles.map(function(f){
+    return new Promise(function(res,rej){
+      var r=new FileReader();
+      r.onload=function(){res({name:f.name,type:f.type||"application/octet-stream",size:f.size,data:String(r.result).split(",")[1]||""});};
+      r.onerror=rej;
+      r.readAsDataURL(f);
+    });
+  }));
+}
 
 /* submit */
 function collect(){
@@ -759,13 +818,13 @@ function collect(){
   var fd=new FormData(form);
   var multi={};
   fd.forEach(function(v,k){
-    if(k==="files"||k==="website_url")return;
+    if(k==="website_url")return;
     if(multi[k]!==undefined){multi[k].push(v);}
     else if(data[k]!==undefined){multi[k]=[data[k],v];delete data[k];}
     else data[k]=v;
   });
   for(var k in multi)data[k]=multi[k];
-  data.files=Array.prototype.map.call(fileInput.files,function(f){return f.name;});
+  data.file_names=pickedFiles.map(function(f){return f.name;});
   return data;
 }
 form.addEventListener("submit",function(e){
@@ -777,17 +836,20 @@ form.addEventListener("submit",function(e){
   if(!ok){errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});return;}
   errBox.classList.remove("show");
   var btn=document.getElementById("submitBtn");btn.disabled=true;
+  var btnLabel=btn.textContent;btn.textContent=T[LANG].sending;
+  function fail(){btn.disabled=false;btn.textContent=btnLabel;errBox.textContent=T[LANG].errSend;errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});}
   function success(){
     form.parentElement.querySelectorAll(".sec,.form-head").forEach(function(s){s.style.display="none";});
     document.getElementById("done").classList.add("show");
     window.scrollTo({top:document.getElementById("form").offsetTop-60,behavior:"smooth"});
   }
   if(FORM_ENDPOINT){
-    var fd=new FormData(form);
-    fd.append("payload",JSON.stringify(collect()));
-    fetch(FORM_ENDPOINT,{method:"POST",body:fd})
-      .then(function(r){if(!r.ok)throw 0;success();})
-      .catch(function(){btn.disabled=false;errBox.textContent=T[LANG].errMsg;errBox.classList.add("show");});
+    filesAsBase64().then(function(files){
+      var payload=collect();payload.files=files;
+      return fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    }).then(function(r){return r.json();})
+      .then(function(j){if(j&&j.ok)success();else fail();})
+      .catch(fail);
   }else{
     try{localStorage.setItem("chuai_last_submission",JSON.stringify(collect()));}catch(e){}
     setTimeout(success,400);
