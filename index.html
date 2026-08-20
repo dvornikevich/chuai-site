@@ -813,6 +813,29 @@ function filesAsBase64(){
 }
 
 /* submit */
+/* Коды ответов переводятся в русские подписи, чтобы таблицу было удобно читать */
+var OPT_FIELD={who:"who",dist:"dist",brand_mode:"brandMode",veh:"veh",groups:"groups",info:"info",price:"price",stock_ru:"yn",stock_cn:"stockCn",small_orders:"small",seek:"seek"};
+var SEL_MAP={
+ warranty:{none:"wNone","6m":"w6","12m":"w12","24m":"w24",claims:"wClaims",other:"wOther"},
+ lot_ru:{unit:"lotUnit",box:"lotBox",pallet:"lotPallet",bulk:"lotBulk"},
+ lot_cn:{unit:"lotUnit",box:"lotBox",lcl:"lotLcl",fcl:"lotFcl",fcl_only:"lotFclOnly"},
+ speed_opt:{"1-3d":"sp13","7d":"sp7","14d":"sp14","30d":"sp30","30d+":"sp30p"},
+ speed_ret:{"1-3d":"sp13","7d":"sp7","14d":"sp14","30d":"sp30","30d+":"sp30p"}};
+function ruLabel(field,val){
+  var list=OPTS[OPT_FIELD[field]];
+  for(var i=0;i<list.length;i++)if(list[i].v===val)return list[i].ru;
+  return val;
+}
+function toReadable(data){
+  Object.keys(OPT_FIELD).forEach(function(k){
+    if(data[k]==null)return;
+    data[k]=Array.isArray(data[k])?data[k].map(function(v){return ruLabel(k,v);}):ruLabel(k,data[k]);
+  });
+  Object.keys(SEL_MAP).forEach(function(k){
+    if(data[k]&&SEL_MAP[k][data[k]])data[k]=T.ru[SEL_MAP[k][data[k]]];
+  });
+  return data;
+}
 function collect(){
   var data={lang:LANG, submitted_at:new Date().toISOString(), source:"chuai.ru"};
   var fd=new FormData(form);
@@ -825,7 +848,7 @@ function collect(){
   });
   for(var k in multi)data[k]=multi[k];
   data.file_names=pickedFiles.map(function(f){return f.name;});
-  return data;
+  return toReadable(data);
 }
 form.addEventListener("submit",function(e){
   e.preventDefault();
