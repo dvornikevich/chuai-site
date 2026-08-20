@@ -936,6 +936,8 @@ function collect(){
   });
   for(var k in multi)data[k]=multi[k];
   data.file_names=pickedFiles.map(function(f){return f.name;});
+  /* ведущий апостроф — иначе Google Таблицы принимают «+7…» за формулу */
+  if(data.phone)data.phone="'"+data.phone;
   return toReadable(data);
 }
 form.addEventListener("submit",function(e){
