@@ -46,6 +46,20 @@
   @media(min-width:640px){.bullets{grid-template-columns:1fr 1fr 1fr}}
   .bullet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;font-size:14.5px;color:#DCE4EB;display:flex;gap:10px;align-items:flex-start}
   .bullet .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#E8B84B;margin-top:7px}
+  /* ---------- name meaning ---------- */
+  .meaning{max-width:860px;margin:0 auto;padding:30px 16px 0}
+  .meaning-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 18px}
+  @media(min-width:640px){.meaning-in{padding:26px 28px}}
+  .meaning h3{font-family:var(--disp-font);font-size:19px;font-weight:700;margin-bottom:6px}
+  .meaning .lead{color:var(--steel);font-size:14px;margin-bottom:16px}
+  .glyphs{display:grid;gap:12px}
+  @media(min-width:640px){.glyphs{grid-template-columns:repeat(3,1fr)}}
+  .glyph{border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:var(--field)}
+  .glyph .ch{font-size:30px;font-weight:700;line-height:1.1;color:var(--ink)}
+  .glyph .py{font-size:13px;color:var(--red);font-weight:600;margin-top:2px}
+  .glyph .tx{font-size:14px;color:var(--ink-soft);margin-top:7px;line-height:1.45}
+  .meaning .sum{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:15px;line-height:1.55}
+  .meaning .sum b{color:var(--red)}
   /* ---------- form ---------- */
   .wrap{max-width:860px;margin:0 auto;padding:34px 12px 80px}
   .form-head{padding:0 6px 8px}
@@ -165,6 +179,19 @@
       <div class="bullet"><span class="dot"></span><span data-i18n="b2"></span></div>
       <div class="bullet"><span class="dot"></span><span data-i18n="b3"></span></div>
     </div>
+  </div>
+</section>
+
+<section class="meaning">
+  <div class="meaning-in">
+    <h3 data-i18n="mnTitle"></h3>
+    <p class="lead" data-i18n="mnLead"></p>
+    <div class="glyphs">
+      <div class="glyph"><div class="ch">揣</div><div class="py">chuāi</div><div class="tx" data-i18n="mn1"></div></div>
+      <div class="glyph"><div class="ch">揣</div><div class="py">chuǎi</div><div class="tx" data-i18n="mn2"></div></div>
+      <div class="glyph"><div class="ch">踹</div><div class="py">chuài</div><div class="tx" data-i18n="mn3"></div></div>
+    </div>
+    <p class="sum" data-i18n-html="mnSum"></p>
   </div>
 </section>
 
@@ -411,6 +438,12 @@ ru:{
  b1:"Бесплатно для поставщиков — участие в базе не стоит ничего",
  b2:"Опт и розница: отгрузки из Китая и со складов в России",
  b3:"Прямой контакт с покупателями — без посредников",
+ mnTitle:"Почему CHUAI",
+ mnLead:"Chuai — запись китайского слога пиньинем. В зависимости от тона он даёт три значения, и все три — про нашу работу.",
+ mn1:"Положить за пазуху, в карман — 揣在口袋里.",
+ mn2:"Оценить, прикинуть, предположить — 揣测.",
+ mn3:"Пнуть, открыть дверь ногой — 踹门.",
+ mnSum:"Мы <b>берём</b> вашу продукцию, <b>оцениваем</b> её и предлагаем нужным покупателям — и <b>открываем</b> вам дверь на рынок России.",
  formTitle:"Анкета поставщика",
  formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
  langNote:"Пожалуйста, заполняйте всю анкету на русском или английском языке. Варианты ответов достаточно просто отметить.",
@@ -486,6 +519,12 @@ en:{
  b1:"Free for suppliers — joining the database costs nothing",
  b2:"Wholesale & retail: shipping from China or from stock in Russia",
  b3:"Direct contact with buyers — no middlemen",
+ mnTitle:"Why CHUAI",
+ mnLead:"Chuai is a Chinese syllable in pinyin. Depending on the tone it carries three meanings — and all three describe what we do.",
+ mn1:"To tuck away, to put in your pocket — 揣在口袋里.",
+ mn2:"To estimate, to size up, to judge — 揣测.",
+ mn3:"To kick a door open — 踹门.",
+ mnSum:"We <b>take</b> your products, <b>size up</b> the market and offer them to the right buyers — and <b>kick open</b> the door to Russia for you.",
  formTitle:"Supplier questionnaire",
  formNote:"Takes 7–10 minutes. Fields marked * are required. The more complete your answers, the faster we match you with buyers.",
  langNote:"Please complete the entire form in Russian or English. For multiple-choice questions simply tick the options.",
@@ -561,6 +600,12 @@ zh:{
  b1:"供应商免费 — 加入买家数据库不收取任何费用",
  b2:"批发与零售：支持中国直发或俄罗斯仓库发货",
  b3:"与买家直接联系 — 没有中间商",
+ mnTitle:"为什么叫 CHUAI",
+ mnLead:"CHUAI 取自汉语拼音 chuai。不同声调有三个含义，恰好对应我们为供应商做的三件事。",
+ mn1:"揣起来、放进口袋 —— 揣在口袋里。",
+ mn2:"揣度、评估、判断 —— 揣测。",
+ mn3:"踹开门 —— 踹门。",
+ mnSum:"我们把您的产品<b>收进来</b>，<b>评估</b>后推荐给合适的买家，为您<b>踹开</b>俄罗斯市场的大门。",
  formTitle:"供应商问卷",
  formNote:"填写约需 7–10 分钟。带 * 的为必填项。信息越完整，我们为您匹配买家的速度越快。",
  langNote:"重要提示：请务必用俄语或英语填写整份问卷的文字内容（选择题直接点选即可）。",
@@ -811,6 +856,9 @@ function applyLang(l){
   var dict=T[l];
   document.querySelectorAll("[data-i18n]").forEach(function(n){
     var k=n.getAttribute("data-i18n"); if(dict[k]!=null)n.textContent=dict[k];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(function(n){
+    var k=n.getAttribute("data-i18n-html"); if(dict[k]!=null)n.innerHTML=dict[k];
   });
   document.querySelectorAll("[data-i18n-ph]").forEach(function(n){
     var k=n.getAttribute("data-i18n-ph"); if(dict[k]!=null)n.placeholder=dict[k];
