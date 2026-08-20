@@ -51,6 +51,9 @@
   .form-head{padding:0 6px 8px}
   .form-head h2{font-family:var(--disp-font);font-weight:700;font-size:24px;line-height:1.25}
   .form-head p{color:var(--steel);margin-top:8px;font-size:14.5px}
+  .lang-note{display:flex;gap:12px;align-items:flex-start;background:#FCF9F2;border:1px solid #E8B84B;
+    border-radius:11px;padding:14px 16px;margin-top:14px;font-size:15px;font-weight:500;color:var(--ink)}
+  .lang-note svg{flex:none;margin-top:2px;color:var(--gold)}
   .sec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 18px;margin-top:16px}
   @media(min-width:640px){.sec{padding:28px 28px}}
   .sec-t{display:flex;align-items:center;gap:12px;margin-bottom:6px}
@@ -169,6 +172,10 @@
   <div class="form-head">
     <h2 data-i18n="formTitle"></h2>
     <p data-i18n="formNote"></p>
+    <div class="lang-note">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l9 17H3l9-17z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1" fill="currentColor"/></svg>
+      <span data-i18n="langNote"></span>
+    </div>
   </div>
 
   <form id="f" novalidate>
@@ -405,7 +412,8 @@ ru:{
  b2:"Опт и розница: отгрузки из Китая и со складов в России",
  b3:"Прямой контакт с покупателями — без посредников",
  formTitle:"Анкета поставщика",
- formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Текстовые ответы просим заполнять на русском или английском языке. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
+ formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
+ langNote:"Пожалуйста, заполняйте всю анкету на русском или английском языке. Варианты ответов достаточно просто отметить.",
  s1:"Контакты", s1hint:"Укажите хотя бы один канал связи: WeChat, email или телефон.",
  company:"Название компании *", person:"Контактное лицо *", position:"Должность",
  phone:"Телефон / WhatsApp", booth:"Номер стенда на выставке", boothPh:"например: 2B-105",
@@ -479,7 +487,8 @@ en:{
  b2:"Wholesale & retail: shipping from China or from stock in Russia",
  b3:"Direct contact with buyers — no middlemen",
  formTitle:"Supplier questionnaire",
- formNote:"Takes 7–10 minutes. Fields marked * are required. Please fill in the text answers in Russian or English. The more complete your answers, the faster we match you with buyers.",
+ formNote:"Takes 7–10 minutes. Fields marked * are required. The more complete your answers, the faster we match you with buyers.",
+ langNote:"Please complete the entire form in Russian or English. For multiple-choice questions simply tick the options.",
  s1:"Contacts", s1hint:"Please leave at least one contact channel: WeChat, email or phone.",
  company:"Company name *", person:"Contact person *", position:"Job title",
  phone:"Phone / WhatsApp", booth:"Booth number at the exhibition", boothPh:"e.g. 2B-105",
@@ -553,7 +562,8 @@ zh:{
  b2:"批发与零售：支持中国直发或俄罗斯仓库发货",
  b3:"与买家直接联系 — 没有中间商",
  formTitle:"供应商问卷",
- formNote:"填写约需 7–10 分钟。带 * 的为必填项。文字栏目请务必用俄语或英语填写（选项直接点选即可）。信息越完整，我们为您匹配买家的速度越快。",
+ formNote:"填写约需 7–10 分钟。带 * 的为必填项。信息越完整，我们为您匹配买家的速度越快。",
+ langNote:"重要提示：请务必用俄语或英语填写整份问卷的文字内容（选择题直接点选即可）。",
  s1:"联系方式", s1hint:"请至少留下一种联系方式：微信、邮箱或电话。",
  company:"公司名称 *", person:"联系人 *", position:"职位",
  phone:"电话 / WhatsApp", booth:"展会展位号", boothPh:"例如：2B-105",
