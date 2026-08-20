@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CHUAI Supplier Gateway</title>
-<meta name="description" content="CHUAI — B2B platform connecting Chinese auto parts manufacturers with buyers in Russia. 中俄汽配对接平台.">
+<title>CHUAI — 汽配自有品牌采购</title>
+<meta name="description" content="俄罗斯汽车配件自有品牌方，直接向中国工厂贴牌采购。在售 12,000 个货号，计划扩充到 20,000 个。">
+<meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
@@ -294,11 +295,12 @@
 
       <div class="grid2">
         <div class="fld"><label data-i18n="skuQ"></label>
+          <p class="hint" data-i18n="skuHint"></p>
           <select name="sku">
             <option value="" data-i18n="choose"></option>
-            <option value="<100">&lt; 100</option><option value="100-500">100 – 500</option>
-            <option value="500-1000">500 – 1 000</option><option value="1000-5000">1 000 – 5 000</option>
-            <option value="5000-20000">5 000 – 20 000</option><option value=">20000">&gt; 20 000</option>
+            <option value="lt50" data-i18n="sk1"></option><option value="50-200" data-i18n="sk2"></option>
+            <option value="200-500" data-i18n="sk3"></option><option value="500-1500" data-i18n="sk4"></option>
+            <option value="1500-5000" data-i18n="sk5"></option><option value="gt5000" data-i18n="sk6"></option>
           </select>
         </div>
         <div class="fld"><label data-i18n="warrantyQ"></label>
@@ -315,6 +317,18 @@
         <p class="q" data-i18n="infoQ"></p>
         <div class="opts" id="infoOpts"></div>
       </div>
+
+      <div class="sub-fld" id="skuTotalBox">
+        <label style="font-weight:600;font-size:15px;display:block;margin-bottom:4px" data-i18n="skuTotalQ"></label>
+        <p class="hint" data-i18n="skuTotalHint"></p>
+        <select name="sku_total">
+          <option value="" data-i18n="choose"></option>
+          <option value="lt1000" data-i18n="st1"></option><option value="1000-5000" data-i18n="st2"></option>
+          <option value="5000-20000" data-i18n="st3"></option><option value="20000-100000" data-i18n="st4"></option>
+          <option value="gt100000" data-i18n="st5"></option><option value="na" data-i18n="st6"></option>
+        </select>
+      </div>
+      <p class="hint" style="margin-top:10px" data-i18n="skuNote"></p>
 
       <div class="cols">
         <p class="q" data-i18n="certsQ"></p>
@@ -453,13 +467,13 @@ var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwHjyruaEt4WnQn9mU-
 /* ================= I18N ================= */
 var T = {
 ru:{
- kicker:"B2B-платформа · Автозапчасти · Россия",
- h1:"Прямой выход на покупателей автозапчастей в России",
- sub:"CHUAI соединяет производителей и торговые компании из Китая с оптовыми и розничными покупателями в России. Заполните анкету — мы покажем вашу продукцию покупателям, которым она нужна.",
- cta:"Заполнить анкету",
- b1:"Бесплатно для поставщиков — участие в базе не стоит ничего",
- b2:"Опт и розница: отгрузки из Китая и со складов в России",
- b3:"Прямой контакт с покупателями — без посредников",
+ kicker:"Россия · Автозапчасти · Закупка под собственной маркой",
+ h1:"Закупаем автозапчасти под собственной торговой маркой",
+ sub:"Мы — российский владелец СТМ автозапчастей, с собственной сбытовой сетью и складами. Сейчас в продаже 12 000 артикулов, план — 20 000; не хватает 8 000, поэтому идём к заводам напрямую. Сами размещаем заказ, сами платим, сами растамаживаем, товар идёт на наш склад и продаётся под нашей маркой.",
+ cta:"Зарегистрироваться поставщиком",
+ b1:"Сами заказываем, сами платим, сами растамаживаем — товар на наших складах",
+ b2:"Наша марка: упаковка, этикетки, инструкции наши — вы производите по спецификации",
+ b3:"Российская сторона на нас: EAC, импорт, склад, продажи, сервис",
  resumeTxt:"У вас есть незаконченная анкета. Продолжить с того места, где вы остановились?",
  resumeYes:"Продолжить",
  resumeNo:"Начать заново",
@@ -470,7 +484,7 @@ ru:{
  mn2:"Оценить, прикинуть, предположить — 揣测.",
  mn3:"Пнуть, открыть дверь ногой — 踹门.",
  mnSum:"Мы <b>берём</b> вашу продукцию, <b>оцениваем</b> её и предлагаем нужным покупателям — и <b>открываем</b> вам дверь на рынок России.",
- formTitle:"Анкета поставщика",
+ formTitle:"Регистрация поставщика",
  formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
  langNote:"Пожалуйста, заполняйте всю анкету на русском или английском языке. Варианты ответов достаточно просто отметить.",
  s1:"Контакты", s1hint:"Укажите хотя бы один канал связи: WeChat, email или телефон.",
@@ -491,7 +505,14 @@ ru:{
  makesOther:"Другая марка (если нет в списке)",
  groupsQ:"Ваши товарные группы (можно несколько)",
  groupsOther:"Другая товарная группа",
- skuQ:"Количество SKU в ассортименте", choose:"— выберите —",
+ skuQ:"Сколько артикулов (моделей) вы производите на собственном заводе?",
+ skuHint:"Считайте по артикулам: один артикул, подходящий к нескольким маркам и перекрывающий десятки OE-номеров, считается как ОДИН. Размеры, цвета и варианты упаковки отдельно не считаем.",
+ sk1:"до 50", sk2:"50 – 200", sk3:"200 – 500", sk4:"500 – 1 500", sk5:"1 500 – 5 000", sk6:"более 5 000",
+ skuTotalQ:"Сколько всего позиций вы можете предложить, включая товар других заводов?",
+ skuTotalHint:"Собственное производство + закупаемый товар (весь ваш прайс-лист). Считаем так же по артикулам, без OE-кроссов.",
+ st1:"до 1 000", st2:"1 000 – 5 000", st3:"5 000 – 20 000", st4:"20 000 – 100 000", st5:"более 100 000", st6:"не применимо — продаём только своё",
+ skuNote:"Количество не влияет на решение — нам одинаково интересны и узкоспециализированные заводы, и широкий ассортимент.",
+ choose:"— выберите —",
  warrantyQ:"Гарантия на товар",
  wNone:"Без гарантии", w6:"6 месяцев", w12:"1 год", w24:"2 года и более",
  wClaims:"Замена по рекламациям (брак)", wOther:"Другое",
@@ -528,23 +549,23 @@ ru:{
  filesTooBig:"Файлы больше 25 МБ (или суммарно больше 50 МБ) не прикрепляются — отправьте их на",
  sending:"Отправка…",
  filesAlt:"Или отправьте материалы на email (укажите название компании в теме письма):",
- consent:"Согласен(-на) на обработку указанных данных и передачу их потенциальным покупателям в России. *",
+ consent:"Согласен на использование указанных данных для оценки поставщика и закупочных коммуникаций. Третьим лицам данные не передаются. *",
  submit:"Отправить анкету",
  errMsg:"Заполните обязательные поля: название компании, контактное лицо, хотя бы один канал связи, «Кто вы?» и согласие на обработку данных.",
  errSend:"Не удалось отправить анкету. Проверьте интернет и попробуйте ещё раз — или напишите нам на mos.kruk@gmail.com.",
  doneT:"Анкета отправлена!",
  doneP:"Спасибо! Мы изучим информацию о вашей компании и свяжемся с вами, когда подберём заинтересованных покупателей.",
  doneMail:"Каталоги и прайс-листы можно дослать на:",
- footer1:"Независимая B2B-платформа по подбору покупателей автозапчастей в России."
+ footer1:"Российский владелец СТМ автозапчастей · Закупаем у заводов напрямую под своей маркой"
 },
 en:{
- kicker:"B2B platform · Auto parts · Russia",
- h1:"Direct access to auto parts buyers in Russia",
- sub:"CHUAI connects Chinese manufacturers and trading companies with wholesale and retail buyers across Russia. Fill in the form — we will present your products to buyers who need them.",
- cta:"Fill in the form",
- b1:"Free for suppliers — joining the database costs nothing",
- b2:"Wholesale & retail: shipping from China or from stock in Russia",
- b3:"Direct contact with buyers — no middlemen",
+ kicker:"Russia · Auto Parts · Own-Brand Sourcing",
+ h1:"We buy auto parts and sell them under our own brand",
+ sub:"We are a Russian auto-parts private-label owner with our own distribution network and warehouses. 12,000 part numbers in our range today, 20,000 planned — 8,000 still missing, which is why we come to factories directly. We place the orders, we pay, we clear customs; goods go into our own warehouse and are sold under our own brand.",
+ cta:"Register as a supplier",
+ b1:"We place the orders, we pay, we clear customs — goods go to our own warehouses",
+ b2:"Our label: packaging, labels and manuals are ours — you produce to our specification",
+ b3:"The Russian side is on us: EAC, import clearance, warehousing, sales, after-sales",
  resumeTxt:"You have an unfinished form. Continue where you left off?",
  resumeYes:"Continue",
  resumeNo:"Start over",
@@ -555,7 +576,7 @@ en:{
  mn2:"To estimate, to size up, to judge — 揣测.",
  mn3:"To kick a door open — 踹门.",
  mnSum:"We <b>take</b> your products, <b>size up</b> the market and offer them to the right buyers — and <b>kick open</b> the door to Russia for you.",
- formTitle:"Supplier questionnaire",
+ formTitle:"Supplier qualification",
  formNote:"Takes 7–10 minutes. Fields marked * are required. The more complete your answers, the faster we match you with buyers.",
  langNote:"Please complete the entire form in Russian or English. For multiple-choice questions simply tick the options.",
  s1:"Contacts", s1hint:"Please leave at least one contact channel: WeChat, email or phone.",
@@ -576,7 +597,14 @@ en:{
  makesOther:"Other make (if not listed)",
  groupsQ:"Your product groups (multiple)",
  groupsOther:"Other product group",
- skuQ:"Number of SKUs in your range", choose:"— select —",
+ skuQ:"How many part numbers do you manufacture in your own factory?",
+ skuHint:"Count by part number. One part number that fits several car makes and covers dozens of OE numbers counts as ONE. Do not count sizes, colours or packaging variants separately.",
+ sk1:"under 50", sk2:"50 – 200", sk3:"200 – 500", sk4:"500 – 1,500", sk5:"1,500 – 5,000", sk6:"over 5,000",
+ skuTotalQ:"How many items in total can you offer, including goods from other factories?",
+ skuTotalHint:"Own production + sourced goods. Count by part number, not by OE cross-references.",
+ st1:"under 1,000", st2:"1,000 – 5,000", st3:"5,000 – 20,000", st4:"20,000 – 100,000", st5:"over 100,000", st6:"N/A — own production only",
+ skuNote:"The number does not affect our decision — we work both with focused single-category factories and with wide-range suppliers.",
+ choose:"— select —",
  warrantyQ:"Product warranty",
  wNone:"No warranty", w6:"6 months", w12:"1 year", w24:"2 years or more",
  wClaims:"Replacement on claims (defects)", wOther:"Other",
@@ -613,23 +641,23 @@ en:{
  filesTooBig:"Files over 25 MB (or 50 MB in total) are not attached — please email them to",
  sending:"Sending…",
  filesAlt:"Or send your materials by email (put your company name in the subject):",
- consent:"I agree to the processing of this data and to sharing it with potential buyers in Russia. *",
+ consent:"I agree that CHUAI may use this information for supplier evaluation and sourcing contact. It will not be shared with third parties. *",
  submit:"Submit the form",
  errMsg:"Please fill in the required fields: company name, contact person, at least one contact channel, “Who are you?” and the consent checkbox.",
  errSend:"Failed to submit the form. Check your connection and try again — or email us at mos.kruk@gmail.com.",
  doneT:"Form submitted!",
  doneP:"Thank you! We will review your company profile and contact you once we match you with interested buyers.",
  doneMail:"You can also send catalogues and price lists to:",
- footer1:"An independent B2B platform matching auto parts suppliers with buyers in Russia."
+ footer1:"Russian auto-parts brand owner · Buying direct from factories under our own label"
 },
 zh:{
- kicker:"B2B平台 · 汽车配件 · 俄罗斯",
- h1:"直接对接俄罗斯汽配买家",
- sub:"CHUAI 平台帮助中国生产厂家和贸易公司对接俄罗斯的批发及零售买家。填写问卷，我们会把您的产品推荐给有需求的买家。",
- cta:"填写问卷",
- b1:"供应商免费 — 加入买家数据库不收取任何费用",
- b2:"批发与零售：支持中国直发或俄罗斯仓库发货",
- b3:"与买家直接联系 — 没有中间商",
+ kicker:"俄罗斯 · 汽车配件 · 自有品牌采购",
+ h1:"我们采购汽车配件，贴我们自己的品牌",
+ sub:"我们是俄罗斯汽车配件自有品牌方，有自己的销售网络和仓库。目前在售 12,000 个货号，计划扩充到 20,000 个 —— 还缺 8,000 个，所以直接来找工厂。我们自己下单、自己付款、自己清关，货进我们自己的仓库，以我们自己的品牌在俄罗斯销售。",
+ cta:"登记为合格供应商",
+ b1:"我们自己下单、自己付款、自己清关，货进我们自有仓库",
+ b2:"贴我们的品牌 —— 包装、标签、说明书由我们提供，贵公司按标准生产",
+ b3:"俄罗斯这一端由我们负责：EAC 认证、进口清关、仓储、销售和售后",
  resumeTxt:"您有一份未完成的问卷，是否从上次中断的地方继续填写？",
  resumeYes:"继续填写",
  resumeNo:"重新开始",
@@ -640,7 +668,7 @@ zh:{
  mn2:"揣度、评估、判断 —— 揣测。",
  mn3:"踹开门 —— 踹门。",
  mnSum:"我们把您的产品<b>收进来</b>，<b>评估</b>后推荐给合适的买家，为您<b>踹开</b>俄罗斯市场的大门。",
- formTitle:"供应商问卷",
+ formTitle:"供应商准入登记",
  formNote:"填写约需 7–10 分钟。带 * 的为必填项。信息越完整，我们为您匹配买家的速度越快。",
  langNote:"重要提示：请务必用俄语或英语填写整份问卷的文字内容（选择题直接点选即可）。",
  s1:"联系方式", s1hint:"请至少留下一种联系方式：微信、邮箱或电话。",
@@ -661,7 +689,14 @@ zh:{
  makesOther:"其他品牌（如列表中没有）",
  groupsQ:"您的产品类目（可多选）",
  groupsOther:"其他产品类目",
- skuQ:"产品 SKU 数量", choose:"— 请选择 —",
+ skuQ:"贵公司自己工厂生产的产品型号数量",
+ skuHint:"请按型号（货号）统计：同一型号适配多种车型、对应多个 OE 号，只算 1 个；规格、颜色、包装不同也不单独计算。",
+ sk1:"50 个以下", sk2:"50 – 200 个", sk3:"200 – 500 个", sk4:"500 – 1500 个", sk5:"1500 – 5000 个", sk6:"5000 个以上",
+ skuTotalQ:"贵公司可对外报价的产品总数（SKU）",
+ skuTotalHint:"含自产 + 外购/代理的其他工厂产品。同样按型号统计，不计 OE 交叉号。",
+ st1:"1000 以下", st2:"1000 – 5000", st3:"5000 – 20000", st4:"20000 – 100000", st5:"100000 以上", st6:"不适用（只销售自产产品）",
+ skuNote:"数量多少不影响合作评估。我们既需要专注单一品类的工厂，也需要品类齐全的供应商。",
+ choose:"— 请选择 —",
  warrantyQ:"产品质保",
  wNone:"无质保", w6:"6 个月", w12:"1 年", w24:"2 年及以上",
  wClaims:"质量问题换货", wOther:"其他",
@@ -698,14 +733,14 @@ zh:{
  filesTooBig:"超过 25 MB（或总共超过 50 MB）的文件无法上传，请发送至邮箱",
  sending:"正在提交…",
  filesAlt:"也可以将资料发送至邮箱（邮件主题请注明公司名称）：",
- consent:"我同意平台处理上述信息，并将其提供给俄罗斯的潜在买家。*",
+ consent:"我同意 CHUAI 将以上信息用于供应商评估与采购联络，不向第三方提供。*",
  submit:"提交问卷",
  errMsg:"请填写必填项：公司名称、联系人、至少一种联系方式、公司类型，并勾选同意条款。",
  errSend:"提交失败。请检查网络后重试，或发送邮件至 mos.kruk@gmail.com。",
  doneT:"问卷已提交！",
  doneP:"感谢您的填写！我们会认真研究贵公司的信息，匹配到有意向的买家后会尽快与您联系。",
  doneMail:"产品目录和价格表也可发送至：",
- footer1:"独立 B2B 平台 — 为汽配供应商匹配俄罗斯买家。"
+ footer1:"俄罗斯汽车配件自有品牌方 · 直接向工厂贴牌采购"
 }};
 
 /* ============ dynamic option data ============ */
@@ -945,10 +980,14 @@ form.addEventListener("change",function(e){
   if(n==="dist") document.getElementById("distCountBox").classList.toggle("show",form.dist.value==="yes");
   if(n==="stock_ru") document.getElementById("lotRuBox").classList.toggle("show",form.stock_ru.value==="yes");
   if(n==="defer_pay") document.getElementById("deferDaysBox").classList.toggle("show",form.defer_pay.value==="yes");
+  if(n==="who"){
+    var w=form.who.value;
+    document.getElementById("skuTotalBox").classList.toggle("show",w==="trader"||w==="factory_trader"||w==="group"||w==="other");
+  }
 });
 
 /* ---- автосохранение: анкета длинная, WeChat-браузер легко теряет вкладку ---- */
-var DRAFT_KEY="chuai_draft_v1";
+var DRAFT_KEY="chuai_draft_v2";
 var saveTimer=null;
 function draftSnapshot(){
   var d={};
@@ -956,7 +995,7 @@ function draftSnapshot(){
     if(!el.name||el.name==="website_url"||el.type==="file")return;
     if(el.type==="checkbox"||el.type==="radio"){
       if(el.checked){(d[el.name]=d[el.name]||[]).push(el.value);}
-    }else if(el.value){d[el.name]=el.value;}
+    }else{d[el.name]=el.value;}
   });
   return d;
 }
@@ -1000,6 +1039,8 @@ function restoreDraft(d){
   if(form.dist&&form.dist.value==="yes")document.getElementById("distCountBox").classList.add("show");
   if(form.stock_ru&&form.stock_ru.value==="yes")document.getElementById("lotRuBox").classList.add("show");
   if(form.defer_pay&&form.defer_pay.value==="yes")document.getElementById("deferDaysBox").classList.add("show");
+  if(form.who){var w0=form.who.value;
+    document.getElementById("skuTotalBox").classList.toggle("show",w0==="trader"||w0==="factory_trader"||w0==="group"||w0==="other");}
   /* счётчики выбранных марок */
   document.querySelectorAll(".region").forEach(function(reg){
     var n=reg.querySelectorAll("input:checked").length;
@@ -1008,6 +1049,31 @@ function restoreDraft(d){
   });
 }
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
+
+/* ---- частичный лид: контакт сохраняем, даже если анкету не дозаполнили ---- */
+var leadSent=false;
+function pushLead(){
+  if(leadSent||!FORM_ENDPOINT)return;
+  var c=(form.company.value||"").trim();
+  var w=((form.wechat.value||"")+(form.phone.value||"")+(form.email.value||"")).trim();
+  if(!c||!w)return;
+  leadSent=true;
+  var b={kind:"lead",lang:LANG,company:c,person:form.person.value,
+         wechat:form.wechat.value,phone:"'"+(form.phone.value||""),email:form.email.value,
+         booth:form.booth.value,who:(form.who&&form.who.value)||""};
+  try{
+    var blob=new Blob([JSON.stringify(b)],{type:"text/plain;charset=UTF-8"});
+    if(!(navigator.sendBeacon&&navigator.sendBeacon(FORM_ENDPOINT,blob))){
+      fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(b),keepalive:true});
+    }
+  }catch(e){}
+}
+["company","person","wechat","phone","email","booth"].forEach(function(n){
+  if(form[n])form[n].addEventListener("blur",pushLead);
+});
+document.addEventListener("visibilitychange",function(){if(document.hidden)pushLead();});
+window.addEventListener("pagehide",pushLead);
 form.addEventListener("input",saveDraft);
 form.addEventListener("change",saveDraft);
 document.addEventListener("visibilitychange",function(){if(document.hidden)saveDraft();});
