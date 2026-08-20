@@ -260,6 +260,15 @@
         <div class="opts" id="infoOpts"></div>
       </div>
 
+      <div class="cols">
+        <p class="q" data-i18n="certsQ"></p>
+        <div class="opts" id="certOpts"></div>
+      </div>
+      <div class="fld"><label data-i18n="certsOther"></label><input type="text" name="certs_other"></div>
+
+      <p class="q" data-i18n="eacQ"></p>
+      <div class="opts" id="eacOpts"></div>
+
       <p class="q" data-i18n="priceQ"></p>
       <div class="opts" id="priceOpts"></div>
     </section>
@@ -314,6 +323,24 @@
 
       <p class="q" data-i18n="smallQ"></p>
       <div class="opts" id="smallOpts"></div>
+
+      <div class="cols">
+        <p class="q" data-i18n="payQ"></p>
+        <div class="opts" id="payOpts"></div>
+      </div>
+
+      <p class="q" data-i18n="currQ"></p>
+      <div class="opts" id="currOpts"></div>
+
+      <p class="q" data-i18n="deferQ"></p>
+      <div class="opts" id="deferOpts"></div>
+      <div class="sub-fld" id="deferDaysBox">
+        <label style="font-weight:600;font-size:14px;display:block;margin-bottom:6px" data-i18n="deferDays"></label>
+        <input type="number" name="defer_days" min="1" max="365" style="max-width:140px">
+      </div>
+
+      <p class="q" data-i18n="incoQ"></p>
+      <div class="opts" id="incoOpts"></div>
 
       <div class="cols">
         <p class="q" data-i18n="seekQ"></p>
@@ -378,7 +405,7 @@ ru:{
  b2:"Опт и розница: отгрузки из Китая и со складов в России",
  b3:"Прямой контакт с покупателями — без посредников",
  formTitle:"Анкета поставщика",
- formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
+ formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Текстовые ответы просим заполнять на русском или английском языке. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
  s1:"Контакты", s1hint:"Укажите хотя бы один канал связи: WeChat, email или телефон.",
  company:"Название компании *", person:"Контактное лицо *", position:"Должность",
  phone:"Телефон / WhatsApp", booth:"Номер стенда на выставке", boothPh:"например: 2B-105",
@@ -403,6 +430,14 @@ ru:{
  wClaims:"Замена по рекламациям (брак)", wOther:"Другое",
  infoQ:"Какую информацию о товаре можете предоставить? (можно несколько)",
  priceQ:"Можете предоставить цены на продукцию?",
+ certsQ:"Какие сертификаты есть на продукцию? (можно несколько)",
+ certsOther:"Другие сертификаты",
+ eacQ:"Готовы ли оформить сертификаты ЕАЭС (EAC) для поставок в Россию?",
+ payQ:"Какие условия оплаты вы принимаете? (можно несколько)",
+ currQ:"В каких валютах готовы принимать оплату? (можно несколько)",
+ deferQ:"Готовы ли предоставить отсрочку платежа?",
+ deferDays:"Сколько дней отсрочки?",
+ incoQ:"Условия поставки — Инкотермс (можно несколько)",
  s4:"Условия поставок",
  stockRuQ:"Есть ли у вас склад в России?",
  lotRuQ:"Какими партиями готовы отгружать со склада в РФ?",
@@ -444,7 +479,7 @@ en:{
  b2:"Wholesale & retail: shipping from China or from stock in Russia",
  b3:"Direct contact with buyers — no middlemen",
  formTitle:"Supplier questionnaire",
- formNote:"Takes 7–10 minutes. Fields marked * are required. The more complete your answers, the faster we match you with buyers.",
+ formNote:"Takes 7–10 minutes. Fields marked * are required. Please fill in the text answers in Russian or English. The more complete your answers, the faster we match you with buyers.",
  s1:"Contacts", s1hint:"Please leave at least one contact channel: WeChat, email or phone.",
  company:"Company name *", person:"Contact person *", position:"Job title",
  phone:"Phone / WhatsApp", booth:"Booth number at the exhibition", boothPh:"e.g. 2B-105",
@@ -469,6 +504,14 @@ en:{
  wClaims:"Replacement on claims (defects)", wOther:"Other",
  infoQ:"What product information can you provide? (multiple)",
  priceQ:"Can you provide prices for your products?",
+ certsQ:"Which certificates do your products have? (multiple)",
+ certsOther:"Other certificates",
+ eacQ:"Are you ready to obtain EAC (EAEU) certificates for supplying Russia?",
+ payQ:"Which payment terms do you accept? (multiple)",
+ currQ:"Which currencies do you accept? (multiple)",
+ deferQ:"Can you offer deferred payment terms?",
+ deferDays:"How many days of deferral?",
+ incoQ:"Delivery terms — Incoterms (multiple)",
  s4:"Supply terms",
  stockRuQ:"Do you have a warehouse in Russia?",
  lotRuQ:"What lot sizes can you ship from your Russian stock?",
@@ -510,7 +553,7 @@ zh:{
  b2:"批发与零售：支持中国直发或俄罗斯仓库发货",
  b3:"与买家直接联系 — 没有中间商",
  formTitle:"供应商问卷",
- formNote:"填写约需 7–10 分钟。带 * 的为必填项。信息越完整，我们为您匹配买家的速度越快。",
+ formNote:"填写约需 7–10 分钟。带 * 的为必填项。文字栏目请务必用俄语或英语填写（选项直接点选即可）。信息越完整，我们为您匹配买家的速度越快。",
  s1:"联系方式", s1hint:"请至少留下一种联系方式：微信、邮箱或电话。",
  company:"公司名称 *", person:"联系人 *", position:"职位",
  phone:"电话 / WhatsApp", booth:"展会展位号", boothPh:"例如：2B-105",
@@ -518,7 +561,7 @@ zh:{
  s2:"公司信息",
  whoQ:"贵公司属于哪种类型？", otherPh:"请填写",
  aboutQ:"请介绍一下贵公司",
- aboutPh:"成立年份、员工人数、生产能力、主要市场、主要客户……",
+ aboutPh:"成立年份、员工人数、生产能力、主要市场、主要客户……（请用俄语或英语填写）",
  distQ:"贵公司在俄罗斯有经销商吗？", distCount:"有几家经销商？",
  brandQ:"您想在俄罗斯发展哪个品牌？", brandPh:"品牌名称",
  brandModeQ:"品牌策略（可多选）",
@@ -535,6 +578,14 @@ zh:{
  wClaims:"质量问题换货", wOther:"其他",
  infoQ:"您能提供哪些产品资料？（可多选）",
  priceQ:"能否提供产品价格？",
+ certsQ:"贵公司产品有哪些证书？（可多选）",
+ certsOther:"其他证书",
+ eacQ:"是否愿意为供应俄罗斯办理 EAC（欧亚联盟）认证？",
+ payQ:"贵公司接受哪些付款方式？（可多选）",
+ currQ:"接受哪些货币结算？（可多选）",
+ deferQ:"是否可以提供账期（延期付款）？",
+ deferDays:"账期多少天？",
+ incoQ:"交货条款 — 国际贸易术语（可多选）",
  s4:"供货条款",
  stockRuQ:"贵公司在俄罗斯有仓库吗？",
  lotRuQ:"俄罗斯仓库可按什么批量发货？",
@@ -631,6 +682,36 @@ var OPTS = {
  small:[o("yes","Да","Yes","愿意"),
         o("no","Нет","No","不愿意"),
         o("discuss","Готовы обсуждать","Open to discuss","可以商量")],
+ certs:[o("iatf","IATF 16949 / TS 16949","IATF 16949 / TS 16949","IATF 16949 / TS 16949"),
+      o("iso9001","ISO 9001","ISO 9001","ISO 9001"),
+      o("eac","EAC — ЕАЭС / ТР ТС (Россия)","EAC — EAEU / Customs Union (Russia)","EAC认证（俄罗斯/关税同盟）"),
+      o("gost","ГОСТ Р","GOST R (Russia)","GOST R（俄罗斯）"),
+      o("ece","E-mark / ECE (Европа)","E-mark / ECE (Europe)","E-mark / ECE（欧洲）"),
+      o("ccc","CCC (Китай)","CCC (China)","CCC（中国）"),
+      o("dot","DOT / SAE (США)","DOT / SAE (USA)","DOT / SAE（美国）"),
+      o("gcc","GCC / GSO (ОАЭ, Персидский залив)","GCC / GSO (UAE, Gulf)","GCC / GSO（海湾/阿联酋）"),
+      o("none","Нет сертификатов","No certificates","暂无证书")],
+ eacReady:[o("have","EAC уже оформлен","Already have EAC","已有 EAC 证书"),
+      o("ready","Да, готовы оформить","Yes, ready to certify","愿意办理"),
+      o("partner","Готовы — с помощью партнёра в РФ","Ready with a Russian partner's help","愿意，需俄方伙伴协助"),
+      o("no","Нет","No","不考虑")],
+ pay:[o("prepay100","100% предоплата","100% advance payment","100% 预付款"),
+      o("prepay_part","Частичная предоплата (30–50%), остаток перед отгрузкой","Partial advance (30–50%), balance before shipment","部分预付（30–50%），发货前结清"),
+      o("after_ship","Оплата после отгрузки","Payment after shipment","发货后付款"),
+      o("lc","Аккредитив (L/C)","Letter of credit (L/C)","信用证（L/C）"),
+      o("defer","Отсрочка платежа","Deferred payment","账期/赊销")],
+ curr:[o("cny","CNY (юани)","CNY (yuan)","人民币 CNY"),
+      o("usd","USD (доллары)","USD","美元 USD"),
+      o("rub","RUB (рубли)","RUB (rubles)","卢布 RUB"),
+      o("usdt","USDT","USDT","USDT")],
+ deferPay:[o("yes","Да","Yes","可以"),
+      o("no","Нет","No","不可以"),
+      o("discuss","Обсуждаемо (зависит от покупателя)","Negotiable (depends on the buyer)","可以商量（视买家而定）")],
+ inco:[o("exw","EXW — самовывоз с фабрики","EXW — ex works","EXW（工厂交货）"),
+      o("fob","FOB — порт Китая","FOB — Chinese port","FOB（中国港口）"),
+      o("cif","CIF / CFR — порт назначения","CIF / CFR — destination port","CIF / CFR（目的港）"),
+      o("dap","DAP — до склада покупателя","DAP — delivered to buyer's warehouse","DAP（送达买方仓库）"),
+      o("ddp","DDP — с таможней и пошлинами","DDP — duties paid","DDP（完税交货）")],
  seek:[o("distributors","Дистрибьюторов","Distributors","经销商"),
       o("wholesale","Оптовых покупателей","Wholesale buyers","批发买家"),
       o("retail_chains","Розничные сети","Retail chains","零售连锁"),
@@ -743,6 +824,12 @@ buildOpts("brandModeOpts","brand_mode",OPTS.brandMode,"checkbox");
 buildOpts("vehOpts","veh",OPTS.veh,"checkbox");
 buildOpts("groupOpts","groups",OPTS.groups,"checkbox");
 buildOpts("infoOpts","info",OPTS.info,"checkbox");
+buildOpts("certOpts","certs",OPTS.certs,"checkbox");
+buildOpts("eacOpts","eac_ready",OPTS.eacReady,"radio");
+buildOpts("payOpts","pay",OPTS.pay,"checkbox");
+buildOpts("currOpts","currency",OPTS.curr,"checkbox");
+buildOpts("deferOpts","defer_pay",OPTS.deferPay,"radio");
+buildOpts("incoOpts","incoterms",OPTS.inco,"checkbox");
 buildOpts("priceOpts","price",OPTS.price,"radio");
 buildOpts("stockRuOpts","stock_ru",OPTS.yn,"radio");
 buildOpts("stockCnOpts","stock_cn",OPTS.stockCn,"radio");
@@ -765,6 +852,7 @@ form.addEventListener("change",function(e){
   if(n==="who") document.getElementById("whoOtherBox").classList.toggle("show",form.who.value==="other");
   if(n==="dist") document.getElementById("distCountBox").classList.toggle("show",form.dist.value==="yes");
   if(n==="stock_ru") document.getElementById("lotRuBox").classList.toggle("show",form.stock_ru.value==="yes");
+  if(n==="defer_pay") document.getElementById("deferDaysBox").classList.toggle("show",form.defer_pay.value==="yes");
 });
 
 /* files */
@@ -804,7 +892,7 @@ dropEl.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.fil
 
 /* submit */
 /* Коды ответов переводятся в русские подписи, чтобы таблицу было удобно читать */
-var OPT_FIELD={who:"who",dist:"dist",brand_mode:"brandMode",veh:"veh",groups:"groups",info:"info",price:"price",stock_ru:"yn",stock_cn:"stockCn",small_orders:"small",seek:"seek"};
+var OPT_FIELD={who:"who",dist:"dist",brand_mode:"brandMode",veh:"veh",groups:"groups",info:"info",price:"price",stock_ru:"yn",stock_cn:"stockCn",small_orders:"small",seek:"seek",certs:"certs",eac_ready:"eacReady",pay:"pay",currency:"curr",defer_pay:"deferPay",incoterms:"inco"};
 var SEL_MAP={
  warranty:{none:"wNone","6m":"w6","12m":"w12","24m":"w24",claims:"wClaims",other:"wOther"},
  lot_ru:{unit:"lotUnit",box:"lotBox",pallet:"lotPallet",bulk:"lotBulk"},
