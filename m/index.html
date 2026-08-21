@@ -9,9 +9,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
 <style>
   :root{
-    --ink:#16232F; --ink-2:#22394F; --paper:#fff; --mist:#C9D4DE;
-    --steel:#7A8B9C; --line:#E3E9EF; --gold:#E8B84B; --red:#C4342B;
-    --bg:#F4F6F8;
+    --ink:#16232F; --ink-2:#22394F; --paper:#fff; --steel:#7A8B9C;
+    --line:#E3E9EF; --gold:#E8B84B; --red:#C4342B; --bg:#F4F6F8; --green:#1E9E60;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);
@@ -24,21 +23,35 @@
   .word b{color:var(--gold);font-weight:700}
   .wrap{max-width:760px;margin:0 auto;padding:22px 18px 60px}
   h1{font-size:24px;font-weight:700;line-height:1.25;margin-bottom:6px}
-  .lead{color:var(--steel);font-size:15px;margin-bottom:26px}
+  .lead{color:var(--steel);font-size:15px;margin-bottom:22px}
   h2{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
      color:var(--steel);margin:28px 0 12px}
+
+  /* сводка по анкетам */
+  .stats{background:var(--ink);color:#fff;border-radius:16px;padding:18px 20px;margin-bottom:8px}
+  .stats-row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-end}
+  .stat .v{font-size:36px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .stat .v.gold{color:var(--gold)}
+  .stat .k{font-size:12.5px;color:#9DB0C2;margin-top:6px}
+  .stats-note{font-size:12.5px;color:#9DB0C2;margin-top:14px;
+              padding-top:12px;border-top:1px solid rgba(255,255,255,.14)}
+  .stats a{color:var(--gold)}
+
   .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;
         padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;
         text-decoration:none;color:inherit}
   .card:active{background:#EEF2F6}
   .flag{flex:none;width:44px;height:44px;border-radius:11px;background:var(--ink);color:#fff;
         display:grid;place-items:center;font-size:17px;font-weight:700}
-  .flag.wide{background:var(--red)}
+  .flag.wide{background:var(--red);font-size:14px}
   .flag.tab{background:var(--ink-2)}
   .t{flex:1;min-width:0}
   .t .n{font-weight:600;font-size:16px}
   .t .d{color:var(--steel);font-size:13.5px;margin-top:2px}
   .arrow{flex:none;color:var(--steel);font-size:20px}
+  .pdf{flex:none;font-size:12px;font-weight:600;color:var(--red);
+       border:1px solid #F0CFCC;border-radius:8px;padding:6px 10px;text-decoration:none}
+  .pdf:active{background:#FDF1F0}
   .hint{background:#FFF8E8;border:1px solid #F0DFB4;border-radius:12px;
         padding:14px 16px;font-size:14px;color:#5A4B22;margin-top:24px}
   .hint b{font-weight:600}
@@ -60,12 +73,21 @@
   <h1>Материалы для выставки</h1>
   <p class="lead">Всё, что показываем и раздаём на стенде. Откройте с того устройства, с которого будете показывать.</p>
 
+  <h2>Сколько собрали</h2>
+  <div class="stats">
+    <div class="stats-row">
+      <div class="stat"><div class="v gold" id="nForms">—</div><div class="k">анкет заполнено</div></div>
+      <div class="stat"><div class="v" id="nLeads">—</div><div class="k">начали и не закончили</div></div>
+    </div>
+    <div class="stats-note" id="statsNote">Загружаю…</div>
+  </div>
+
   <h2>Планшет — экран для показа</h2>
   <a class="card" href="/tablet/">
     <div class="flag tab">▣</div>
     <div class="t">
       <div class="n">Открыть на планшете</div>
-      <div class="d">Один экран, языки переключаются вкладками: 中文 · 日本語 · 한국어 · EN</div>
+      <div class="d">Один экран, языки вкладками: 中文 · 日本語 · 한국어 · EN</div>
     </div>
     <div class="arrow">→</div>
   </a>
@@ -78,52 +100,91 @@
     <div class="arrow">→</div>
   </a>
 
-  <h2>Телефон — картинка для показа собеседнику</h2>
-  <a class="card" href="/f/flyer-zh.png" download>
-    <div class="flag">中</div>
-    <div class="t"><div class="n">Китайский</div><div class="d">Для китайских фабрик</div></div>
-    <div class="arrow">→</div>
-  </a>
-  <a class="card" href="/f/flyer-ja.png" download>
-    <div class="flag">日</div>
-    <div class="t"><div class="n">Японский</div><div class="d">Контакт через почту, не WeChat</div></div>
-    <div class="arrow">→</div>
-  </a>
-  <a class="card" href="/f/flyer-ko.png" download>
-    <div class="flag">한</div>
-    <div class="t"><div class="n">Корейский</div><div class="d">Контакт через почту</div></div>
-    <div class="arrow">→</div>
-  </a>
-  <a class="card" href="/f/flyer-en.png" download>
-    <div class="flag">EN</div>
-    <div class="t"><div class="n">Английский</div><div class="d">Универсальный — и для индийских стендов</div></div>
-    <div class="arrow">→</div>
-  </a>
-  <a class="card" href="/f/flyer-hi.png" download>
-    <div class="flag">हि</div>
-    <div class="t"><div class="n">Хинди</div><div class="d">Если собеседнику так привычнее</div></div>
+  <h2>Телефон — экран для показа собеседнику</h2>
+  <a class="card" href="/phone/">
+    <div class="flag tab">▤</div>
+    <div class="t">
+      <div class="n">Открыть на телефоне</div>
+      <div class="d">Языки переключаются вкладками: 中文 · 日本語 · 한국어 · EN · हिन्दी</div>
+    </div>
     <div class="arrow">→</div>
   </a>
 
+  <h2>Флаер — картинкой или PDF</h2>
+  <div class="card">
+    <div class="flag">中</div>
+    <div class="t"><div class="n">Китайский</div><div class="d">Для китайских фабрик</div></div>
+    <a class="pdf" href="/f/flyer-zh.png" download>PNG</a>
+    <a class="pdf" href="/f/CHUAI-A5-zh.pdf" download>PDF</a>
+  </div>
+  <div class="card">
+    <div class="flag">日</div>
+    <div class="t"><div class="n">Японский</div><div class="d">Контакт через почту, не WeChat</div></div>
+    <a class="pdf" href="/f/flyer-ja.png" download>PNG</a>
+    <a class="pdf" href="/f/CHUAI-A5-ja.pdf" download>PDF</a>
+  </div>
+  <div class="card">
+    <div class="flag">한</div>
+    <div class="t"><div class="n">Корейский</div><div class="d">Контакт через почту</div></div>
+    <a class="pdf" href="/f/flyer-ko.png" download>PNG</a>
+    <a class="pdf" href="/f/CHUAI-A5-ko.pdf" download>PDF</a>
+  </div>
+  <div class="card">
+    <div class="flag">EN</div>
+    <div class="t"><div class="n">Английский</div><div class="d">Универсальный — и для индийских стендов</div></div>
+    <a class="pdf" href="/f/flyer-en.png" download>PNG</a>
+    <a class="pdf" href="/f/CHUAI-A5-en.pdf" download>PDF</a>
+  </div>
+  <div class="card">
+    <div class="flag">हि</div>
+    <div class="t"><div class="n">Хинди</div><div class="d">Если собеседнику так привычнее</div></div>
+    <a class="pdf" href="/f/flyer-hi.png" download>PNG</a>
+    <a class="pdf" href="/f/CHUAI-A5-hi.pdf" download>PDF</a>
+  </div>
+
   <h2>Печать</h2>
-  <a class="card" href="/f/CHUAI-flyer-A5-print.pdf" download>
+  <a class="card" href="/f/CHUAI-A5-zh.pdf" download>
     <div class="flag wide">A5</div>
     <div class="t">
       <div class="n">Макет для типографии</div>
-      <div class="d">2 страницы, 154×216 мм с вылетами, китайский</div>
+      <div class="d">2 страницы, 154×216 мм с вылетами — PDF выше на нужном языке</div>
     </div>
     <div class="arrow">→</div>
   </a>
 
   <div class="hint">
-    <b>На iPhone:</b> откройте картинку, задержите палец на ней и выберите «Добавить в Фото» — тогда на стенде её можно показать из фотоплёнки, без интернета.<br><br>
-    <b>На iPad:</b> откройте «Открыть на планшете» и добавьте страницу на домашний экран через «Поделиться» → «На экран “Домой”» — откроется во весь экран, как приложение.
+    <b>На iPhone:</b> «Открыть на телефоне» → «Поделиться» → «На экран “Домой”». Откроется во весь экран, языки переключаются одним тапом.<br><br>
+    <b>Без интернета:</b> скачайте PNG нужного языка и сохраните в Фото — картинку можно показать всегда.
   </div>
 
   <footer>
     Анкета для поставщиков: <a href="/">chuai.ru</a> · почта для каталогов: mos.kruk@gmail.com
   </footer>
 </div>
+
+<script>
+/* счётчик тянем из того же приёмника, куда падают анкеты; наружу отдаются только числа */
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbwHjyruaEt4WnQn9mU-QqMu6uz8nqL_Y9OvUuH6M0DMnG7yTwk6_LdGWOyz5kvkCko/exec";
+
+function renderStats(j){
+  document.getElementById("nForms").textContent = j.forms;
+  document.getElementById("nLeads").textContent = j.leads;
+  document.getElementById("statsNote").innerHTML =
+    (j.last ? "Последняя анкета: " + j.last + " · " : "") +
+    '<a href="https://docs.google.com/spreadsheets/d/1CzpG2seDmNstoQapFzFgVveSwB2MPV74r8NlACU7Mu8/edit" target="_blank" rel="noopener">открыть таблицу с ответами</a>';
+}
+function loadStats(){
+  fetch(ENDPOINT + "?op=stats&t=" + Date.now(), {cache:"no-store"})
+    .then(function(r){ return r.json(); })
+    .then(function(j){ if(j && j.ok) renderStats(j); else throw 0; })
+    .catch(function(){
+      document.getElementById("statsNote").innerHTML =
+        'Не удалось получить счётчик — <a href="https://docs.google.com/spreadsheets/d/1CzpG2seDmNstoQapFzFgVveSwB2MPV74r8NlACU7Mu8/edit" target="_blank" rel="noopener">открыть таблицу</a>';
+    });
+}
+loadStats();
+document.addEventListener("visibilitychange", function(){ if(!document.hidden) loadStats(); });
+</script>
 
 </body>
 </html>
