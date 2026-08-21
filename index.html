@@ -1528,16 +1528,66 @@ function restoreDraft(d){
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
 
 /* ---- частичный лид: контакт сохраняем, даже если анкету не дозаполнили ---- */
-var leadSent=false;
+
+/* где человек остановился: раздел, последний вопрос и сколько полей заполнено */
+var LAST_SEC={no:"",key:""}, LAST_FIELD="", SUBMITTED=false;
+
+function markPlace(el){
+  if(!el||!el.closest)return;
+  var sec=el.closest(".sec");
+  if(sec){
+    var n=sec.querySelector(".sec-n"), h=sec.querySelector("h3[data-i18n]");
+    LAST_SEC={no:n?n.textContent.trim():"", key:h?h.getAttribute("data-i18n"):""};
+  }
+  LAST_FIELD=nearestLabel(el);
+}
+function nearestLabel(el){
+  var box=el.closest(".fld");
+  if(box){var l=box.querySelector("label");if(l&&l.textContent.trim())return l.textContent.trim();}
+  var node=el.closest(".opts")||el.closest(".sub-fld")||el;
+  while(node){
+    var prev=node.previousElementSibling;
+    while(prev){
+      if(prev.classList&&prev.classList.contains("q"))return prev.textContent.trim();
+      if(prev.tagName==="LABEL"&&prev.textContent.trim())return prev.textContent.trim();
+      prev=prev.previousElementSibling;
+    }
+    node=node.parentElement;
+    if(!node||(node.classList&&node.classList.contains("sec")))break;
+  }
+  return el.name||"";
+}
+function formProgress(){
+  var seen={}, done={};
+  [].forEach.call(form.elements,function(el){
+    if(!el.name||el.name==="website_url"||el.type==="submit"||el.type==="file")return;
+    seen[el.name]=1;
+    var ok=(el.type==="checkbox"||el.type==="radio")?el.checked:String(el.value||"").trim()!=="";
+    if(ok)done[el.name]=1;
+  });
+  var t=Object.keys(seen).length, d=Object.keys(done).length;
+  return {done:d, total:t, pct:t?Math.round(d*100/t):0};
+}
+form.addEventListener("focusin",function(e){markPlace(e.target);});
+form.addEventListener("change",function(e){markPlace(e.target);});
+
+var leadSig="", leadAt=0;
 function pushLead(){
-  if(leadSent||!FORM_ENDPOINT)return;
+  if(!FORM_ENDPOINT||SUBMITTED)return;
   var c=(form.company.value||"").trim();
   var w=((form.wechat.value||"")+(form.phone.value||"")+(form.email.value||"")).trim();
   if(!c||!w)return;
-  leadSent=true;
+  var pr=formProgress();
+  var sig=c+"|"+w+"|"+pr.done+"|"+LAST_SEC.no;
+  var now=new Date().getTime();
+  if(sig===leadSig&&now-leadAt<15000)return;   /* состояние не изменилось — не шлём повторно */
+  leadSig=sig; leadAt=now;
+  var stage=LAST_SEC.no?(LAST_SEC.no+". "+((T.ru&&T.ru[LAST_SEC.key])||"")):"";
   var b={kind:"lead",lang:LANG,company:c,person:form.person.value,
          wechat:form.wechat.value,phone:"'"+(form.phone.value||""),email:form.email.value,
-         booth:form.booth.value,who:(form.who&&form.who.value)||""};
+         booth:form.booth.value,who:(form.who&&form.who.value)||"",
+         country:(function(cv){return cv&&COUNTRY_RU[cv]?T.ru[COUNTRY_RU[cv]]:(cv||"");})((form.country&&form.country.value)||""),
+         stage:stage, progress:pr.done+" / "+pr.total+" ("+pr.pct+"%)", last_field:LAST_FIELD};
   try{
     var blob=new Blob([JSON.stringify(b)],{type:"text/plain;charset=UTF-8"});
     if(!(navigator.sendBeacon&&navigator.sendBeacon(FORM_ENDPOINT,blob))){
@@ -1681,6 +1731,7 @@ form.addEventListener("submit",function(e){
   var btnLabel=btn.textContent;btn.textContent=T[LANG].sending;
   function fail(){btn.disabled=false;btn.textContent=btnLabel;errBox.textContent=T[LANG].errSend;errBox.classList.add("show");errBox.scrollIntoView({behavior:"smooth",block:"center"});}
   function success(){
+    SUBMITTED=true;
     clearDraft();
     form.parentElement.querySelectorAll(".sec,.form-head").forEach(function(s){s.style.display="none";});
     document.getElementById("done").classList.add("show");
