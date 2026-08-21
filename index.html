@@ -46,24 +46,28 @@
   .lang-menu button:hover{background:#F1F4F7}
   .lang-menu button.on{background:var(--ink);color:#fff}
   /* ---------- hero ---------- */
-  .hero{background:linear-gradient(160deg,#1C2B3A 0%,#24384D 55%,#2A415A 100%);color:#fff;padding:44px 16px 52px;position:relative;overflow:hidden}
+  .hero{background:linear-gradient(160deg,#1C2B3A 0%,#24384D 55%,#2A415A 100%);color:#fff;padding:26px 16px 34px;position:relative;overflow:hidden}
   .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
     background:radial-gradient(circle,rgba(232,184,75,.16),transparent 65%);pointer-events:none}
   .hero-in{max-width:860px;margin:0 auto;position:relative}
   .kicker{display:inline-block;font:600 12px/1 var(--body-font);letter-spacing:.14em;text-transform:uppercase;
     color:#E8B84B;border:1px solid rgba(232,184,75,.45);border-radius:999px;padding:7px 14px;margin-bottom:18px}
   h1{font-family:var(--disp-font);font-weight:700;font-size:clamp(26px,5vw,40px);line-height:1.18;text-wrap:balance;max-width:21ch}
-  .sub{margin-top:16px;max-width:56ch;color:#C9D4DE;font-size:17px}
-  .cta{display:inline-block;margin-top:26px;background:var(--red);color:#fff;text-decoration:none;font:600 17px/1 var(--body-font);
+  .sub{margin-top:14px;max-width:52ch;color:#C9D4DE;font-size:16.5px;line-height:1.5}
+  .cta{display:inline-block;margin-top:22px;background:var(--red);color:#fff;text-decoration:none;font:600 17px/1 var(--body-font);
     padding:16px 30px;border-radius:10px;box-shadow:0 6px 18px rgba(196,52,43,.35)}
   .cta:active{background:var(--red-deep)}
-  .bullets{margin-top:34px;display:grid;gap:10px}
+  .bullets{margin-top:26px;display:grid;gap:10px}
   @media(min-width:640px){.bullets{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:639px){
+    .cta{display:block;text-align:center;width:100%;box-sizing:border-box}
+    .mp-item{height:32px;padding:0 12px;font-size:13px}
+  }
   .bullet{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;font-size:14.5px;color:#DCE4EB;display:flex;gap:10px;align-items:flex-start}
   .bullet .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#E8B84B;margin-top:7px}
   /* ---------- marketplaces ---------- */
-  .mp{margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14)}
-  .mp-t{font-size:13px;font-weight:600;letter-spacing:.06em;color:#E8B84B;margin-bottom:12px}
+  .mp{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14)}
+  .mp-t{font-size:12.5px;font-weight:600;letter-spacing:.06em;color:#E8B84B;margin-bottom:10px}
   .mp-row{display:flex;flex-wrap:wrap;gap:8px}
   .mp-item{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:8px;
     font:700 14px/1 var(--body-font);letter-spacing:.01em;white-space:nowrap}
@@ -225,21 +229,21 @@
     <span class="kicker" data-i18n="kicker"></span>
     <h1 data-i18n="h1"></h1>
     <p class="sub" data-i18n="sub"></p>
+    <div class="mp">
+      <div class="mp-t" data-i18n="mpTitle"></div>
+      <div class="mp-row">
+        <span class="mp-item mp-zap">ZAP.RU</span>
+        <span class="mp-item mp-ozon">OZON</span>
+        <span class="mp-item mp-wb">WILDBERRIES</span>
+        <span class="mp-item mp-ya">Яндекс Маркет</span>
+        <span class="mp-item mp-mm">МегаМаркет</span>
+      </div>
+    </div>
     <a class="cta" href="#form" data-i18n="cta"></a>
     <div class="bullets">
       <div class="bullet"><span class="dot"></span><span data-i18n="b1"></span></div>
       <div class="bullet"><span class="dot"></span><span data-i18n="b2"></span></div>
       <div class="bullet"><span class="dot"></span><span data-i18n="b3"></span></div>
-    </div>
-    <div class="mp">
-      <div class="mp-t" data-i18n="mpTitle"></div>
-      <div class="mp-row">
-        <span class="mp-item mp-ozon">OZON</span>
-        <span class="mp-item mp-wb">WILDBERRIES</span>
-        <span class="mp-item mp-ya">Яндекс Маркет</span>
-        <span class="mp-item mp-mm">МегаМаркет</span>
-        <span class="mp-item mp-zap">ZAP.RU</span>
-      </div>
     </div>
   </div>
 </section>
@@ -532,7 +536,7 @@ var T = {
 ru:{
  kicker:"Россия · Автозапчасти · Закупка под собственной маркой",
  h1:"Закупаем автозапчасти под собственной торговой маркой",
- sub:"Мы — российский владелец СТМ автозапчастей, с собственной сбытовой сетью и складами. Сейчас в продаже 12 000 артикулов, план — 20 000; не хватает 8 000, поэтому идём к заводам напрямую. Сами размещаем заказ, сами платим, сами растамаживаем, товар идёт на наш склад и продаётся под нашей маркой.",
+ sub:"Владелец собственной торговой марки автозапчастей в России: своя сеть продаж и свои склады. В продаже 12 000 артикулов, расширяем до 20 000 — идём к заводам напрямую.",
  cta:"Зарегистрироваться поставщиком",
  b1:"Сами заказываем, сами платим, сами растамаживаем — товар на наших складах",
  b2:"Наша марка: упаковка, этикетки, инструкции наши — вы производите по спецификации",
@@ -628,7 +632,7 @@ ru:{
 en:{
  kicker:"Russia · Auto Parts · Own-Brand Sourcing",
  h1:"We buy auto parts and sell them under our own brand",
- sub:"We are a Russian auto-parts private-label owner with our own distribution network and warehouses. 12,000 part numbers in our range today, 20,000 planned — 8,000 still missing, which is why we come to factories directly. We place the orders, we pay, we clear customs; goods go into our own warehouse and are sold under our own brand.",
+ sub:"A Russian private-label owner in auto parts, with our own sales network and warehouses. 12,000 SKU on sale, growing to 20,000 — so we come to factories directly.",
  cta:"Register as a supplier",
  b1:"We place the orders, we pay, we clear customs — goods go to our own warehouses",
  b2:"Our label: packaging, labels and manuals are ours — you produce to our specification",
@@ -724,7 +728,7 @@ en:{
 zh:{
  kicker:"俄罗斯 · 汽车配件 · 自有品牌采购",
  h1:"我们采购汽车配件，贴我们自己的品牌",
- sub:"我们是俄罗斯汽车配件自有品牌方，有自己的销售网络和仓库。目前在售 12,000 个货号，计划扩充到 20,000 个 —— 还缺 8,000 个，所以直接来找工厂。我们自己下单、自己付款、自己清关，货进我们自己的仓库，以我们自己的品牌在俄罗斯销售。",
+ sub:"我们是俄罗斯汽车配件自有品牌方，有自己的销售网络和仓库。在售 12,000 个货号，今年扩到 20,000 —— 还缺 8,000 个，所以直接来找工厂。",
  cta:"登记为合格供应商",
  b1:"我们自己下单、自己付款、自己清关，货进我们自有仓库",
  b2:"贴我们的品牌 —— 包装、标签、说明书由我们提供，贵公司按标准生产",
@@ -824,7 +828,7 @@ ja:{
  cVN:"ベトナム", cTH:"タイ", cRU:"ロシア", cOther:"その他の国",
  kicker:"ロシア · 自動車部品 · 自社ブランド調達",
  h1:"当社は自動車部品を買い付け、自社ブランドで販売しています",
- sub:"当社はロシアの自動車部品の自社ブランドオーナーで、自前の販売網と倉庫を持っています。現在12,000品番を販売しており、20,000品番まで拡大する計画です。残る8,000品番が不足しているため、工場の皆様に直接お声がけしています。発注・支払い・通関はすべて当社が行い、商品は当社の倉庫に入り、当社ブランドでロシア国内で販売します。",
+ sub:"ロシアの自動車部品の自社ブランドオーナーです。自前の販売網と倉庫があります。現在 12,000 品番、今年 20,000 品番へ —— 不足分は工場から直接調達します。",
  cta:"サプライヤー登録に進む",
  b1:"発注・支払い・通関はすべて当社が行い、商品は当社の自社倉庫に入ります",
  b2:"当社ブランドでの生産 — 包装・ラベル・取扱説明書は当社が支給し、貴社には当社の仕様どおりに生産していただきます",
@@ -920,7 +924,7 @@ ko:{
  cVN:"베트남", cTH:"태국", cRU:"러시아", cOther:"기타 국가",
  kicker:"러시아 · 자동차 부품 · 자체 브랜드 구매",
  h1:"자동차 부품을 저희 자체 브랜드로 구매합니다",
- sub:"저희는 러시아 자동차 부품 자체 브랜드(PB)를 보유한 기업으로, 자체 판매망과 물류창고를 운영합니다. 현재 12,000개 품번을 판매 중이며 20,000개까지 확대할 계획입니다. 8,000개가 부족하여 제조사를 직접 찾고 있습니다. 발주·결제·통관을 모두 저희가 직접 진행하고, 저희 창고로 입고하여 저희 브랜드로 러시아에서 판매합니다.",
+ sub:"러시아 자동차 부품 자체 브랜드 오너입니다. 자체 판매망과 창고를 갖고 있습니다. 현재 12,000개 품번, 올해 20,000개로 —— 부족분은 공장에서 직접 조달합니다.",
  cta:"공급업체 등록하기",
  b1:"발주·결제·통관을 저희가 직접 진행하고 저희 자체 창고로 입고합니다",
  b2:"저희 브랜드로 납품 — 포장·라벨·설명서는 저희가 제공하고, 귀사는 규격대로 생산해 주시면 됩니다",
@@ -1012,7 +1016,7 @@ ko:{
 hi:{
  kicker:"रूस · Auto Parts · Private Label खरीद",
  h1:"हम auto parts खरीदते हैं — अपने खुद के ब्रांड के तहत",
- sub:"हम रूस में auto parts के private label brand owner हैं — अपना sales network और अपने warehouse हैं। इस समय 12,000 SKU बिक्री में हैं और इन्हें 20,000 तक बढ़ा रहे हैं — यानी 8,000 SKU और चाहिए, इसीलिए हम सीधे factories से बात कर रहे हैं। order हम खुद देते हैं, payment हम खुद करते हैं, customs clearance हम खुद कराते हैं; माल हमारे अपने warehouse में आता है और रूस में हमारे अपने ब्रांड के तहत बिकता है।",
+ sub:"हम रूस में auto parts के private label brand owner हैं — अपना sales network और warehouse है। अभी 12,000 SKU बिक्री में, इस साल 20,000 तक — बाक़ी सीधे factories से।",
  cta:"अपनी कंपनी को supplier के रूप में रजिस्टर करें",
  b1:"order, payment और customs clearance — सब हम खुद करते हैं; माल हमारे अपने warehouse में जाता है",
  b2:"हमारे ब्रांड के तहत — packaging, labels और manual हम देते हैं, आपकी कंपनी उसी spec के अनुसार production करती है",
