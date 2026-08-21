@@ -89,20 +89,6 @@
     background:var(--ink);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:999px;
     opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60}
   .saved-hint.show{opacity:.94;transform:translateX(-50%) translateY(0)}
-  /* ---------- name meaning ---------- */
-  .meaning{max-width:860px;margin:0 auto;padding:30px 16px 0}
-  .meaning-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 18px}
-  @media(min-width:640px){.meaning-in{padding:26px 28px}}
-  .meaning h3{font-family:var(--disp-font);font-size:19px;font-weight:700;margin-bottom:6px}
-  .meaning .lead{color:var(--steel);font-size:14px;margin-bottom:16px}
-  .glyphs{display:grid;gap:12px}
-  @media(min-width:640px){.glyphs{grid-template-columns:repeat(3,1fr)}}
-  .glyph{border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:var(--field)}
-  .glyph .ch{font-size:30px;font-weight:700;line-height:1.1;color:var(--ink)}
-  .glyph .py{font-size:13px;color:var(--red);font-weight:600;margin-top:2px}
-  .glyph .tx{font-size:14px;color:var(--ink-soft);margin-top:7px;line-height:1.45}
-  .meaning .sum{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:15px;line-height:1.55}
-  .meaning .sum b{color:var(--red)}
   /* ---------- form ---------- */
   .wrap{max-width:860px;margin:0 auto;padding:34px 12px 80px}
   .form-head{padding:0 6px 8px}
@@ -257,18 +243,6 @@
 </div>
 <div class="saved-hint" id="savedHint" data-i18n="savedHint"></div>
 
-<section class="meaning">
-  <div class="meaning-in">
-    <h3 data-i18n="mnTitle"></h3>
-    <p class="lead" data-i18n="mnLead"></p>
-    <div class="glyphs">
-      <div class="glyph"><div class="ch">揣</div><div class="py">chuāi</div><div class="tx" data-i18n="mn1"></div></div>
-      <div class="glyph"><div class="ch">揣</div><div class="py">chuǎi</div><div class="tx" data-i18n="mn2"></div></div>
-      <div class="glyph"><div class="ch">踹</div><div class="py">chuài</div><div class="tx" data-i18n="mn3"></div></div>
-    </div>
-    <p class="sum" data-i18n-html="mnSum"></p>
-  </div>
-</section>
 
 <main class="wrap" id="form">
   <div class="form-head">
@@ -321,6 +295,13 @@
       <p class="q"><span data-i18n="whoQ"></span> <span class="req">*</span></p>
       <div class="opts" id="whoOpts"></div>
       <div class="sub-fld" id="whoOtherBox"><input type="text" name="who_other" data-i18n-ph="otherPh"></div>
+
+      <p class="q" data-i18n="oemQ"></p>
+      <div class="opts" id="oemOpts"></div>
+      <div class="sub-fld" id="oemBrandsBox">
+        <label style="font-weight:600;font-size:14px;display:block;margin-bottom:6px" data-i18n="oemBrandsQ"></label>
+        <input type="text" name="oem_brands" data-i18n-ph="oemBrandsPh">
+      </div>
 
       <p class="q" data-i18n="aboutQ"></p>
       <textarea name="about" data-i18n-ph="aboutPh"></textarea>
@@ -534,6 +515,9 @@ var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwHjyruaEt4WnQn9mU-
 /* ================= I18N ================= */
 var T = {
 ru:{
+ oemQ:"Поставляете ли вы на конвейер автозаводов (OEM)?",
+ oemBrandsQ:"На какие марки?",
+ oemBrandsPh:"Например: Chery, Haval, LADA",
  kicker:"Россия · Автозапчасти · Закупка под собственной маркой",
  h1:"Закупаем автозапчасти под собственной торговой маркой",
  sub:"Владелец собственной торговой марки автозапчастей в России: своя сеть продаж и свои склады. В продаже 12 000 артикулов, расширяем до 20 000 — идём к заводам напрямую.",
@@ -546,14 +530,8 @@ ru:{
  resumeYes:"Продолжить",
  resumeNo:"Начать заново",
  savedHint:"Черновик сохранён",
- mnTitle:"Почему CHUAI",
- mnLead:"Chuai — запись китайского слога пиньинем. В зависимости от тона он даёт три значения, и все три — про нашу работу.",
- mn1:"Положить за пазуху, в карман — 揣在口袋里.",
- mn2:"Оценить, прикинуть, предположить — 揣测.",
- mn3:"Пнуть, открыть дверь ногой — 踹门.",
- mnSum:"Мы <b>берём</b> вашу продукцию, <b>оцениваем</b> её и предлагаем нужным покупателям — и <b>открываем</b> вам дверь на рынок России.",
  formTitle:"Регистрация поставщика",
- formNote:"Заполнение занимает 7–10 минут. Поля со звёздочкой (*) обязательны. Чем полнее анкета — тем быстрее мы подберём вам покупателей.",
+ formNote:"Около 5 минут. Обязательных полей всего пять — остальное можно пропустить. Чем полнее ответы, тем быстрее мы перейдём к закупке.",
  langNote:"Пожалуйста, заполняйте всю анкету на русском или английском языке. Варианты ответов достаточно просто отметить.",
  s1:"Контакты", s1hint:"Укажите хотя бы один канал связи: WeChat, email или телефон.",
  company:"Название компании *", person:"Контактное лицо *", position:"Должность",
@@ -625,11 +603,14 @@ ru:{
  errMsg:"Заполните обязательные поля: название компании, контактное лицо, хотя бы один канал связи, страну, «Кто вы?» и согласие на обработку данных.",
  errSend:"Не удалось отправить анкету. Проверьте интернет и попробуйте ещё раз — или напишите нам на mos.kruk@gmail.com.",
  doneT:"Анкета отправлена!",
- doneP:"Спасибо! Мы изучим информацию о вашей компании и свяжемся с вами, когда подберём заинтересованных покупателей.",
+ doneP:"Спасибо! Мы изучим информацию о вашей компании и свяжемся с вами сами, чтобы обсудить закупку.",
  doneMail:"Каталоги и прайс-листы можно дослать на:",
  footer1:"Российский владелец СТМ автозапчастей · Закупаем у заводов напрямую под своей маркой"
 },
 en:{
+ oemQ:"Do you supply car assembly plants (OEM)?",
+ oemBrandsQ:"Which brands?",
+ oemBrandsPh:"For example: Chery, Haval, Toyota",
  kicker:"Russia · Auto Parts · Own-Brand Sourcing",
  h1:"We buy auto parts and sell them under our own brand",
  sub:"A Russian private-label owner in auto parts, with our own sales network and warehouses. 12,000 SKU on sale, growing to 20,000 — so we come to factories directly.",
@@ -642,14 +623,8 @@ en:{
  resumeYes:"Continue",
  resumeNo:"Start over",
  savedHint:"Draft saved",
- mnTitle:"Why CHUAI",
- mnLead:"Chuai is a Chinese syllable in pinyin. Depending on the tone it carries three meanings — and all three describe what we do.",
- mn1:"To tuck away, to put in your pocket — 揣在口袋里.",
- mn2:"To estimate, to size up, to judge — 揣测.",
- mn3:"To kick a door open — 踹门.",
- mnSum:"We <b>take</b> your products, <b>size up</b> the market and offer them to the right buyers — and <b>kick open</b> the door to Russia for you.",
  formTitle:"Supplier qualification",
- formNote:"Takes 7–10 minutes. Fields marked * are required. The more complete your answers, the faster we match you with buyers.",
+ formNote:"About 5 minutes. Only five fields are required — the rest is optional. The more complete your answers, the faster we move to purchasing.",
  langNote:"Please complete the entire form in Russian or English. For multiple-choice questions simply tick the options.",
  s1:"Contacts", s1hint:"Please leave at least one contact channel: WeChat, email or phone.",
  company:"Company name *", person:"Contact person *", position:"Job title",
@@ -721,11 +696,14 @@ en:{
  errMsg:"Please fill in the required fields: company name, contact person, at least one contact channel, country, “Who are you?” and the consent checkbox.",
  errSend:"Failed to submit the form. Check your connection and try again — or email us at mos.kruk@gmail.com.",
  doneT:"Form submitted!",
- doneP:"Thank you! We will review your company profile and contact you once we match you with interested buyers.",
+ doneP:"Thank you! We will study your company profile and contact you ourselves to discuss purchasing.",
  doneMail:"You can also send catalogues and price lists to:",
  footer1:"Russian auto-parts brand owner · Buying direct from factories under our own label"
 },
 zh:{
+ oemQ:"贵公司是否为整车厂配套供货（OEM 主机厂）？",
+ oemBrandsQ:"配套哪些品牌？",
+ oemBrandsPh:"例如：奇瑞、哈弗、丰田",
  kicker:"俄罗斯 · 汽车配件 · 自有品牌采购",
  h1:"我们采购汽车配件，贴我们自己的品牌",
  sub:"我们是俄罗斯汽车配件自有品牌方，有自己的销售网络和仓库。在售 12,000 个货号，今年扩到 20,000 —— 还缺 8,000 个，所以直接来找工厂。",
@@ -738,14 +716,8 @@ zh:{
  resumeYes:"继续填写",
  resumeNo:"重新开始",
  savedHint:"已自动保存",
- mnTitle:"为什么叫 CHUAI",
- mnLead:"CHUAI 取自汉语拼音 chuai。不同声调有三个含义，恰好对应我们为供应商做的三件事。",
- mn1:"揣起来、放进口袋 —— 揣在口袋里。",
- mn2:"揣度、评估、判断 —— 揣测。",
- mn3:"踹开门 —— 踹门。",
- mnSum:"我们把您的产品<b>收进来</b>，<b>评估</b>后推荐给合适的买家，为您<b>踹开</b>俄罗斯市场的大门。",
  formTitle:"供应商准入登记",
- formNote:"填写约需 7–10 分钟。带 * 的为必填项。信息越完整，我们为您匹配买家的速度越快。",
+ formNote:"大约 5 分钟。必填项只有 5 个，其余可以跳过。信息越完整，我们越快进入采购环节。",
  langNote:"重要提示：请务必用俄语或英语填写整份问卷的文字内容（选择题直接点选即可）。",
  s1:"联系方式", s1hint:"请至少留下一种联系方式：微信、邮箱或电话。",
  company:"公司名称 *", person:"联系人 *", position:"职位",
@@ -817,11 +789,14 @@ zh:{
  errMsg:"请填写必填项：公司名称、联系人、至少一种联系方式、生产国家、公司类型，并勾选同意条款。",
  errSend:"提交失败。请检查网络后重试，或发送邮件至 mos.kruk@gmail.com。",
  doneT:"问卷已提交！",
- doneP:"感谢您的填写！我们会认真研究贵公司的信息，匹配到有意向的买家后会尽快与您联系。",
+ doneP:"感谢您的填写！我们会认真研究贵公司的信息，并主动与您联系，商谈采购事宜。",
  doneMail:"产品目录和价格表也可发送至：",
  footer1:"俄罗斯汽车配件自有品牌方 · 直接向工厂贴牌采购"
 },
 ja:{
+ oemQ:"完成車メーカーへの純正供給（OEM）はありますか？",
+ oemBrandsQ:"どのブランドですか？",
+ oemBrandsPh:"例：トヨタ、日産、奇瑞",
  mpTitle:"ロシアでの販売チャネル",
  countryQ:"製造国 *",
  cCN:"中国", cKR:"韓国", cJP:"日本", cIN:"インド", cTR:"トルコ",
@@ -837,14 +812,8 @@ ja:{
  resumeYes:"続きから入力する",
  resumeNo:"最初から入力する",
  savedHint:"自動保存しました",
- mnTitle:"社名 CHUAI の由来",
- mnLead:"CHUAI は中国語のピンイン chuai に由来します。声調によって三つの意味があり、それがそのまま当社がサプライヤーの皆様に対して行う三つのことに対応しています。",
- mn1:"揣（chuāi）— 手に取って懐にしまう、ふところに入れる。",
- mn2:"揣（chuǎi）— 見極める、評価する、目利きをする。",
- mn3:"踹（chuài）— 扉を蹴り開ける。",
- mnSum:"当社は貴社の製品を<b>手に取り</b>、<b>評価し</b>、ロシア市場の扉を<b>切り開きます</b>。",
  formTitle:"サプライヤー登録アンケート",
- formNote:"入力所要時間は約7〜10分です。* は必須項目です。ご記入内容が詳しいほど、当社での検討が早く進み、お引き合いも早くお出しできます。",
+ formNote:"所要時間は約5分です。必須項目は5つだけで、ほかは任意です。内容が詳しいほど、購買の話を早く進められます。",
  langNote:"重要：記述式の項目は、必ず日本語または英語でご記入ください（当社は日本語を理解できます）。選択式の項目はそのままお選びいただくだけで結構です。",
  s1:"ご連絡先", s1hint:"メール・電話・WhatsApp のうち、少なくとも一つはご記入ください。",
  company:"会社名 *", person:"ご担当者名 *", position:"役職",
@@ -918,6 +887,9 @@ ja:{
  footer1:"ロシアの自動車部品 自社ブランドオーナー · 工場からの直接OEM調達"
 },
 ko:{
+ oemQ:"완성차 공장에 OEM 납품을 하십니까?",
+ oemBrandsQ:"어떤 브랜드입니까?",
+ oemBrandsPh:"예: 현대, 기아, 토요타",
  mpTitle:"러시아 내 판매 채널",
  countryQ:"제조 국가 *",
  cCN:"중국", cKR:"대한민국", cJP:"일본", cIN:"인도", cTR:"튀르키예",
@@ -933,14 +905,8 @@ ko:{
  resumeYes:"이어서 작성",
  resumeNo:"처음부터 다시",
  savedHint:"자동 저장됨",
- mnTitle:"회사명이 CHUAI인 이유",
- mnLead:"CHUAI는 중국어 발음 chuai에서 따온 이름입니다. 성조에 따라 세 가지 뜻이 있는데, 저희가 공급업체와 함께 밟는 세 단계와 정확히 일치합니다.",
- mn1:"揣 (chuāi) — 품에 넣다, 챙겨 넣다.",
- mn2:"揣 (chuǎi) — 헤아리다, 평가하다, 판단하다.",
- mn3:"踹 (chuài) — 발로 차서 문을 열다.",
- mnSum:"저희는 귀사의 제품을 <b>받아들이고</b>, <b>평가</b>한 뒤, 저희 브랜드로 러시아 시장의 문을 <b>열어</b> 드립니다.",
  formTitle:"공급업체 등록 신청서",
- formNote:"작성에는 약 7~10분이 소요됩니다. *는 필수 항목입니다. 정보가 상세할수록 검토가 빨라집니다.",
+ formNote:"약 5분이면 됩니다. 필수 항목은 5개뿐이고 나머지는 건너뛰어도 됩니다. 내용이 충실할수록 구매 논의가 빨라집니다.",
  langNote:"중요 안내: 설문의 서술형 항목은 반드시 한국어 또는 영어로 작성해 주십시오 (선택형 항목은 클릭만 하시면 됩니다).",
  s1:"연락처", s1hint:"이메일, 전화, WhatsApp 중 최소 한 가지 연락처를 남겨 주십시오.",
  company:"회사명 *", person:"담당자 성명 *", position:"직위",
@@ -1014,6 +980,9 @@ ko:{
  footer1:"러시아 자동차 부품 자체 브랜드 보유 기업 · 공장 직거래 PB 구매"
 },
 hi:{
+ oemQ:"क्या आप car assembly plants को OEM सप्लाई करते हैं?",
+ oemBrandsQ:"किन ब्रांड्स को?",
+ oemBrandsPh:"जैसे: Maruti, Tata, Mahindra",
  kicker:"रूस · Auto Parts · Private Label खरीद",
  h1:"हम auto parts खरीदते हैं — अपने खुद के ब्रांड के तहत",
  sub:"हम रूस में auto parts के private label brand owner हैं — अपना sales network और warehouse है। अभी 12,000 SKU बिक्री में, इस साल 20,000 तक — बाक़ी सीधे factories से।",
@@ -1026,14 +995,8 @@ hi:{
  resumeYes:"आगे भरें",
  resumeNo:"नए सिरे से शुरू करें",
  savedHint:"अपने आप सेव हो गया",
- mnTitle:"नाम CHUAI क्यों",
- mnLead:"CHUAI एक चीनी शब्द है (pinyin: chuai)। टोन बदलने पर इसके तीन अर्थ निकलते हैं — और ठीक यही तीन काम हम अपने suppliers के लिए करते हैं।",
- mn1:"揣 — किसी चीज़ को उठाकर अपनी जेब में रख लेना।",
- mn2:"揣 — आँकना, परखना, मूल्यांकन करना।",
- mn3:"踹 — लात मारकर दरवाज़ा खोल देना।",
- mnSum:"आपका प्रोडक्ट हम <b>अपने पास लेते हैं</b>, उसे <b>परखते हैं</b>, और रूस के बाज़ार का दरवाज़ा आपके लिए <b>खोल देते हैं</b>।",
  formTitle:"Supplier रजिस्ट्रेशन फ़ॉर्म",
- formNote:"भरने में करीब 7–10 मिनट लगेंगे। * वाले फ़ील्ड ज़रूरी हैं। जानकारी जितनी पूरी होगी, हम उतनी ही जल्दी आपकी कंपनी को परखकर खरीद की बात आगे बढ़ा सकेंगे।",
+ formNote:"लगभग 5 मिनट। सिर्फ़ पाँच फ़ील्ड ज़रूरी हैं — बाक़ी छोड़ सकते हैं। जानकारी जितनी पूरी होगी, ख़रीद की बात उतनी जल्दी आगे बढ़ेगी।",
  langNote:"ज़रूरी बात: फ़ॉर्म के सारे text जवाब कृपया अंग्रेज़ी या हिंदी में भरें (जहाँ विकल्प दिए हैं, वहाँ बस चुन लीजिए)।",
  s1:"संपर्क जानकारी", s1hint:"कृपया कम से कम एक संपर्क ज़रूर दें: WhatsApp, email या फ़ोन।",
  company:"कंपनी का नाम *", person:"संपर्क व्यक्ति *", position:"पद",
@@ -1422,6 +1385,7 @@ function applyLang(l){
 
 buildOpts("whoOpts","who",OPTS.who,"radio");
 buildOpts("distOpts","dist",OPTS.dist,"radio");
+buildOpts("oemOpts","oem_conveyor",OPTS.yn,"radio");
 buildOpts("brandModeOpts","brand_mode",OPTS.brandMode,"checkbox");
 buildOpts("vehOpts","veh",OPTS.veh,"checkbox");
 buildOpts("groupOpts","groups",OPTS.groups,"checkbox");
@@ -1489,6 +1453,7 @@ form.addEventListener("change",function(e){
   var n=e.target.name;
   if(n==="who") document.getElementById("whoOtherBox").classList.toggle("show",form.who.value==="other");
   if(n==="dist") document.getElementById("distCountBox").classList.toggle("show",form.dist.value==="yes");
+  if(n==="oem_conveyor") document.getElementById("oemBrandsBox").classList.toggle("show",form.oem_conveyor.value==="yes");
   if(n==="stock_ru") document.getElementById("lotRuBox").classList.toggle("show",form.stock_ru.value==="yes");
   if(n==="defer_pay") document.getElementById("deferDaysBox").classList.toggle("show",form.defer_pay.value==="yes");
   if(n==="country"){ e.target.dataset.auto=""; }  /* выбрал вручную — больше не подставляем */
@@ -1650,7 +1615,7 @@ dropEl.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.fil
 
 /* submit */
 /* Коды ответов переводятся в русские подписи, чтобы таблицу было удобно читать */
-var OPT_FIELD={who:"who",dist:"dist",brand_mode:"brandMode",veh:"veh",groups:"groups",info:"info",price:"price",stock_ru:"yn",stock_cn:"stockCn",small_orders:"small",seek:"seek",certs:"certs",eac_ready:"eacReady",pay:"pay",currency:"curr",defer_pay:"deferPay",incoterms:"inco"};
+var OPT_FIELD={who:"who",dist:"dist",oem_conveyor:"yn",brand_mode:"brandMode",veh:"veh",groups:"groups",info:"info",price:"price",stock_ru:"yn",stock_cn:"stockCn",small_orders:"small",seek:"seek",certs:"certs",eac_ready:"eacReady",pay:"pay",currency:"curr",defer_pay:"deferPay",incoterms:"inco"};
 var SEL_MAP={
  warranty:{none:"wNone","6m":"w6","12m":"w12","24m":"w24",claims:"wClaims",other:"wOther"},
  lot_ru:{unit:"lotUnit",box:"lotBox",pallet:"lotPallet",bulk:"lotBulk"},
